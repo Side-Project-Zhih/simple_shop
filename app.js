@@ -11,6 +11,8 @@ const router = require('./routes/index')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.use(express.static('public'))
+
 //session
 app.use(session({ secret: 'test', resave: false, saveUninitialized: true }))
 
