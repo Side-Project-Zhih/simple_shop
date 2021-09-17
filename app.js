@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
 const session = require('express-session')
+require('./config/mongoose')
+
 const port = process.env.PORT || 3000
 const router = require('./routes/index')
 //bodyparesr
