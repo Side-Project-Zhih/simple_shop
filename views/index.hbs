@@ -1,27 +1,58 @@
-<h1 class="restaurant-show-title ">My Shop</h1>
+<h1 class='restaurant-show-title'>My Shop</h1>
 <!-- search bar -->
-<div class="container ">
-  <div class="row">
-    <div class="col-md-10 row justify-content-between mx-auto">
-      <form action="/restaurants/search " class="col-4">
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入商品名稱" aria-label="Restaurant Name..."
-            value="" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+<div class='container'>
+  <div class='row'>
+    <div class='col-12 row justify-content-between'>
+      <form action='/restaurants/search ' class='col-4 p-0'>
+        <div class='input-group'>
+          <input
+            type='text'
+            name='keyword'
+            class='form-control'
+            placeholder='輸入商品名稱'
+            aria-label='Restaurant Name...'
+            value=''
+            aria-describedby='search-button'
+          />
+          <div class='input-group-append'>
+            <button class='btn btn-major' type='submit' id='search-button'><i
+                class='fas fa-search'
+              ></i></button>
           </div>
         </div>
       </form>
-      <div class="col-4 dropdown d-flex justify-content-end">
-        <button class="btn btn-danger dropdown-toggle " type="button" id="dropdownMenu2" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+      <div class='col-4 dropdown d-flex justify-content-end p-0'>
+        <button
+          class='btn btn-danger dropdown-toggle'
+          type='button'
+          id='dropdownMenu2'
+          data-toggle='dropdown'
+          aria-haspopup='true'
+          aria-expanded='false'
+        >
           商品種類
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <a href="/restaurants/sort?type=A-Z" class="dropdown-item" type="button">A</a>
-          <a href="/restaurants/sort?type=Z-A" class="dropdown-item" type="button">B</a>
-          <a href="/restaurants/sort?type=category" class="dropdown-item" type="button">C</a>
-          <a href="/restaurants/sort?type=location" class="dropdown-item" type="button">D</a>
+        <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+          <a
+            href='/restaurants/sort?type=A-Z'
+            class='dropdown-item'
+            type='button'
+          >A</a>
+          <a
+            href='/restaurants/sort?type=Z-A'
+            class='dropdown-item'
+            type='button'
+          >B</a>
+          <a
+            href='/restaurants/sort?type=category'
+            class='dropdown-item'
+            type='button'
+          >C</a>
+          <a
+            href='/restaurants/sort?type=location'
+            class='dropdown-item'
+            type='button'
+          >D</a>
         </div>
       </div>
     </div>
@@ -30,41 +61,151 @@
 
 </div>
 
-
 <!-- product list -->
-<div class="container mt-3">
-  <div class="row">
-    <div class="row col-md-10 col-12 mx-auto">
-      {{#each products}}
-      <div class="col-md-4 col-12 ">
-        <a href="/restaurants/{{this._id}}" class=" text-secondary w-100">
-          <div class="card mb-1">
-            <img class="card-img-top" src={{this.image}} alt="{{this.image}}">
-            <div class="card-body p-3">
-              <h6 class="card-title mb-1">{{this.name}}</h6>
-
-              <div class="restaurant-category mb-1">
-                <i class="fas fa-utensils pr-2"></i>{{this.category}}
-              </div>
-
-              <span class="badge badge-pill badge-danger font-weight-normal">
-                {{this.rating}}
-                <i class="fas fa-star fa-xs"></i>
-              </span>
-
+<div class='container mt-3'>
+  <div class='row'>
+    <div class='col-2 list-group'>
+      <a class='list-group-item bg-info text-white'>商品分類</a>
+      <a
+        class='list-group-item list-group-item-action list-group-item-light'
+        aria-disabled='true'
+      >Cras justo odio</a>
+      <a
+        class='list-group-item list-group-item-action list-group-item-light'
+      >Dapibus ac facilisis in</a>
+      <a
+        class='list-group-item list-group-item-action list-group-item-light'
+      >Morbi leo risus</a>
+      <a
+        class='list-group-item list-group-item-action list-group-item-light'
+      >Porta ac consectetur ac</a>
+      <a
+        class='list-group-item list-group-item-action list-group-item-light active'
+      >Vestibulum at eros</a>
+    </div>
+    <div class='row col-md-10 col-12 mx-auto'>
+      {{!-- {{#each products}} --}}
+      <div class='col-md-4 col-12'>
+        <div class='text-secondary w-100'>
+          <a href='' class='card rounded-0 text-decoration-none'>
+            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
+            <div class='card-body pb-0 text-secondary'>
+              <h5 class='card-title mb-1'>12345678</h5>
+              <span class='badge badge-primary'>Primary</span>
+              <h6 class='card-title mb-'>$ 100</h6>
             </div>
+          </a>
+          <div class='w-100 row no-gutters'>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button
+                class='w-100 h-100 btn btn-warning rounded-0'
+              >加入清單</button>
+            </form>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
+            </form>
           </div>
-        </a>
-        <div class="w-100 row align-items-center justify-content-end no-gutters mb-3">
-          <a href="/restaurants/{{this._id}}/edit" class="col-3 text-danger">edit</a>
-          <a href="/restaurants/{{this._id}}" class="col-3 text-danger ">detail</a>
-          <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST" class="col-3 p-0">
-            <button class="w-100 btn btn-warning ">delete</button>
-          </form>
-
         </div>
       </div>
-      {{/each}}
+            <div class='col-md-4 col-12'>
+        <div class='text-secondary w-100'>
+          <a href='' class='card rounded-0 text-decoration-none'>
+            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
+            <div class='card-body pb-0 text-secondary'>
+              <h5 class='card-title mb-1'>12345678</h5>
+              <span class='badge badge-primary'>Primary</span>
+              <h6 class='card-title mb-'>$ 100</h6>
+            </div>
+          </a>
+          <div class='w-100 row no-gutters'>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button
+                class='w-100 h-100 btn btn-warning rounded-0'
+              >加入清單</button>
+            </form>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
+            </form>
+          </div>
+        </div>
+      </div>
+            <div class='col-md-4 col-12'>
+        <div class='text-secondary w-100'>
+          <a href='' class='card rounded-0 text-decoration-none'>
+            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
+            <div class='card-body pb-0 text-secondary'>
+              <h5 class='card-title mb-1'>12345678</h5>
+              <span class='badge badge-primary'>Primary</span>
+              <h6 class='card-title mb-'>$ 100</h6>
+            </div>
+          </a>
+          <div class='w-100 row no-gutters'>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button
+                class='w-100 h-100 btn btn-warning rounded-0'
+              >加入清單</button>
+            </form>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
+            </form>
+          </div>
+        </div>
+      </div>
+            <div class='col-md-4 col-12'>
+        <div class='text-secondary w-100'>
+          <a href='' class='card rounded-0 text-decoration-none'>
+            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
+            <div class='card-body pb-0 text-secondary'>
+              <h5 class='card-title mb-1'>12345678</h5>
+              <span class='badge badge-primary'>Primary</span>
+              <h6 class='card-title mb-'>$ 100</h6>
+            </div>
+          </a>
+          <div class='w-100 row no-gutters'>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button
+                class='w-100 h-100 btn btn-warning rounded-0'
+              >加入清單</button>
+            </form>
+            <form
+              action='/restaurants/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {{!-- {{/each}} --}}
     </div>
   </div>
 </div>
