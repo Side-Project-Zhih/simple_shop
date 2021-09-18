@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { NUMBER } = require('sequelize/types')
 const Schema = mongoose.Schema
 const User = new Schema({
   email: {
@@ -23,7 +22,7 @@ const User = new Schema({
     required: true
   },
   mailNum: {
-    type: NUMBER
+    type: Number
   },
   address: {
     type: [String]

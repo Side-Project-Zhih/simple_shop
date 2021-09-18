@@ -3,13 +3,14 @@
   <div class='row justify-content-center'>
     <form
       class='form-signin col-6 '
-      action='/signup'
+      action='/users/register'
       method='POST'
       style='width: 100%;'
     >
       <div class='text-center mb-4'>
         <h1 class='h3 mb-3 font-weight-normal'>會員註冊</h1>
       </div>
+      {{>message}}
       <div class='form-label-group'>
         <label for='inputName'>姓名</label>
         <input

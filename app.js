@@ -5,6 +5,9 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
 const session = require('express-session')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 require('./config/mongoose')
 
 const port = process.env.PORT || 3000
@@ -28,7 +31,15 @@ app.use(methodOverride('_method'))
 //flash
 app.use(connectFlash())
 
-//test route
+
+app.use((req, res, next) => {
+
+  res.locals.successMsg = req.flash('successMsg')
+  res.locals.warningMsg = req.flash('warningMsg')
+next()
+})
+
+
 app.use(router)
 app.listen(port, () =>
   console.log(`operate server successfully at port :${port}`)
