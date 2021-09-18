@@ -6,6 +6,7 @@ const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -19,27 +20,29 @@ app.use(bodyParser.json())
 
 app.use(express.static('public'))
 
-//session
-app.use(session({ secret: 'test', resave: false, saveUninitialized: true }))
-app.use(passport.initialize())
-app.use(passport.session())
-require('./config/passport')
-//template
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
-app.set('view engine', 'hbs')
-
 //methodOveride
 app.use(methodOverride('_method'))
 
 //flash
 app.use(connectFlash())
+//session
+app.use(session({ secret: 'test', resave: false, saveUninitialized: true }))
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passport')
+
+//template
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
+app.set('view engine', 'hbs')
+
 
 
 app.use((req, res, next) => {
-
   res.locals.successMsg = req.flash('successMsg')
   res.locals.warningMsg = req.flash('warningMsg')
-next()
+  res.locals.user = req.user 
+  res.locals.isAuthenticated = req.isAuthenticated()
+  next()
 })
 
 
