@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const exphbr = require('express-handlebars')
+const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
@@ -19,7 +19,7 @@ app.use(express.static('public'))
 app.use(session({ secret: 'test', resave: false, saveUninitialized: true }))
 
 //template
-app.engine('hbs', exphbr({ defaultLayout: 'main', extname: 'hbs' }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
 
 //methodOveride
