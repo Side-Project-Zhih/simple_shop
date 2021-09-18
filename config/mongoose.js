@@ -6,10 +6,11 @@ mongoose.connect(DB_URL, {
   useCreateIndex: true
 })
 const db = mongoose.connection
-db.on('error', (error)=> {
+db.on('error', (error) => {
   console.log(`error happen because ${error}`)
 })
-db.once('open', ()=> {
+db.once('open', () => {
   console.log('mongodb connect successfully')
-
 })
+
+module.exports = db

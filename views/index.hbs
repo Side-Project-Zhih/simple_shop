@@ -30,29 +30,33 @@
           aria-haspopup='true'
           aria-expanded='false'
         >
-          商品種類
+        {{#if orderName_cht}}
+          {{orderName_cht}}
+        {{else}}
+          商品排序
+        {{/if}}
         </button>
         <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
           <a
-            href='/restaurants/sort?type=A-Z'
+            href='/?order=low-high&{{this.category}}'
             class='dropdown-item'
             type='button'
-          >A</a>
+          >價錢低到高</a>
           <a
-            href='/restaurants/sort?type=Z-A'
+            href='/?order=high-low&{{this.category}}'
             class='dropdown-item'
             type='button'
-          >B</a>
+          >價錢高到低</a>
           <a
-            href='/restaurants/sort?type=category'
+            href='/?order=A-Z&{{this.category}}'
             class='dropdown-item'
             type='button'
-          >C</a>
+          >A-Z</a>
           <a
-            href='/restaurants/sort?type=location'
+            href='/?order=Z-A&{{this.category}}'
             class='dropdown-item'
             type='button'
-          >D</a>
+          >Z-A</a>
         </div>
       </div>
     </div>
@@ -66,38 +70,31 @@
   <div class='row'>
     <div class='col-2 list-group'>
       <a class='list-group-item bg-info text-white'>商品分類</a>
-      <a
+      <a href="/"
         class='list-group-item list-group-item-action list-group-item-light'
         aria-disabled='true'
-      >Cras justo odio</a>
-      <a
+      >全部</a>
+      {{#each categories}}
+      <a href="/?category={{this.url}}"
         class='list-group-item list-group-item-action list-group-item-light'
-      >Dapibus ac facilisis in</a>
-      <a
-        class='list-group-item list-group-item-action list-group-item-light'
-      >Morbi leo risus</a>
-      <a
-        class='list-group-item list-group-item-action list-group-item-light'
-      >Porta ac consectetur ac</a>
-      <a
-        class='list-group-item list-group-item-action list-group-item-light active'
-      >Vestibulum at eros</a>
+      >{{this.name}}</a>
+      {{/each}}
     </div>
     <div class='row col-md-10 col-12 mx-auto'>
-      {{!-- {{#each products}} --}}
+      {{#each products}}
       <div class='col-md-4 col-12'>
         <div class='text-secondary w-100'>
           <a href='' class='card rounded-0 text-decoration-none'>
-            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
+            <img class='card-img-top' src='{{this.pic}}' alt='{{this.pic}}' style="height: 183px;" />
             <div class='card-body pb-0 text-secondary'>
-              <h5 class='card-title mb-1'>12345678</h5>
+              <h5 class='card-title mb-1'>{{this.name}}</h5>
               <span class='badge badge-primary'>Primary</span>
-              <h6 class='card-title mb-'>$ 100</h6>
+              <h6 class='card-title mb-'>$ {{this.price}}</h6>
             </div>
           </a>
           <div class='w-100 row no-gutters'>
             <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
+              action='/wishlist/{{this._id}}?_method=DELETE'
               method='POST'
               class='col-6 p-0'
             >
@@ -106,7 +103,7 @@
               >加入清單</button>
             </form>
             <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
+              action='/cart/{{this._id}}'
               method='POST'
               class='col-6 p-0'
             >
@@ -115,97 +112,7 @@
           </div>
         </div>
       </div>
-            <div class='col-md-4 col-12'>
-        <div class='text-secondary w-100'>
-          <a href='' class='card rounded-0 text-decoration-none'>
-            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
-            <div class='card-body pb-0 text-secondary'>
-              <h5 class='card-title mb-1'>12345678</h5>
-              <span class='badge badge-primary'>Primary</span>
-              <h6 class='card-title mb-'>$ 100</h6>
-            </div>
-          </a>
-          <div class='w-100 row no-gutters'>
-            <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
-              method='POST'
-              class='col-6 p-0'
-            >
-              <button
-                class='w-100 h-100 btn btn-warning rounded-0'
-              >加入清單</button>
-            </form>
-            <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
-              method='POST'
-              class='col-6 p-0'
-            >
-              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
-            </form>
-          </div>
-        </div>
-      </div>
-            <div class='col-md-4 col-12'>
-        <div class='text-secondary w-100'>
-          <a href='' class='card rounded-0 text-decoration-none'>
-            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
-            <div class='card-body pb-0 text-secondary'>
-              <h5 class='card-title mb-1'>12345678</h5>
-              <span class='badge badge-primary'>Primary</span>
-              <h6 class='card-title mb-'>$ 100</h6>
-            </div>
-          </a>
-          <div class='w-100 row no-gutters'>
-            <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
-              method='POST'
-              class='col-6 p-0'
-            >
-              <button
-                class='w-100 h-100 btn btn-warning rounded-0'
-              >加入清單</button>
-            </form>
-            <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
-              method='POST'
-              class='col-6 p-0'
-            >
-              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
-            </form>
-          </div>
-        </div>
-      </div>
-            <div class='col-md-4 col-12'>
-        <div class='text-secondary w-100'>
-          <a href='' class='card rounded-0 text-decoration-none'>
-            <img class='card-img-top' src='/pic/1.jpg' alt='{{this.image}}' />
-            <div class='card-body pb-0 text-secondary'>
-              <h5 class='card-title mb-1'>12345678</h5>
-              <span class='badge badge-primary'>Primary</span>
-              <h6 class='card-title mb-'>$ 100</h6>
-            </div>
-          </a>
-          <div class='w-100 row no-gutters'>
-            <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
-              method='POST'
-              class='col-6 p-0'
-            >
-              <button
-                class='w-100 h-100 btn btn-warning rounded-0'
-              >加入清單</button>
-            </form>
-            <form
-              action='/restaurants/{{this._id}}?_method=DELETE'
-              method='POST'
-              class='col-6 p-0'
-            >
-              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      {{!-- {{/each}} --}}
+      {{/each}}
     </div>
   </div>
 </div>
