@@ -30,29 +30,57 @@ passport.use(
     {
       clientID: process.env.googleClientId_login,
       clientSecret: process.env.googleClientSecret_login,
-      callbackURL: 'http://localhost:3000/auth/google/callback',
+      callbackURL: 'http://localhost:3000/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
       const { email, name } = profile._json
-      User.findOne({ email }).then((user) => {
-        if (user) {
-          return done(null, user)
-        }
-        let password = Math.random().toString(36).slice(-8)
-        return User.create({
-          name,
-          email,
-          password:bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+      User.findOne({ email })
+        .then((user) => {
+          if (user) {
+            return done(null, user)
+          }
+          let password = Math.random().toString(36).slice(-8)
+          return User.create({
+            name,
+            email,
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+          }).then((user) => {
+            return done(null, user)
+          })
         })
-        .then(user =>{ 
-          console.log(user)
-          return done(null, user)})
-      })
-      .catch(error => console.log(error))
+        .catch((error) => console.log(error))
     }
   )
 )
-// passport.use(new fbStrategy({}))
+passport.use(
+  new fbStrategy(
+    {
+      clientID: process.env.facebookClientId,
+      clientSecret: process.env.facebookClientSecret,
+      callbackURL: 'http://localhost:3000/auth/facebook/callback',
+      profileFields: ['email', 'displayName']
+    },
+    ( accessToken, refreshToken, profile, done) => {
+
+      const { email, name } = profile._json
+      User.findOne({ email })
+        .then((user) => {
+          if (user) {
+            return done(null, user)
+          }
+          let password = Math.random().toString(36).slice(-8)
+          return User.create({
+            name,
+            email,
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+          }).then((user) => {
+            return done(null, user)
+          })
+        })
+        .catch((error) => console.log(error))
+    }
+  )
+)
 
 passport.serializeUser((user, done) => {
   return done(null, user._id)
