@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
 const session = require('express-session')
+const passport = require('passport')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -20,7 +21,9 @@ app.use(express.static('public'))
 
 //session
 app.use(session({ secret: 'test', resave: false, saveUninitialized: true }))
-
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passport')
 //template
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const DB_URL = 'mongodb://localhost/todo-list'
+const DB_URL = 'mongodb://localhost/MYSHOP'
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
