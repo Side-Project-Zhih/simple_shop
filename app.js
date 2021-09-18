@@ -32,7 +32,14 @@ app.use(passport.session())
 require('./config/passport')
 
 //template
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
+app.engine(
+  'hbs',
+  exphbs({
+    defaultLayout: 'main',
+    extname: 'hbs',
+    helpers: require('./helper/helper')
+  })
+)
 app.set('view engine', 'hbs')
 
 app.use(async (req, res, next) => {
@@ -40,8 +47,7 @@ app.use(async (req, res, next) => {
   res.locals.warningMsg = req.flash('warningMsg')
   res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()
-  let categories = await Category
-    .find()
+  let categories = await Category.find()
     .lean()
     .then((categories) => categories)
   categories.forEach((item) => {

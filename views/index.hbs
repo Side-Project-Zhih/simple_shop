@@ -101,12 +101,20 @@
     <div class='col-2 list-group'>
       <a class='list-group-item bg-info text-white'>商品分類</a>
       <a href="/"
-        class='list-group-item list-group-item-action list-group-item-light'
+        class='list-group-item list-group-item-action list-group-item-light 
+        {{#if category}}
+        {{else}}
+        active
+        {{/if}}'
         aria-disabled='true'
       >全部</a>
       {{#each categories}}
       <a href="/?category={{this.url}}"
-        class='list-group-item list-group-item-action list-group-item-light'
+        class='list-group-item list-group-item-action list-group-item-light 
+        {{#ifCond ../category this.name}}
+        active {{../category}}
+        {{/ifCond}}
+        '
       >{{this.name}}</a>
       {{/each}}
     </div>

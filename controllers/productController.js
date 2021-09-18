@@ -1,6 +1,6 @@
 const Category = require('../models/category')
 const Product = require('../models/product')
-const helper = require('../helper/hepler')
+const helper = require('../helper/helper')
 module.exports = {
   renderIndexPage: async (req, res) => {
     const { category, order } = req.query
@@ -34,6 +34,6 @@ module.exports = {
       item.name = item.name.substring(0, 18)
     })
     keyword = encodeURIComponent(keyword)
-    res.render('index', {products,orderName_cht, keyword})
+    res.render('index', { products, orderName_cht, keyword })
   }
 }

@@ -27,5 +27,12 @@ module.exports = {
       orderName_cht = '價錢高到低'
     }
     return [orderOption, orderName_cht]
+  },
+  ifCond: function (a, b, options) {
+    if (a === b) {
+      return options.fn(this)
+    } else {
+      return options.inverse(this)
+    }
   }
 }
