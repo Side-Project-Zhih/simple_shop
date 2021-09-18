@@ -6,7 +6,7 @@ const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
-
+const Category = require('./models/category') // 待整理
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -35,16 +35,21 @@ require('./config/passport')
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
 
-
-
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   res.locals.successMsg = req.flash('successMsg')
   res.locals.warningMsg = req.flash('warningMsg')
-  res.locals.user = req.user 
+  res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()
+  let categories = await Category
+    .find()
+    .lean()
+    .then((categories) => categories)
+  categories.forEach((item) => {
+    item.url = encodeURIComponent(item.name)
+  })
+  res.locals.categories = categories
   next()
 })
-
 
 app.use(router)
 app.listen(port, () =>

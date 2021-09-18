@@ -3,7 +3,7 @@
 <div class='container'>
   <div class='row'>
     <div class='col-12 row justify-content-between'>
-      <form action='/restaurants/search ' class='col-4 p-0'>
+      <form action='/products/search ' class='col-4 p-0'>
         <div class='input-group'>
           <input
             type='text'
@@ -11,7 +11,12 @@
             class='form-control'
             placeholder='輸入商品名稱'
             aria-label='Restaurant Name...'
-            value=''
+            value= 
+            {{#if keyword}}
+            {{keyword}}
+            {{else}}
+            ''
+            {{/if}}
             aria-describedby='search-button'
           />
           <div class='input-group-append'>
@@ -36,28 +41,53 @@
           商品排序
         {{/if}}
         </button>
+        {{#if keyword}}
         <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
           <a
-            href='/?order=low-high&{{this.category}}'
+            href='/products/search?order=low-high&keyword={{keyword}}'
             class='dropdown-item'
             type='button'
           >價錢低到高</a>
           <a
-            href='/?order=high-low&{{this.category}}'
+            href='/products/search?order=high-low&keyword={{keyword}}'
             class='dropdown-item'
             type='button'
           >價錢高到低</a>
           <a
-            href='/?order=A-Z&{{this.category}}'
+            href='/products/search?order=A-Z&keyword={{keyword}}'
             class='dropdown-item'
             type='button'
           >A-Z</a>
           <a
-            href='/?order=Z-A&{{this.category}}'
+            href='/products/search?order=Z-A&keyword={{keyword}}'
             class='dropdown-item'
             type='button'
           >Z-A</a>
         </div>
+        {{else}}
+          <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+          <a
+            href='/?order=low-high&category={{this.category}}'
+            class='dropdown-item'
+            type='button'
+          >價錢低到高</a>
+          <a
+            href='/?order=high-low&category={{this.category}}'
+            class='dropdown-item'
+            type='button'
+          >價錢高到低</a>
+          <a
+            href='/?order=A-Z&category={{this.category}}'
+            class='dropdown-item'
+            type='button'
+          >A-Z</a>
+          <a
+            href='/?order=Z-A&category={{this.category}}'
+            class='dropdown-item'
+            type='button'
+          >Z-A</a>
+        </div>
+        {{/if}}
       </div>
     </div>
 
