@@ -47,8 +47,9 @@ module.exports = {
             return mailer.sendMail({
               from: process.env.googleAccount,
               to: 'fufong79570@gmail.com',
+              subject: 'MY SHOP 帳號驗證信',
               html: `<h2>請點以下連結完成驗證</h2><br>
-            <a href="http://locahost:3000/users/${_id}/validation/${user.email}">連結</a>
+            <a href="http://localhost:3000/users/${_id}/validation/${user.email.toString()}">連結</a>
             `
             })
           })
