@@ -1,3 +1,4 @@
+const Product = require('../models/product')
 module.exports = {
   orderType: (order) => {
     let orderOption = {}
@@ -35,9 +36,16 @@ module.exports = {
       return options.inverse(this)
     }
   },
-  pagination: (db, page, limit) => {
-    --page
-
-    db.find()
+  getPagination: async (option, limit, page) => {
+     let totalNum = await Product.countDocuments(option)
+     let totalPage = Math.ceil(totalNum / limit)
+     let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
+     let prev = page - 1 <= 0 ? 1 : page - 1
+     let next = page + 1 >= totalPage ? totalPage : page + 1
+     return {
+       pages,
+       prev,
+       next
+     }
   }
 }

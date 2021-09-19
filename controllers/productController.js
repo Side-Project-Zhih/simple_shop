@@ -13,14 +13,14 @@ module.exports = {
       }
     }
     const [orderOption, orderName_cht] = helper.orderType(order)
-    let totalNum = await Product.countDocuments(pdOption)
-    let totalPage = Math.ceil(totalNum / pdNumLimit)
-    let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
-    let prev = page - 1 <= 0 ? 1 : page - 1
-    let next = page + 1 >= totalPage ? totalPage : page + 1
-
+    const { pages, prev, next } = await helper.getPagination(
+      pdOption,
+      pdNumLimit,
+      page
+    )
+    let skipNum = pdNumLimit * (page - 1)
     let products = await Product.find(pdOption)
-      .skip(pdNumLimit * (page - 1))
+      .skip(skipNum)
       .limit(pdNumLimit)
       .sort(orderOption)
       .lean()
@@ -49,16 +49,11 @@ module.exports = {
     const pdOption = {
       name: { $regex: keyword, $options: 'i' }
     }
-
-    let totalNum = await Product.countDocuments(pdOption)
-    let totalPage = Math.ceil(totalNum / pdNumLimit)
-    let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
-    let prev = page - 1 <= 0 ? 1 : page - 1
-    let next = page + 1 >= totalPage ? totalPage : page + 1
-
+    const { pages, prev, next } = helper.getPagination(pdOption, limit, page)
     const [orderOption, orderName_cht] = helper.orderType(order)
+    let skipNum = pdNumLimit * (page - 1)
     const products = await Product.find(pdOption)
-      .skip(pdNumLimit * (page - 1))
+      .skip(skipNum)
       .limit(pdNumLimit)
       .sort(orderOption)
       .lean()
