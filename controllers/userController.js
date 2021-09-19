@@ -57,5 +57,9 @@ module.exports = {
           })
       })
       .catch((err) => console.log(error))
+  },
+  logout:(req, res) => {
+    req.logout()
+    res.redirect('/')
   }
 }
