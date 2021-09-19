@@ -25,7 +25,7 @@ const User = new Schema({
     type: Number
   },
   address: {
-    type: [String]
+    type: String
   },
   creditCard: {
     type: Map,

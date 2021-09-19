@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const mailer = require('../config/mailer')
 const helper = require('../helper/helper')
+const cardValidator = require('card-validator')
 module.exports = {
   renderLoginPage: (req, res) => {
     res.render('login')
@@ -66,14 +67,24 @@ module.exports = {
     const renderObj = helper.getProfilePart(req.query)
     res.render('profile', renderObj)
   },
-  putUserProfile: (req, res) => {
-    const id = req.params
+  putUserProfile: async (req, res) => {
+    const _id = req.params
     const user = req.user
-    if(id !== user._id) return res.redirect('back')
+    if (_id !== user._id) return res.redirect('back')
     const { password, newPassword, checkPassword } = req.body
+    const { cardNumber, expYear, expMon } = req.body
+    const { name, address, mailNum, phone} = req.body
     //基本訊息
-    
-
+    if(name &&　address && mailNum && phone){
+      await User.findOneAndUpdate({ _id }, {
+        name,
+        address,
+        mailNum,
+        phone
+      })
+      req.flash('successMsg', '基本訊息更改成功')
+      return res.redirect('back')
+    }
     //密碼處理
     const isMatch = bcrypt.compareSync(password, user.password)
     if (password && !isMatch) {
@@ -86,10 +97,31 @@ module.exports = {
         return res.redirect(back)
       }
       password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10))
-      User.findOneAndUpdate({ email: user.email }, { password })
+      await User.findOneAndUpdate({ _id }, { password })
       return
     }
     //信用卡處理
-    
+    let result = cardValidator.number(cardNumber)
+    if (result.isValid) {
+      await User.findOneAndUpdate(
+        { _id },
+        {
+          creditCard: {
+            cardNumber,
+            expMon,
+            expYear
+          }
+        }
+      )
+      req.flash('successMsg', '信用卡卡號更改成功')
+      return res.redirect('back')
+    }
+    if (!result.isValid) {
+      req.flash('warningMsg', '信用卡卡號錯誤')
+      return res.redirect('back')
+    }
+
+    req.flash('warning', '請勿填寫每一個欄位')
+    return res.redirect('back')
   }
 }
