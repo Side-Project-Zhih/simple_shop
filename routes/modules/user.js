@@ -15,7 +15,8 @@ router.post(
 router.get('/register', userController.renderRegisterPage)
 router.post('/register', userController.register)
 router.get('/logout', userController.logout)
+router.get('/:_id/validation/:email', userController.checkValidationMail)
+router.post('/:_id/validation', userController.sendValidationMail)
 router.get('/:_id', userController.renderUserProfile)
 router.put('/:_id', userController.putUserProfile)
-
 module.exports = router

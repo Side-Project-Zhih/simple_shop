@@ -48,7 +48,7 @@ module.exports = {
               from: process.env.googleAccount,
               to: 'fufong79570@gmail.com',
               html: `<h2>請點以下連結完成驗證</h2><br>
-            <a href="http://locahost:3000/users/${user.email}">連結</a>
+            <a href="http://locahost:3000/users/${_id}/validation/${user.email}">連結</a>
             `
             })
           })
@@ -134,5 +134,35 @@ module.exports = {
 
     req.flash('warning', '請勿填寫每一個欄位')
     return res.redirect('back')
+  },
+  sendValidationMail: async (req, res) => {
+    const _id = req.params._id
+    const user = req.user
+    if (user._id.toString() !== _id) {
+      return res.redirect('back')
+    }
+    let mail
+    let validMail = {
+      from: process.env.googleAccount,
+      to: 'fufong79570@gmail.com',
+      subject: 'MY SHOP 帳號驗證信',
+      html: `<h2>請點以下連結完成驗證</h2><br>
+            <a href="http://localhost:3000/users/${_id}/validation/${user.email.toString()}">連結</a>
+            `
+    }
+    let info = await mailer
+      .sendMail(validMail)
+      .catch((error) => console.log(error))
+    req.flash('successMsg', '已發送驗證信')
+    res.redirect('back')
+  },
+  checkValidationMail: async (req, res) => {
+    let email = req.params.email
+    const user = req.user
+    if (user.email.toString() !== email) {
+      return res.render('mailValid')
+    }
+    await User.findOneAndUpdate({ email }, { isValid: true })
+    res.render('mailValid',{isValid:true})
   }
 }
