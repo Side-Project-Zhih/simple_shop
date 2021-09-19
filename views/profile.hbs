@@ -25,6 +25,13 @@
     {{#if isProfile}}
       <div class='col-9'>
         {{>message}}
+        {{#if user.isValid}}
+        {{else}}
+        <form class="d-flex justify-content-between border p-2" method="POST" action="/users/{{user._id}}/validation">
+          <h3>帳戶尚未驗證，請按下按鈕接收驗證信</h3>
+          <button class="btn btn-danger">發送驗證信</button>
+        </form>
+        {{/if}}
         <form action="/users/{{user._id}}?_method=PUT" method="POST">
           <div class='form-group row'>
             <label

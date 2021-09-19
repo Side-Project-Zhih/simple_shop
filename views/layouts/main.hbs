@@ -45,7 +45,7 @@
                 href=''
                 class='nav-link'
               >購物車</a></li>
-            {{!-- {{#if isAuthenticated}} --}}
+            {{#if isAuthenticated}}
               <li class='nav-item text-secondary rounded'><a
                   href='/users/{{user._id}}'
                   class='nav-link'
@@ -54,12 +54,12 @@
                   href='/users/logout'
                   class='nav-link'
                 >logout</a></li>
-            {{!-- {{else}} --}}
+            {{else}}
               <li class='nav-item text-secondary rounded'><a
                   href='/users/login'
                   class='nav-link'
                 >login</a></li>
-            {{!-- {{/if}} --}}
+            {{/if}}
           </ul>
         </div>
       </nav>
