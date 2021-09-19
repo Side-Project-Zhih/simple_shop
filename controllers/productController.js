@@ -75,5 +75,11 @@ module.exports = {
       next,
       keyword
     })
+  },
+  renderProductPage: async (req, res) => {
+    const { productId } = req.params
+    let product = await Product.findById(productId).lean()
+    product.amount = Array.from({ length: product.amount }).map((_, i) => i + 1)
+    res.render('pb_detail', { product })
   }
 }

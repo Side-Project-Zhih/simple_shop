@@ -122,7 +122,7 @@
       {{#each products}}
       <div class='col-md-4 col-12'>
         <div class='text-secondary w-100'>
-          <a href='' class='card rounded-0 text-decoration-none'>
+          <a href='/products/{{this._id}}' class='card rounded-0 text-decoration-none'>
             <img class='card-img-top' src='{{this.pic}}' alt='{{this.pic}}' style="height: 183px;" />
             <div class='card-body pb-0 text-secondary'>
               <h5 class='card-title mb-1'>{{this.name}}</h5>
@@ -138,7 +138,7 @@
             >
               <button
                 class='w-100 h-100 btn btn-warning rounded-0'
-              >加入清單</button>
+              >加入願望清單</button>
             </form>
             <form
               action='/cart/{{this._id}}'
