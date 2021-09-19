@@ -27,9 +27,9 @@ const User = new Schema({
   address: {
     type: [String]
   },
-  creditCard:{
+  creditCard: {
     type: Map,
-    of:new Schema({
+    of: new Schema({
       cardNumber: String,
       expMon: String,
       expYear: String
@@ -42,7 +42,9 @@ const User = new Schema({
   updatedAt: {
     type: Date,
     default: new Date()
-  }
+  },
+  isGoogle: Boolean,
+  isFb: Boolean
 })
 
 module.exports = mongoose.model('User', User)

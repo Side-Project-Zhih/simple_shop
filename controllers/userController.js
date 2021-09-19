@@ -66,4 +66,30 @@ module.exports = {
     const renderObj = helper.getProfilePart(req.query)
     res.render('profile', renderObj)
   },
+  putUserProfile: (req, res) => {
+    const id = req.params
+    const user = req.user
+    if(id !== user._id) return res.redirect('back')
+    const { password, newPassword, checkPassword } = req.body
+    //基本訊息
+    
+
+    //密碼處理
+    const isMatch = bcrypt.compareSync(password, user.password)
+    if (password && !isMatch) {
+      req.flash('warningMsg', '密碼錯誤')
+      return res.redirect('back')
+    }
+    if (password && isMatch) {
+      if (newPassword !== checkPassword) {
+        req.flash('warningMsg', '密碼與確認密碼不一致')
+        return res.redirect(back)
+      }
+      password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10))
+      User.findOneAndUpdate({ email: user.email }, { password })
+      return
+    }
+    //信用卡處理
+    
+  }
 }

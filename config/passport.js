@@ -44,7 +44,8 @@ passport.use(
           return User.create({
             name,
             email,
-            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+            isGoogle: true
           }).then((user) => {
             return done(null, user)
           })
@@ -74,7 +75,8 @@ passport.use(
           return User.create({
             name,
             email,
-            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+            isFb: true
           }).then((user) => {
             return done(null, user)
           })

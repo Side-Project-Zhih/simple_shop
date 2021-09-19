@@ -113,6 +113,12 @@
                 type='password'
                 class='form-control'
                 id='oldPassword'
+                {{#if user.isGoogle }}
+                readonly
+                {{/if}}
+                {{#if user.isFb }}
+                readonly
+                {{/if}}
                 name='password'
                 placeholder='請輸入舊密碼'
               />
@@ -127,6 +133,12 @@
               <input
                 type='password'
                 name='newPassword'
+                {{#if user.isGoogle }}
+                readonly
+                {{/if}}
+                {{#if user.isFb }}
+                readonly
+                {{/if}}
                 class='form-control'
                 id='newPassword'
                 placeholder='請輸入新密碼'
@@ -142,6 +154,12 @@
               <input
                 type='password'
                 class='form-control'
+                {{#if user.isGoogle }}
+                readonly
+                {{/if}}
+                {{#if user.isFb }}
+                readonly
+                {{/if}}
                 id='checkPassword'
                 name='checkPassword'
                 placeholder='請輸入確認密碼'
