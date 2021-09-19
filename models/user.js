@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+let card = new Schema({
+      cardNumber: String,
+      expMon: String,
+      expYear: String
+    })
 const User = new Schema({
   email: {
     type: String,
@@ -29,11 +34,7 @@ const User = new Schema({
   },
   creditCard: {
     type: Map,
-    of: new Schema({
-      cardNumber: String,
-      expMon: String,
-      expYear: String
-    })
+    of: String
   },
   createdAt: {
     type: Date,

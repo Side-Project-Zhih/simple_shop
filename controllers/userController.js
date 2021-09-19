@@ -68,37 +68,48 @@ module.exports = {
     res.render('profile', renderObj)
   },
   putUserProfile: async (req, res) => {
-    const _id = req.params
+    const _id = req.params._id
     const user = req.user
-    if (_id !== user._id) return res.redirect('back')
+    if (user._id.toString() !== _id) {
+      return res.redirect('back')
+    }
     const { password, newPassword, checkPassword } = req.body
     const { cardNumber, expYear, expMon } = req.body
-    const { name, address, mailNum, phone} = req.body
+    const { name, address, mailNum, phone } = req.body
     //基本訊息
-    if(name &&　address && mailNum && phone){
-      await User.findOneAndUpdate({ _id }, {
-        name,
-        address,
-        mailNum,
-        phone
-      })
+    if (name && address && mailNum && phone) {
+      await User.findOneAndUpdate(
+        { _id },
+        {
+          name,
+          address,
+          mailNum,
+          phone
+        }
+      )
       req.flash('successMsg', '基本訊息更改成功')
       return res.redirect('back')
     }
     //密碼處理
-    const isMatch = bcrypt.compareSync(password, user.password)
-    if (password && !isMatch) {
-      req.flash('warningMsg', '密碼錯誤')
-      return res.redirect('back')
-    }
-    if (password && isMatch) {
-      if (newPassword !== checkPassword) {
-        req.flash('warningMsg', '密碼與確認密碼不一致')
-        return res.redirect(back)
+    if (password) {
+      const isMatch = bcrypt.compareSync(password, user.password.toString())
+      if (!isMatch) {
+        req.flash('warningMsg', '密碼錯誤')
+        return res.redirect('back')
       }
-      password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10))
-      await User.findOneAndUpdate({ _id }, { password })
-      return
+      if (isMatch) {
+        if (newPassword !== checkPassword) {
+          req.flash('warningMsg', '密碼與確認密碼不一致')
+          return res.redirect(back)
+        }
+        const hashPassword = bcrypt.hashSync(
+          newPassword,
+          bcrypt.genSaltSync(10)
+        )
+        await User.findOneAndUpdate({ _id }, { password: hashPassword })
+        req.flash('successMsg', '密碼更改成功')
+        return res.redirect('back')
+      }
     }
     //信用卡處理
     let result = cardValidator.number(cardNumber)
