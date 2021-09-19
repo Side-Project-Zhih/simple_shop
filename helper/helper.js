@@ -34,5 +34,10 @@ module.exports = {
     } else {
       return options.inverse(this)
     }
+  },
+  pagination: (db, page, limit) => {
+    --page
+
+    db.find()
   }
 }
