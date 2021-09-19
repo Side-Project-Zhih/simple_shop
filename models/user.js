@@ -31,7 +31,6 @@ const User = new Schema({
     type: Map,
     of:new Schema({
       cardNumber: String,
-      cardType:String,
       expMon: String,
       expYear: String
     })

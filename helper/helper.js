@@ -30,6 +30,7 @@ module.exports = {
     return [orderOption, orderName_cht]
   },
   ifCond: function (a, b, options) {
+    // console.log(a,b)
     if (a === b) {
       return options.fn(this)
     } else {
@@ -37,15 +38,29 @@ module.exports = {
     }
   },
   getPagination: async (option, limit, page) => {
-     let totalNum = await Product.countDocuments(option)
-     let totalPage = Math.ceil(totalNum / limit)
-     let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
-     let prev = page - 1 <= 0 ? 1 : page - 1
-     let next = page + 1 >= totalPage ? totalPage : page + 1
-     return {
-       pages,
-       prev,
-       next
-     }
+    let totalNum = await Product.countDocuments(option)
+    let totalPage = Math.ceil(totalNum / limit)
+    let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
+    let prev = page - 1 <= 0 ? 1 : page - 1
+    let next = page + 1 >= totalPage ? totalPage : page + 1
+    return {
+      pages,
+      prev,
+      next
+    }
+  },
+  getProfilePart: (data) => {
+    const { editPwd, credit, orders } = data
+    const obj = {}
+    if (editPwd) {
+      obj.isEditPwd = true
+    } else if (credit) {
+      obj.isCredit = true
+    } else if (orders) {
+      //撈出處理orders
+    } else {
+      obj.isProfile = true
+    }
+    return obj
   }
 }

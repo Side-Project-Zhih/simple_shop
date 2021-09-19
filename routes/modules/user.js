@@ -15,4 +15,5 @@ router.post(
 router.get('/register', userController.renderRegisterPage)
 router.post('/register', userController.register)
 router.get('/logout', userController.logout)
+router.get('/:_id', userController.renderUserProfile)
 module.exports = router

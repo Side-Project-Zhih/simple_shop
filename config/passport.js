@@ -12,7 +12,7 @@ passport.use(
       passReqToCallback: true
     },
     (req, email, password, done) => {
-      User.findOne({ email }).then((user) => {
+      User.findOne({ email }).lean().then((user) => {
         if (!user) {
           return done(null, false, req.flash('warningMsg', '該帳戶不存在'))
         }
@@ -35,6 +35,7 @@ passport.use(
     (accessToken, refreshToken, profile, done) => {
       const { email, name } = profile._json
       User.findOne({ email })
+        .lean()
         .then((user) => {
           if (user) {
             return done(null, user)
@@ -64,6 +65,7 @@ passport.use(
 
       const { email, name } = profile._json
       User.findOne({ email })
+        .lean()
         .then((user) => {
           if (user) {
             return done(null, user)
@@ -86,6 +88,8 @@ passport.serializeUser((user, done) => {
   return done(null, user._id)
 })
 passport.deserializeUser((userId, done) => {
-  return User.findById(userId).then((user) => done(null, user))
+  return User.findById(userId)
+    .lean()
+    .then((user) => done(null, user))
 })
 module.exports = passport

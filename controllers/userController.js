@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const mailer = require('../config/mailer')
+const helper = require('../helper/helper')
 module.exports = {
   renderLoginPage: (req, res) => {
-
     res.render('login')
   },
   login: (req, res) => {},
@@ -58,8 +58,12 @@ module.exports = {
       })
       .catch((err) => console.log(error))
   },
-  logout:(req, res) => {
+  logout: (req, res) => {
     req.logout()
     res.redirect('/')
-  }
+  },
+  renderUserProfile: (req, res) => {
+    const renderObj = helper.getProfilePart(req.query)
+    res.render('profile', renderObj)
+  },
 }
