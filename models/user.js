@@ -40,6 +40,10 @@ const User = new Schema({
     type: String,
     default: null
   },
+  wishlist: {
+    type: String,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: new Date()

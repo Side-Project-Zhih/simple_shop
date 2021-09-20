@@ -28,5 +28,18 @@ module.exports = {
       return next()
     }
     next()
+  },
+  dealCart: async (req, res, next) => {
+    const user = req.user
+    const cart = req.session.cart
+    if (req.isAuthenticated()) {
+      if (!user.cart && cart) {
+        user.cart = cart
+        await User.findByIdAndUpdate(user._id.toString(), {
+          cart: cart
+        })
+      }
+    }
+    next()
   }
 }

@@ -59,6 +59,8 @@ app.use(async (req, res, next) => {
 })
 //處理session內的wishlist
 app.use(sessionHelper.dealWithWishlist)
+//處理session內的cart
+app.use(sessionHelper.dealCart)
 
 app.use(router)
 app.listen(port, () =>
