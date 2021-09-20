@@ -4,6 +4,7 @@ const helper = require('../helper/helper')
 const pdNumLimit = 12
 module.exports = {
   renderIndexPage: async (req, res) => {
+    const wishlistPds = req.wishlistPds
     let { category, order, page } = req.query
     let pdOption = {}
     page = +page ? +page : 1
@@ -26,11 +27,13 @@ module.exports = {
       .lean()
       .then((products) => {
         products.forEach((item) => {
+          if(wishlistPds && wishlistPds[item._id]){
+            item.isInWishlist = true
+          }
           item.name = item.name.substring(0, 18)
         })
         return products
       })
-
     res.render('index', {
       products,
       category,

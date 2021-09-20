@@ -131,15 +131,31 @@
             </div>
           </a>
           <div class='w-100 row no-gutters'>
-            <form
-              action='/wishlist/{{this._id}}?_method=DELETE'
+            {{#if this.isInWishlist}}
+             <form
+              action='/wishlist?_method=delete'
               method='POST'
               class='col-6 p-0'
             >
+            <input type="text" hidden name='id' value="{{this._id}}">
+              <button
+                class='w-100 h-100 btn btn-info rounded-0'
+              >移除願望清單</button>
+            </form>
+            {{else}}
+            <form
+              action='/wishlist'
+              method='POST'
+              class='col-6 p-0'
+            >
+            <input type="text" hidden name='id' value="{{this._id}}">
+            <input type="text" hidden name='name' value="{{this.name}}">
+            <input type="text" hidden name="price" value="{{this.price}}">
               <button
                 class='w-100 h-100 btn btn-warning rounded-0'
               >加入願望清單</button>
             </form>
+            {{/if}}
             <form
               action='/cart/{{this._id}}'
               method='POST'

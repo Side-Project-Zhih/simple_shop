@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const productController = require('../../controllers/productController')
-
-router.get('/', productController.renderIndexPage)
+const sessionHelper = require('../../middleware/sessionHelper')
+router.get('/', sessionHelper.listWishlistPds,productController.renderIndexPage)
 
 module.exports = router
