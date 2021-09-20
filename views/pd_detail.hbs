@@ -24,9 +24,19 @@
         </select>
           <button type='submit' class='w-100 btn btn-warning my-1'>加入購物車</button>
       </form>
-      <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist/{{product._id}}" method="POST">
+      {{#if isInWishlist}}
+      <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist?_method=DELETE" method="POST">
+        <input type="text" hidden name='id' value="{{this._id}}">
+       <button type="submit" class="btn btn-info mb-2 mr-5">移除願望清單</button>
+      </form>
+      {{else}}
+      <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist" method="POST">
+            <input type="text" hidden name='id' value="{{this._id}}">
+            <input type="text" hidden name='name' value="{{this.name}}">
+            <input type="text" hidden name="price" value="{{this.price}}">
        <button type="submit" class="btn btn-danger mb-2 mr-5">加入願望清單</button>
       </form>
+      {{/if}}
       </div>
 
     </div>

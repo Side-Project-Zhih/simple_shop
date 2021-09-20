@@ -27,7 +27,7 @@ module.exports = {
       .lean()
       .then((products) => {
         products.forEach((item) => {
-          if(wishlistPds && wishlistPds[item._id]){
+          if (wishlistPds && wishlistPds[item._id]) {
             item.isInWishlist = true
           }
           item.name = item.name.substring(0, 18)
@@ -46,13 +46,18 @@ module.exports = {
     })
   },
   searchProduct: async (req, res) => {
-    let { keyword, order, page } = req.query
+    const wishlistPds = req.wishlistPds
+    let { category,keyword, order, page } = req.query
     if (keyword) return res.redirect('back')
 
     const pdOption = {
       name: { $regex: keyword, $options: 'i' }
     }
-    const { pages, prev, next } = helper.getPagination(pdOption, limit, page)
+    const { pages, prev, next } = helper.getPagination(
+      pdOption,
+      pdNumLimit,
+      page
+    )
     const [orderOption, orderName_cht] = helper.orderType(order)
     let skipNum = pdNumLimit * (page - 1)
     const products = await Product.find(pdOption)
@@ -62,6 +67,9 @@ module.exports = {
       .lean()
       .then((products) => {
         products.forEach((item) => {
+          if (wishlistPds && wishlistPds[item._id]) {
+            item.isInWishlist = true
+          }
           item.name = item.name.substring(0, 18)
         })
         return products
@@ -80,9 +88,11 @@ module.exports = {
     })
   },
   renderProductPage: async (req, res) => {
+    const wishlistPds = req.wishlistPds
     const { productId } = req.params
+    let isInWishlist = (wishlistPds && wishlistPds[productId])? true: false
     let product = await Product.findById(productId).lean()
     product.amount = Array.from({ length: product.amount }).map((_, i) => i + 1)
-    res.render('pb_detail', { product })
+    res.render('pd_detail', { product, isInWishlist })
   }
 }
