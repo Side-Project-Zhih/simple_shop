@@ -2,7 +2,38 @@ const Cart = require('../models/cart')
 const Product = require('../models/product')
 const User = require('../models/user')
 module.exports = {
-  renderCart: async (req, res) => {},
+  renderCart: async (req, res) => {
+    let cartId = req.session.cart
+    const user = req.user
+    let products = []
+    let totalPrice = 0
+    if (req.isAuthenticated()) {
+      //wishlist 有wishlistId
+      if (user.cart) {
+        let cart = await Cart.findById(user.cart).lean()
+        let pds = cart.pds
+        totalPrice = cart.totalPrice
+        for (const key of Object.keys(pds)) {
+          products.push(pds[key])
+        }
+      }
+    } else {
+      //未登入狀態
+      if (cartId) {
+        //session有wishlistId
+        let cart = await Cart.findById(cartId).lean()
+        let pds = cart.pds
+        totalPrice = cart.totalPrice
+        for (const key of Object.keys(pds)) {
+          products.push(pds[key])
+        }
+      }
+    }
+    products.forEach((pd) => {
+      pd.totalPrice = pd.price * pd.num
+    })
+    res.render('carts', { products, totalPrice })
+  },
   postCart: async (req, res) => {
     let cartId = req.session.cart
     const user = req.user

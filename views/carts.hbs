@@ -1,0 +1,41 @@
+<h1 class='restaurant-show-title'>MY WISHLIST</h1>
+<div class='container'>
+  {{#each products}}
+  <div class='media row mb-1 border justify-content-between'>
+    <img
+      src='{{this.pic}}'
+      class='col-4 align-self-start border rounded mr-3 m-3'
+      alt='...'
+    />
+    <div class='col-8 media-body'>
+      <h3 class='mb-5 pt-2'>{{this.name}}</h3>
+      <h3 class='text-info'>$ {{this.totalPrice}}</h3>
+      <h6 class=''>單價 $ {{this.price}}</h6>
+      
+      <div class="mb-5 d-flex">
+        <form action="">
+          <button class="btn btn-outline"><img  style="height:40px" src="/pic/left.png" alt=""></button>
+        </form>
+        <div class="pr-2 pl-2 border d-flex align-items-center" style="height: 50px;"> 
+          <p class="mt-3"> 數量 {{this.num}}</p>
+         </div>
+        <form action="/cart" method="POST">
+          <input type="hidden" name="id" value="{{this._id}}">
+          <input type="hidden" name="num" value="1">
+          <button type="submit" class="btn btn-outline"><img  style="height:40px" src="/pic/right.png" alt=""></button>
+        </form>
+      </div>
+      <div class="row justify-content-end">
+        <form action="/carts/{{this.id}}" class='col-4 form-inline no-gutters' method="POST">
+          <input type="hidden" name="num" value="1">
+          <button type='submit' class='w-100 btn btn-warning my-1'>移除商品</button>
+      </form>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+  <form class="text-right border-top row justify-content-end">
+    <h2 class="col-12 mt-4 mb-4">總共  {{totalPrice}} 元</h2>
+    <button class="col-3 btn btn-info">確定購買</button>
+  </form>
+</div>
