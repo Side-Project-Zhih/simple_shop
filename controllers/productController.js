@@ -48,7 +48,7 @@ module.exports = {
   searchProduct: async (req, res) => {
     const wishlistPds = req.wishlistPds
     let { category,keyword, order, page } = req.query
-    if (keyword) return res.redirect('back')
+    if (!keyword) return res.redirect('back')
 
     const pdOption = {
       name: { $regex: keyword, $options: 'i' }
