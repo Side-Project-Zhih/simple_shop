@@ -7,6 +7,7 @@ const connectFlash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
 const Category = require('./models/category') // 待整理
+const sessionHelper = require('./middleware/sessionHelper')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -56,6 +57,8 @@ app.use(async (req, res, next) => {
   res.locals.categories = categories
   next()
 })
+//處理session內的wishlist
+app.use(sessionHelper.dealWithWishlist)
 
 app.use(router)
 app.listen(port, () =>
