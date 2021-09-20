@@ -4,12 +4,10 @@ const User = require('../models/user')
 module.exports = {
   renderCart: async (req, res) => {},
   postCart: async (req, res) => {
-    let cartId =
-    req.session.cart
+    let cartId = req.session.cart
     const user = req.user
     const pdId = req.body.id
     let num = +req.body.num
-
     let pd = await Product.findById(pdId).lean()
     if (num > pd.amount || num <= 0) {
       req.flash('warningMsg', '此為該數量之上限')
@@ -39,6 +37,9 @@ module.exports = {
         let cartPd = pds[pd._id]
         if (cartPd) {
           cartPd.num += num
+          if (cartPd.num > pd.amount) {
+            cartPd.num = pd.amount
+          }
         } else {
           pds[pd._id] = pd
         }
@@ -61,6 +62,9 @@ module.exports = {
         let cartPd = pds[pd._id]
         if (cartPd) {
           cartPd.num += num
+          if (cartPd.num > pd.amount) {
+            cartPd.num = pd.amount
+          }
         } else {
           pds[pd._id] = pd
         }

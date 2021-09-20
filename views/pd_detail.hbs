@@ -10,32 +10,33 @@
       <h3 class='mb-5 pt-2'>{{product.name}}</h3>
       <h3 class='text-info mb-5'>$ {{product.price}}</h3>
       <div class="row">
-        <form action="/carts/{{product._id}}" class='col-4 form-inline no-gutters' method="POST">
-        <label class='my-1 mr-2 mb-5' for='inlineFormCustomSelectPref'>數量</label>
+        <form action="/cart" class='col-4 form-inline no-gutters' method="POST">
+        <label class='my-1 mr-2 mb-5' for='num'>數量</label>
         <select
           class='custom-select my-1 mr-sm-2 mb-5'
           name="num"
-          id='inlineFormCustomSelectPref'
+          id='num'
         >
           <option selected disabled>選擇數量...</option>
           {{#each product.amount}}
           <option value='{{this}}'>{{this}}</option>
           {{/each}}
         </select>
+            <input type="hidden" name="id" value="{{product._id}}">
           <button type='submit' class='w-100 btn btn-warning my-1'>加入購物車</button>
       </form>
       {{#if isInWishlist}}
       <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist?_method=PUT" method="POST">
         <input type="text" hidden name='id' value="{{product._id}}">
-       <button type="submit" class="btn btn-info mb-2 mr-5">移除願望清單</button>
+       <button type="submit" class="btn btn-info mb-1 mr-5">移除願望清單</button>
       </form>
       {{else}}
-      <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist" method="POST">
+      <form class="col-4 d-flex flex-column justify-content-end mt-2" action="/wishlist" method="POST">
              <input type="text" hidden name='pic' value="{{product.pic}}">
             <input type="text" hidden name='id' value="{{product._id}}">
             <input type="text" hidden name='name' value="{{product.name}}">
             <input type="text" hidden name="price" value="{{product.price}}">
-       <button type="submit" class="btn btn-danger mb-2 mr-5">加入願望清單</button>
+       <button type="submit" class="btn btn-danger mb-1 mr-5">加入願望清單</button>
       </form>
       {{/if}}
       </div>
