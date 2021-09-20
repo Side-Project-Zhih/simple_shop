@@ -57,5 +57,28 @@ module.exports = {
       }
     }
     return res.redirect('back')
+  },
+  putWishlist: async (req, res) => {
+    const pdId = req.body.id
+    let wishlistId = req.session.wishlist
+    console.log(pdId)
+    const user = req.user
+    if (req.isAuthenticated()) {
+      //wishlist 有wishlistId
+      if (user.wishlist) {
+        let wishlist = await Wishlist.findById(user.wishlist)
+        wishlist.pds.delete(pdId)
+        await wishlist.save()
+      }
+    } else {
+      //未登入狀態
+      if (wishlistId) {
+        //session有wishlistId
+        let wishlist = await Wishlist.findById(wishlistId)
+        wishlist.pds.delete(pdId)
+        await wishlist.save()
+      }
+    }
+    return res.redirect('back')
   }
 }
