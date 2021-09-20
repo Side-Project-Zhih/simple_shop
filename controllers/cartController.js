@@ -105,5 +105,36 @@ module.exports = {
     }
     return res.redirect('back')
   },
-  putCart: async (req, res) => {}
+  putCart: async (req, res) => {
+    const pdId = req.body.id
+    let cartId = req.session.cart
+    const user = req.user
+    if (req.isAuthenticated()) {
+      //wishlist 有wishlistId
+      if (user.cart) {
+        let cart = await Cart.findById(user.cart).lean()
+        let cartPd = cart.pds[pdId]
+        if (cartPd.num === 1) {
+           return res.redirect('back')
+        }
+        --cartPd.num
+        cart.totalPrice -= cartPd.price
+        await Cart.findByIdAndUpdate(user.cart, cart)
+      }
+    } else {
+      //未登入狀態
+      if (cartId) {
+        //session有wishlistId
+        let cart = await Cart.findById(cartId).lean()
+        let cartPd = cart.pds[pdId]
+        if (cartPd.num === 1) {
+          return res.redirect('back')
+        }
+        --cartPd.num
+        cart.totalPrice -= cartPd.price
+        await Cart.findByIdAndUpdate(user.cart, cart)
+      }
+    }
+    return res.redirect('back')
+  }
 }

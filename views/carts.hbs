@@ -13,8 +13,9 @@
       <h6 class=''>單價 $ {{this.price}}</h6>
       
       <div class="mb-5 d-flex">
-        <form action="">
-          <button class="btn btn-outline"><img  style="height:40px" src="/pic/left.png" alt=""></button>
+        <form action="/cart?_method=PUT" method="POST">
+          <input type="hidden" name="id" value="{{this._id}}">
+          <button type="submit" class="btn btn-outline"><img  style="height:40px" src="/pic/left.png" alt=""></button>
         </form>
         <div class="pr-2 pl-2 border d-flex align-items-center" style="height: 50px;"> 
           <p class="mt-3"> 數量 {{this.num}}</p>
