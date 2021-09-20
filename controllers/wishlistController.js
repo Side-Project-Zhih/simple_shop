@@ -35,7 +35,6 @@ module.exports = {
     pds[pd.id] = pd
     // 登入狀態
     if (req.isAuthenticated()) {
-      console.log('login')
       //session 未存wishlistID
       if (!user.wishlist && !wishlistId) {
         let wishlist = await Wishlist.create({

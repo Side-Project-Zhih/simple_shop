@@ -158,10 +158,12 @@
             </form>
             {{/if}}
             <form
-              action='/cart/{{this._id}}'
+              action='/cart'
               method='POST'
               class='col-6 p-0'
             >
+            <input type="hidden" name="id" value="{{this._id}}">
+            <input type="hidden" name="num" value="1">
               <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
             </form>
           </div>

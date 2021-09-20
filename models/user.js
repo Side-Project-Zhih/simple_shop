@@ -40,7 +40,7 @@ const User = new Schema({
     type: String,
     default: null
   },
-  wishlist: {
+  cart: {
     type: String,
     default: null
   },
