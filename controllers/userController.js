@@ -61,6 +61,7 @@ module.exports = {
       .catch((err) => console.log(error))
   },
   logout: (req, res) => {
+    req.session.wishlist = null
     req.logout()
     res.redirect('/')
   },
