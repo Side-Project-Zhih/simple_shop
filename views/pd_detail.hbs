@@ -14,7 +14,7 @@
         <label class='my-1 mr-2 mb-5' for='inlineFormCustomSelectPref'>數量</label>
         <select
           class='custom-select my-1 mr-sm-2 mb-5'
-          name="amount"
+          name="num"
           id='inlineFormCustomSelectPref'
         >
           <option selected disabled>選擇數量...</option>
@@ -31,6 +31,7 @@
       </form>
       {{else}}
       <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist" method="POST">
+             <input type="text" hidden name='pic' value="{{product.pic}}">
             <input type="text" hidden name='id' value="{{product._id}}">
             <input type="text" hidden name='name' value="{{product.name}}">
             <input type="text" hidden name="price" value="{{product.price}}">

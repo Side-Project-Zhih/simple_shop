@@ -1,18 +1,38 @@
 const Wishlist = require('../models/wishlist')
 const User = require('../models/user')
 module.exports = {
-  renderWishlistPage: (req, res) => {
-    res.render('wishList')
+  renderWishlistPage: async (req, res) => {
+    let wishlistId = req.session.wishlist
+    const user = req.user
+    let products = []
+    if (req.isAuthenticated()) {
+      //wishlist 有wishlistId
+      if (user.wishlist) {
+        let wishlist = await Wishlist.findById(user.wishlist).lean()
+        let pds = wishlist.pds
+        for (const key of Object.keys(pds)) {
+          products.push(pds[key])
+        }
+      }
+    } else {
+      //未登入狀態
+      if (wishlistId) {
+        //session有wishlistId
+        let wishlist = await Wishlist.findById(wishlistId).lean()
+        let pds = wishlist.pds
+        for (const key of Object.keys(pds)) {
+          products.push(pds[key])
+        }
+      }
+    }
+    res.render('wishlist', { products })
   },
   postWishlist: async (req, res) => {
     let wishlistId = req.session.wishlist
     const user = req.user
     const pd = req.body
     let pds = {}
-    pds[pd.id] = {
-      name: pd.name,
-      price: pd.price
-    }
+    pds[pd.id] = pd
     // 登入狀態
     if (req.isAuthenticated()) {
       console.log('login')
@@ -30,10 +50,7 @@ module.exports = {
       if (user.wishlist) {
         let wishlist = await Wishlist.findById(user.wishlist)
         pds = wishlist.pds
-        pds.set(pd.id, {
-          name: pd.name,
-          price: pd.price
-        })
+        pds.set(pd.id, pd)
         await wishlist.save()
       }
     } else {
@@ -49,10 +66,7 @@ module.exports = {
         //session有wishlistId
         let wishlist = await Wishlist.findById(wishlistId)
         pds = wishlist.pds
-        pds.set(pd.id, {
-          name: pd.name,
-          price: pd.price
-        })
+        pds.set(pd.id, pd)
         await wishlist.save()
       }
     }
@@ -61,7 +75,6 @@ module.exports = {
   putWishlist: async (req, res) => {
     const pdId = req.body.id
     let wishlistId = req.session.wishlist
-    console.log(pdId)
     const user = req.user
     if (req.isAuthenticated()) {
       //wishlist 有wishlistId
