@@ -27,8 +27,8 @@
         </form>
       </div>
       <div class="row justify-content-end">
-        <form action="/carts/{{this.id}}" class='col-4 form-inline no-gutters' method="POST">
-          <input type="hidden" name="num" value="1">
+        <form action="/cart?_method=DELETE" class='col-4 form-inline no-gutters' method="POST">
+          <input type="hidden" name="id" value="{{this._id}}">
           <button type='submit' class='w-100 btn btn-warning my-1'>移除商品</button>
       </form>
       </div>

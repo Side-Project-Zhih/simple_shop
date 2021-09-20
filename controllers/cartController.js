@@ -115,7 +115,7 @@ module.exports = {
         let cart = await Cart.findById(user.cart).lean()
         let cartPd = cart.pds[pdId]
         if (cartPd.num === 1) {
-           return res.redirect('back')
+          return res.redirect('back')
         }
         --cartPd.num
         cart.totalPrice -= cartPd.price
@@ -133,6 +133,38 @@ module.exports = {
         --cartPd.num
         cart.totalPrice -= cartPd.price
         await Cart.findByIdAndUpdate(user.cart, cart)
+      }
+    }
+    return res.redirect('back')
+  },
+  deleteCart: async (req, res) => {
+    const pdId = req.body.id
+    let cartId = req.session.cart
+    const user = req.user
+    if (req.isAuthenticated()) {
+      //wishlist 有cart
+      if (user.cart) {
+        let cart = await Cart.findById(user.cart)
+        let cartPd = cart.pds[pdId]
+        cart.totalPrice -= cartPd.price * cartPd.num
+        if (cart.totalPrice <= 0) {
+          cart.totalPrice = 0
+        }
+        delete cart.pds[pdId]
+        await Cart.findByIdAndUpdate(user.cart, cart)
+      }
+    } else {
+      //未登入狀態
+      if (cartId) {
+        //session有card
+        let cart = await Cart.findById(cartId)
+        let cartPd = cart.pds[pdId]
+        cart.totalPrice -= cartPd.price * cartPd.num
+        if (cart.totalPrice <= 0) {
+          cart.totalPrice = 0
+        }
+        delete cart.pds[pdId]
+        await Cart.findByIdAndUpdate(cartId, cart)
       }
     }
     return res.redirect('back')
