@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const Order = require('../models/order')
 const helper = require('../helper/helper')
+const mailer = require('../config/mailer')
 let orderLimit = 10
 module.exports = {
   renderOrderPage: async (req, res) => {
@@ -50,14 +51,24 @@ module.exports = {
     let order = await Order.create(orderInfo)
     console.log(user.orders)
     user.orders[order._id.toString()] = true
-
-    await User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders })
+    const mailContent = {
+      from: process.env.googleAccount,
+      to: 'fufong79570@gmail.com',
+      subject: 'MY SHOP 訂單成立',
+      html: `<h2>感謝您的訂購</h2><br>
+      <h2>您的訂單編號為  ${order._id}</h2><br>
+      <h2>詳細內容請至商店個人資料查詢</h2><br>`
+    }
+    await Promise.all([mailer.sendMail(mailContent)
+    ,
+    User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders })
+    ])
 
     res.redirect(`/orders/${order._id.toString()}`)
   },
   getOrders: async (req, res) => {
     const userId = req.user._id
-    let {page} = req.query
+    let { page } = req.query
     page = +page ? +page : 1
     const option = {
       customerId: userId
@@ -76,13 +87,12 @@ module.exports = {
       .sort({ createdAt: 'desc' })
       .select('pdsInfo _id createdAt status')
       .lean()
-    orders.forEach(order => {
+    orders.forEach((order) => {
       order.createdAt = new Date(order.createdAt).toLocaleString()
       order.totalPrice = order.pdsInfo.totalPrice
       delete order.pdsInfo
       order.status = helper.orderStatus(order.status)
     })
-    console.log(orders)
     res.render('profile', { orders, pages, prev, page, next })
   }
 }

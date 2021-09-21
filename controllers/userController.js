@@ -53,7 +53,7 @@ module.exports = {
             `
             })
           })
-          .then(async () => {
+          .then( () => {
             req.flash('successMsg', '帳戶建立成功，稍後請進行email驗證')
             return res.redirect('/users/login')
           })
