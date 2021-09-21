@@ -22,11 +22,15 @@ module.exports = {
       receiverInfo,
       id: _id,
       createdAt,
-      email: 'req.user.email',
+      email: req.user.email,
       status: helper.orderStatus(status)
     })
   },
-  cancelOrder: async (req, res) => {},
+  cancelOrder: async (req, res) => {
+    const id = req.params.id
+    await Order.findByIdAndUpdate(id, {status: 'cancel'})
+    res.redirect('back')
+  },
   postOrder: async (req, res) => {
     let user = req.user
     cartId = user.cart
