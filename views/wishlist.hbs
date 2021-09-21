@@ -1,26 +1,41 @@
 <h1 class='restaurant-show-title'>MY WISHLIST</h1>
 <div class='container'>
   {{#each products}}
-  <div class='media row mb-1 border justify-content-between'>
-    <img
-      src='{{this.pic}}'
-      class='col-4 align-self-start border rounded mr-3 m-3'
-      alt='...'
-    />
-    <div class='col-8 media-body'>
-      <h3 class='mb-5 pt-2'>{{this.name}}</h3>
-      <h3 class='text-info mb-5'>$ {{this.price}}</h3>
-      <div class="row justify-content-end">
-        <form action="/carts/{{this.id}}" class='col-4 form-inline no-gutters' method="POST">
-          <input type="hidden" name="num" value="1">
-          <button type='submit' class='w-100 btn btn-warning my-1'>加入購物車</button>
-      </form>
-      <form class="col-4 d-flex flex-column justify-content-end" action="/wishlist?_method=PUT" method="POST">
-        <input type="text" hidden name='id' value="{{this.id}}">
-       <button type="submit" class="btn btn-info mt-2 mb-2 mr-5">移除願望清單</button>
-      </form>
+    <div class='media row mb-1 border justify-content-between'>
+      <img
+        src='{{this.pic}}'
+        class='col-4 align-self-start border rounded mr-3 m-3'
+        alt='...'
+      />
+      <div class='col-8 media-body'>
+        <h3 class='mb-5 pt-2'>{{this.name}}</h3>
+        <h3 class='text-info mb-5'>$ {{this.price}}</h3>
+        <div class='row justify-content-end'>
+          <form
+            action='/cart'
+            class='col-4 form-inline no-gutters'
+            method='POST'
+          >
+            <input type='text' hidden name='id' value='{{this.id}}' />
+            <input type='text' hidden name='num' value='1' />
+            <button
+              type='submit'
+              class='w-100 btn btn-warning my-1'
+            >加入購物車</button>
+          </form>
+          <form
+            class='col-4 d-flex flex-column justify-content-end'
+            action='/wishlist?_method=PUT'
+            method='POST'
+          >
+            <input type='text' hidden name='id' value='{{this.id}}' />
+            <button
+              type='submit'
+              class='btn btn-info mt-2 mb-2 mr-5'
+            >移除願望清單</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   {{/each}}
 </div>
