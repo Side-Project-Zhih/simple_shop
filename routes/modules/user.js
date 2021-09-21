@@ -3,6 +3,8 @@ const router = express.Router()
 const userController = require('../../controllers/userController')
 const orderController = require('../../controllers/orderController')
 const passport = require('passport')
+const { checkLogin } = require('../../middleware/auth')
+
 //login
 router.get('/login', userController.renderLoginPage)
 router.post(
@@ -15,6 +17,9 @@ router.post(
 //register
 router.get('/register', userController.renderRegisterPage)
 router.post('/register', userController.register)
+
+router.use(checkLogin)
+
 router.get('/logout', userController.logout)
 router.get('/:_id/validation/:email', userController.checkValidationMail)
 router.post('/:_id/validation', userController.sendValidationMail)
