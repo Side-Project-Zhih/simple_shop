@@ -2,6 +2,7 @@ const User = require('../models/user')
 const Cart = require('../models/cart')
 const Order = require('../models/order')
 const helper = require('../helper/helper')
+const { populate } = require('../models/user')
 module.exports = {
   renderOrderPage: async (req, res) => {
     const orderId = req.params.id
@@ -28,7 +29,7 @@ module.exports = {
   },
   cancelOrder: async (req, res) => {
     const id = req.params.id
-    await Order.findByIdAndUpdate(id, {status: 'cancel'})
+    await Order.findByIdAndUpdate(id, { status: 'cancel' })
     res.redirect('back')
   },
   postOrder: async (req, res) => {
@@ -56,7 +57,18 @@ module.exports = {
     res.redirect(`/orders/${order._id.toString()}`)
   },
   getOrders: async (req, res) => {
-
-
+    const userId = req.user._id
+    let orders = await Order.find({ customerId: userId })
+      .populate('pdsInfo', 'totalPrice -_id')
+      .select('pdsInfo _id createdAt status')
+      .lean()
+    orders.forEach(order => {
+      order.createdAt = new Date(order.createdAt).toLocaleString()
+      order.totalPrice = order.pdsInfo.totalPrice
+      delete order.pdsInfo
+      order.status = helper.orderStatus(order.status)
+    })
+    console.log(orders)
+    res.render('profile', { orders })
   }
 }

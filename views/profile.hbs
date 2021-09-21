@@ -18,7 +18,7 @@
         class='list-group-item list-group-item-action list-group-item-light'
       >信用卡資訊</a>
       <a
-        href='/users/{{user._id}}?orders=true'
+        href='/users/{{user._id}}/orders'
         class='list-group-item list-group-item-action list-group-item-light'
       >訂單紀錄</a>
     </div>
@@ -227,8 +227,51 @@
       </div>
     {{/if}}
     {{#if orders}}
-      <div class='col-8'>
+      <div class='col-9 '>
+        <table class='table border-bottom'>
+          <thead class='thead-dark'>
+            <tr>
+              <th scope='col'>訂單編號</th>
+              <th scope='col'>下訂時間</th>
+              <th scope='col'>總價</th>
+              <th scope='col'>狀態</th>
+              <th scope='col'>取消訂單</th>
+              <th scope='col'>前去付款</th>
+            </tr>
+          </thead>
+          <tbody>
 
+          {{#each orders}}
+            <tr>
+              <th scope='row'>
+                <a href="/orders/{{this._id}}">{{this._id}}</a>
+               </th>
+              <td>{{this.createdAt}}</td>
+              <td>$ {{this.totalPrice}}</td>
+              <td>
+                {{this.status}}
+              </td>
+              <td>
+                <form action="/orders/{{this._id}}?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-danger" 
+                  {{#ifCond this.status '訂單已取消'}}
+                  disabled
+                  {{/ifCond}}>取消訂單</button>
+                </form>
+              </td>
+                 <td>
+                <form action="/orders/{{this._id}}">
+                  <button type="submit" class="btn btn-info" 
+                  {{#ifCond this.status '尚未付款'}}
+                  {{else}}
+                  disabled
+                  {{/ifCond}}>前去付款</button>
+                </form>
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
       </div>
     {{/if}}
   </div>
