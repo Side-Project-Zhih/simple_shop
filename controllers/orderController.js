@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const Order = require('../models/order')
 const helper = require('../helper/helper')
+const newbPayHepler  = require('../helper/newbPayHepler')
 const mailer = require('../config/mailer')
 let orderLimit = 10
 module.exports = {
@@ -16,6 +17,10 @@ module.exports = {
       pds[key]['totalPrice'] = pds[key]['num'] * pds[key]['price']
       products.push(pds[key])
     }
+    let tradeInfo = {}
+    if(status === 'unfinished'){
+      tradeInfo = newbPayHepler.genTradeInfo(totalPrice, orderId, req.user.email, `/users`)
+    }
     createdAt = new Date(createdAt).toLocaleString()
     res.render('order', {
       products,
@@ -24,7 +29,8 @@ module.exports = {
       id: _id,
       createdAt,
       email: req.user.email,
-      status: helper.orderStatus(status)
+      status: helper.orderStatus(status),
+      tradeInfo
     })
   },
   cancelOrder: async (req, res) => {
@@ -59,9 +65,9 @@ module.exports = {
       <h2>您的訂單編號為  ${order._id}</h2><br>
       <h2>詳細內容請至商店個人資料查詢</h2><br>`
     }
-    await Promise.all([mailer.sendMail(mailContent)
-    ,
-    User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders })
+    await Promise.all([
+      mailer.sendMail(mailContent),
+      User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders })
     ])
 
     res.redirect(`/orders/${order._id.toString()}`)
@@ -94,5 +100,21 @@ module.exports = {
       order.status = helper.orderStatus(order.status)
     })
     res.render('profile', { orders, pages, prev, page, next })
+  },
+  payOrder: async (req, res) => {
+    const data = JSON.parse(
+      newbPayHepler.create_mpg_aes_decrypt(req.body.TradeInfo)
+    )
+    let orderId = data.Result.MerchantOrderNo
+    let paymentMethod = data.Result.PaymentMethod || data.Result.PaymentType
+    console.log(data)
+    console.log(paymentMethod)
+    await Order.findByIdAndUpdate(orderId, {
+      status: 'finished',
+      updatedAt: Date.now(),
+      paymentMethod 
+    })
+    req.flash('successMsg', `訂單編號 ${orderId} 已付款完成`)
+    res.redirect(`/`)
   }
 }

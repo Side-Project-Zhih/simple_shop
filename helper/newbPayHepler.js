@@ -1,12 +1,12 @@
 const crypto = require('crypto')
-const URL = 'http://test.com'
+const URL = 'https://e3db-36-230-87-154.ngrok.io'
 const MerchantID = 'MS323026958'
 const HashKey = '5zA360sARmhJ0UsIa6rxih5jtNz9Ur57'
 const HashIV = 'ClfvgHRSHOhTpfiP'
 const PayGateWay = 'https://ccore.spgateway.com/MPG/mpg_gateway'
 const ReturnURL = URL + '/orders/payment/callback?from=ReturnURL'
 const NotifyURL = URL + '/orders/payment/callback?from=NotifyURL'
-const ClientBackURL = URL + '/orders'
+const ClientBackURL = URL + '/'
 module.exports = {
   genDataChain: function (TradeInfo) {
     let results = []
@@ -34,7 +34,7 @@ module.exports = {
 
     return sha.update(plainText).digest('hex').toUpperCase()
   },
-  genTradeInfo: function (totalPrice, orderId, email) {
+  genTradeInfo: function (totalPrice, orderId, email) { 
     let data = {
       MerchantID,
       Version: 1.6,
@@ -46,6 +46,7 @@ module.exports = {
       Email: email,
       LoginType: 0,
       ClientBackURL,
+      CREDIT: 1,
       WEBATM: 1,
       VACC: 1,
       NotifyURL,

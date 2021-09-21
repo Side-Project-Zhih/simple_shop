@@ -8,9 +8,8 @@ router.post('/payment/callback', orderController.payOrder)
 router.use(checkLogin)
 router.post('/', orderController.postOrder)
 
-// router.use(checkOrderBelongToOwner)
-router.get('/:id', orderController.renderOrderPage)
-router.delete('/:id', (orderController.cancelOrder))
+router.get('/:id',checkOrderBelongToOwner, orderController.renderOrderPage)
+router.delete('/:id', checkOrderBelongToOwner,(orderController.cancelOrder))
 
 
 module.exports = router
