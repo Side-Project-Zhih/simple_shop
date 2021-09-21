@@ -1,0 +1,102 @@
+<h1 class='restaurant-show-title'>MY CART</h1>
+<div class='container'>
+  {{#each products}}
+    <div class='media row mb-1 border justify-content-between' style="height: 205px;">
+      <img
+        src='{{this.pic}}'
+        class='col-4 align-self-start border rounded mr-3 mt-1 container-fluid'
+        alt='...'
+      />
+      <div class='col-8 media-body'>
+        <h3 class='mb-2 pt-2'>{{this.name}}</h3>
+        <h3 class='text-info'>$ {{this.totalPrice}}</h3>
+        <h6 class=''>單價 $ {{this.price}}</h6>
+
+        <div class='mb-5 d-flex'>
+          <div
+            class='pr-2 pl-2 border d-flex align-items-center'
+            style='height: 50px;'
+          >
+            <p class='mt-3'> 數量 {{this.num}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+  <form
+    action='/orders'
+    method='POST'
+    class='text-right border-top row justify-content-end'
+  >
+      <h3 class="col-12 text-center  mt-5 mb-5">寄件資訊</h3>
+  <div class="col-9">
+      <div class='form-group row'>
+      <label for='staticEmail' class='col-sm-2 col-form-label'>Email</label>
+      <div class='col-sm-10'>
+        <input
+          type='text'
+          readonly
+          disabled
+          class='form-control'
+          id='staticEmail'
+          value='{{user.email}}'
+        />
+      </div>
+    </div>
+    <div class='form-group row'>
+      <label for='inputName' class='col-sm-2 col-form-label'>姓名</label>
+      <div class='col-sm-10'>
+        <input
+          type='text'
+          class='form-control'
+          id='inputName'
+          name='name'
+          value='{{user.name}}'
+        />
+      </div>
+    </div>
+    <div class='form-group row'>
+      <label for='inputPhone' class='col-sm-2 col-form-label'>手機</label>
+      <div class='col-sm-10'>
+        <input
+          type='text'
+          class='form-control'
+          id='inputPhone'
+          name='phone'
+          value='{{user.phone}}'
+        />
+      </div>
+    </div>
+    <div class='form-group row'>
+      <label for='inputMailNum' class='col-sm-2 col-form-label'>郵遞區號</label>
+      <div class='col-sm-10'>
+        <input
+          type='text'
+          class='form-control'
+          id='inputMailNum'
+          ,
+          name='mailNum'
+          value='{{user.mailNum}}'
+        />
+      </div>
+    </div>
+    <div class='form-group row mb-5'>
+      <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
+      <div class='col-sm-10'>
+        <input
+          type='text'
+          class='form-control'
+          id='inputAddress'
+          ,
+          name='address'
+          value='{{user.address}}'
+        />
+      </div>
+    </div>
+  </div>
+  <div class="col-3 d-flex flex-column justify-content-end">
+        <h2 class='mt-4 mb-4'>總共 {{totalPrice}} 元</h2>
+    <button class='btn btn-info'>確定購買</button>
+  </div>
+  </form>
+</div>

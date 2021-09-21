@@ -27,7 +27,14 @@ app.use(methodOverride('_method'))
 //flash
 app.use(connectFlash())
 //session
-app.use(session({ secret: 'test', resave: false, saveUninitialized: true,cookie:{maxAge:80000} }))
+app.use(
+  session({
+    secret: 'test',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 80000 }
+  })
+)
 app.use(passport.initialize())
 app.use(passport.session())
 require('./config/passport')
@@ -42,7 +49,6 @@ app.engine(
   })
 )
 app.set('view engine', 'hbs')
-
 app.use(async (req, res, next) => {
   res.locals.successMsg = req.flash('successMsg')
   res.locals.warningMsg = req.flash('warningMsg')
