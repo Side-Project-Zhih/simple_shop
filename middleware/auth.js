@@ -1,7 +1,6 @@
 module.exports = {
   checkLoginAndOwner: (req, res, next) => {
     let visitUserId = req.params._id
-    console.log(req.params)
     if (req.isAuthenticated()) {
       if (visitUserId !== req.user._id.toString()) {
         return res.redirect('back')
@@ -11,7 +10,7 @@ module.exports = {
     req.flash('warningMsg', '請先登入')
     return res.redirect('/users/login')
   },
-  checkLogin: (req, res) => {
+  checkLogin: (req, res, next) => {
     if (req.isAuthenticated()) {
       return next()
     }
@@ -20,7 +19,7 @@ module.exports = {
   },
   checkOrderBelongToOwner: (req, res, next) => {
     let orders = req.user.orders
-    let orderId = req.body.params.id
+    let orderId = req.params.id
     if (!orders[orderId]) {
       return res.redirect('back')
     }

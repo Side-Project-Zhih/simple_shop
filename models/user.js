@@ -5,55 +5,62 @@ let card = new Schema({
   expMon: String,
   expYear: String
 })
-const User = new Schema({
-  email: {
-    type: String,
-    required: true
+const User = new Schema(
+  {
+    email: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    isValid: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    phone: {
+      type: String
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    mailNum: {
+      type: Number
+    },
+    address: {
+      type: String
+    },
+    creditCard: {
+      type: Map,
+      of: String
+    },
+    wishlist: {
+      type: String,
+      default: null
+    },
+    orders: {
+      type: Object,
+      default: {}
+    },
+    cart: {
+      type: String,
+      default: null
+    },
+    createdAt: {
+      type: Date,
+      default: new Date()
+    },
+    updatedAt: {
+      type: Date,
+      default: new Date()
+    },
+    isGoogle: Boolean,
+    isFb: Boolean
   },
-  password: {
-    type: String,
-    required: true
-  },
-  isValid: {
-    type: Boolean,
-    required: true,
-    default: false
-  },
-  phone: {
-    type: String
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  mailNum: {
-    type: Number
-  },
-  address: {
-    type: String
-  },
-  creditCard: {
-    type: Map,
-    of: String
-  },
-  wishlist: {
-    type: String,
-    default: null
-  },
-  cart: {
-    type: String,
-    default: null
-  },
-  createdAt: {
-    type: Date,
-    default: new Date()
-  },
-  updatedAt: {
-    type: Date,
-    default: new Date()
-  },
-  isGoogle: Boolean,
-  isFb: Boolean
-})
+  { minimize: true }
+)
 
 module.exports = mongoose.model('User', User)

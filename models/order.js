@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+
 const order = new Schema({
   customerId: String,
-  pds: {
-    type: Object,
+  pdsInfo: {
+    type: Schema.Types.ObjectId,
+    ref: 'Cart',
     required: true
   },
-  totalPrice: Number,
   customerInfo: {
     type: Object,
     required: true
@@ -17,6 +18,10 @@ const order = new Schema({
   },
   payment: {
     type: String
+  },
+  receiverInfo: {
+    type: Object,
+    required: true
   },
   createdAt: {
     type: Date,

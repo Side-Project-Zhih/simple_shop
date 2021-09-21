@@ -19,7 +19,6 @@ router.get('/register', userController.renderRegisterPage)
 router.post('/register', userController.register)
 router.get('/logout', userController.logout)
 
-// router.use(checkLoginAndOwner)
 router.get('/:_id/validation/:email',checkLoginAndOwner, userController.checkValidationMail)
 router.post('/:_id/validation',checkLoginAndOwner, userController.sendValidationMail)
 router.get('/:_id/orders', checkLoginAndOwner,orderController.getOrders)
