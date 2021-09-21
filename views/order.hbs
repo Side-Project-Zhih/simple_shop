@@ -108,8 +108,14 @@
     </div>
   </div>
   {{#ifCond '尚未付款' status}}
-  <form class="col-9 d-flex justify-content-center">
-    <button class='btn btn-info w-50'>立即付款</button>
+
+  
+  <form class="col-9 row justify-content-center" name='Spgateway'  action='{{tradeInfo.PayGateWay}}' method="POST">
+    <input type="text" hidden name="MerchantID" value="{{tradeInfo.MerchantID}}"><br>
+    <input type="text" hidden name="TradeInfo" value="{{tradeInfo.TradeInfo}}"><br>
+    <input type="text" hidden name="TradeSha" value="{{tradeInfo.TradeSha}}"><br>
+    <input type="text" hidden name="Version" value="{{tradeInfo.Version}}"><br>
+    <button class='col-6 btn btn-info ' style="height:50;" >立即付款</button>
   </form>
   {{/ifCond}}
   </div>
