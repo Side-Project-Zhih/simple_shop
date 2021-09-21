@@ -1,8 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const orderController = require('../../controllers/orderController')
-router.get('/:id', orderController.renderOrderPage)
+const { checkLogin, checkOrderBelongToOwner } = require('../../middleware/auth')
+
+router.use(checkLogin)
 router.post('/', orderController.postOrder)
+
+router.use(checkOrderBelongToOwner)
+router.get('/:id', orderController.renderOrderPage)
 router.delete('/:id', (orderController.cancelOrder))
+
 
 module.exports = router
