@@ -23,6 +23,10 @@ const order = new Schema({
     type: Object,
     required: true
   },
+  paymentMethod: {
+    type: String,
+    default:null
+  },
   createdAt: {
     type: Date,
     default: new Date()

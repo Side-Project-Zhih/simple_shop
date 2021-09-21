@@ -60,7 +60,7 @@ const User = new Schema(
     isGoogle: Boolean,
     isFb: Boolean
   },
-  { minimize: true }
+  { minimize: false }
 )
 
 module.exports = mongoose.model('User', User)
