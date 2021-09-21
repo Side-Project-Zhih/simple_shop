@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../../controllers/userController')
+const orderController = require('../../controllers/orderController')
 const passport = require('passport')
 //login
 router.get('/login', userController.renderLoginPage)
@@ -17,6 +18,7 @@ router.post('/register', userController.register)
 router.get('/logout', userController.logout)
 router.get('/:_id/validation/:email', userController.checkValidationMail)
 router.post('/:_id/validation', userController.sendValidationMail)
+router.get('/:id/orders', orderController.getOrders)
 router.get('/:_id', userController.renderUserProfile)
 router.put('/:_id', userController.putUserProfile)
 module.exports = router
