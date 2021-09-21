@@ -14,7 +14,7 @@ module.exports = {
       }
     }
     const [orderOption, orderName_cht] = helper.orderType(order)
-    const { pages, prev, next } = await helper.getPagination(
+    const { pages, prev, next } = await helper.getPagination(Product,
       pdOption,
       pdNumLimit,
       page
@@ -53,7 +53,7 @@ module.exports = {
     const pdOption = {
       name: { $regex: keyword, $options: 'i' }
     }
-    const { pages, prev, next } = helper.getPagination(
+    const { pages, prev, next } = helper.getPagination(Product,
       pdOption,
       pdNumLimit,
       page

@@ -1,8 +1,7 @@
 const User = require('../models/user')
-const Cart = require('../models/cart')
 const Order = require('../models/order')
 const helper = require('../helper/helper')
-const { populate } = require('../models/user')
+let orderLimit = 10
 module.exports = {
   renderOrderPage: async (req, res) => {
     const orderId = req.params.id
@@ -58,8 +57,23 @@ module.exports = {
   },
   getOrders: async (req, res) => {
     const userId = req.user._id
-    let orders = await Order.find({ customerId: userId })
+    let {page} = req.query
+    page = +page ? +page : 1
+    const option = {
+      customerId: userId
+    }
+    const { pages, prev, next } = await helper.getPagination(
+      Order,
+      option,
+      orderLimit,
+      page
+    )
+    let skipNum = orderLimit * (page - 1)
+    let orders = await Order.find(option)
+      .skip(skipNum)
+      .limit(orderLimit)
       .populate('pdsInfo', 'totalPrice -_id')
+      .sort({ createdAt: 'desc' })
       .select('pdsInfo _id createdAt status')
       .lean()
     orders.forEach(order => {
@@ -69,6 +83,6 @@ module.exports = {
       order.status = helper.orderStatus(order.status)
     })
     console.log(orders)
-    res.render('profile', { orders })
+    res.render('profile', { orders, pages, prev, page, next })
   }
 }

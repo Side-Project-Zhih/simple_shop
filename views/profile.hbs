@@ -272,6 +272,19 @@
           {{/each}}
           </tbody>
         </table>
+      <nav aria-label="Page navigation col-9  ">
+      <ul class="pagination mt-4 d-flex justify-content-center">
+
+        <li class="page-item"><a class="page-link" href="/users/{{user._id}}/orders?page={{prev}}">Previous</a></li>
+         {{#each pages}}
+        <li class="page-item         
+        {{#ifCond ../page this}}
+        active
+        {{/ifCond}}"><a class="page-link" href="/users/{{../user._id}}/orders?page={{this}}">{{this}}</a></li>
+        {{/each}}
+        <li class="page-item"><a class="page-link" href="/users/{{user._id}}/orders?page={{next}}">Next</a></li>
+      </ul>
+    </nav>
       </div>
     {{/if}}
   </div>

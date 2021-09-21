@@ -37,8 +37,8 @@ module.exports = {
       return options.inverse(this)
     }
   },
-  getPagination: async (option, limit, page) => {
-    let totalNum = await Product.countDocuments(option)
+  getPagination: async (model,option, limit, page) => {
+    let totalNum = await model.countDocuments(option)
     let totalPage = Math.ceil(totalNum / limit)
     let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
     let prev = page - 1 <= 0 ? 1 : page - 1
