@@ -62,5 +62,18 @@ module.exports = {
       obj.isProfile = true
     }
     return obj
+  },
+  orderStatus: (status) => {
+    let output = ''
+    if (status === 'unfinished') {
+      output = '尚未付款'
+    }
+    if (status === 'cancel') {
+      output = '訂單已取消'
+    }
+    if (status === 'finished') {
+      output = '訂單已付款'
+    }
+    return output
   }
 }
