@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const order = new Schema({
+  customerId: String,
   pds: {
     type: Object,
     required: true
@@ -11,13 +12,20 @@ const order = new Schema({
     required: true
   },
   status: {
-    type:String,
-    default: "unfinished"
+    type: String,
+    default: 'unfinished'
   },
-  payment:{
-    type:String
+  payment: {
+    type: String
+  },
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date()
   }
-
 })
 
 module.exports = mongoose.model('Order', order)
