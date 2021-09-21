@@ -3,7 +3,9 @@ const router = express.Router()
 const orderController = require('../../controllers/orderController')
 const { checkLogin, checkOrderBelongToOwner } = require('../../middleware/auth')
 
-// router.use(checkLogin)
+
+router.post('/payment/callback', orderController.payOrder)
+router.use(checkLogin)
 router.post('/', orderController.postOrder)
 
 // router.use(checkOrderBelongToOwner)
