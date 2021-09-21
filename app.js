@@ -27,7 +27,7 @@ app.use(methodOverride('_method'))
 //flash
 app.use(connectFlash())
 //session
-app.use(session({ secret: 'test', resave: false, saveUninitialized: true }))
+app.use(session({ secret: 'test', resave: false, saveUninitialized: true,cookie:{maxAge:80000} }))
 app.use(passport.initialize())
 app.use(passport.session())
 require('./config/passport')
