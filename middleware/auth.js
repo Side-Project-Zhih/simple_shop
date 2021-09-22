@@ -1,15 +1,12 @@
 const passport = require('passport')
 module.exports = {
-  checkLoginAndOwner: (req, res, next) => {
+  checkOwner: (req, res, next) => {
     let visitUserId = req.params._id
-    if (req.isAuthenticated()) {
       if (visitUserId !== req.user._id.toString()) {
+        console.log('nonono')
         return res.redirect('back')
       }
       return next()
-    }
-    req.flash('warningMsg', '請先登入')
-    return res.redirect('/users/login')
   },
   checkLogin: (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -56,6 +53,13 @@ module.exports = {
   isAdmin: (req, res, next) => {
     const user = req.user
     if (user.role === 'admin') {
+      return next()
+    }
+    return res.redirect('/')
+  },
+  isUser: (req, res, next) => {
+    const user = req.user
+    if (user.role === 'user') {
       return next()
     }
     return res.redirect('/')
