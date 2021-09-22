@@ -1,7 +1,7 @@
 const User = require('../models/user')
 const Order = require('../models/order')
 const helper = require('../helper/helper')
-const newbPayHepler  = require('../helper/newbPayHepler')
+const newbPayHepler = require('../helper/newbPayHepler')
 const mailer = require('../config/mailer')
 let orderLimit = 10
 module.exports = {
@@ -18,8 +18,13 @@ module.exports = {
       products.push(pds[key])
     }
     let tradeInfo = {}
-    if(status === 'unfinished'){
-      tradeInfo = newbPayHepler.genTradeInfo(totalPrice, orderId, req.user.email, `/users`)
+    if (status === 'unfinished') {
+      tradeInfo = newbPayHepler.genTradeInfo(
+        totalPrice,
+        orderId,
+        req.user.email,
+        `/users`
+      )
     }
     createdAt = new Date(createdAt).toLocaleString()
     res.render('order', {
@@ -106,15 +111,17 @@ module.exports = {
       newbPayHepler.create_mpg_aes_decrypt(req.body.TradeInfo)
     )
     let orderId = data.Result.MerchantOrderNo
-    let paymentMethod = data.Result.PaymentMethod || data.Result.PaymentType
-    console.log(data)
-    console.log(paymentMethod)
-    await Order.findByIdAndUpdate(orderId, {
-      status: 'finished',
-      updatedAt: Date.now(),
-      paymentMethod 
-    })
-    req.flash('successMsg', `訂單編號 ${orderId} 已付款完成`)
-    res.redirect(`/`)
+    if (data.Status === 'SUCCESS') {
+      let paymentMethod = data.Result.PaymentType
+      console.log(paymentMethod)
+      await Order.findByIdAndUpdate(orderId, {
+        status: 'finished',
+        updatedAt: Date.now(),
+        paymentMethod
+      })
+      req.flash('successMsg', `訂單編號 ${orderId} 已付款完成`)
+      return res.redirect(`/`)
+    }
+    return req.flash('warningMsg', `訂單編號 ${orderId} 付款失敗`)
   }
 }
