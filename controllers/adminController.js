@@ -1,5 +1,5 @@
 module.exports = {
   renderLoginPage: (req, res) => {
-    res.render('login', { admin: true })
+    res.render('./admin/login')
   }
 }

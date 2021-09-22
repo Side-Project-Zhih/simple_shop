@@ -14,13 +14,13 @@ passport.use(
     (req, email, password, done) => {
       User.findOne({ email }).lean().then((user) => {
         if (!user) {
-          return done(null, false, req.flash('warningMsg', '該帳戶不存在'))
+          return done(null, false,{ message: '該帳戶不存在' })
         }
         const isMatch = bcrypt.compareSync(password, user.password)
         if (isMatch) {
           return done(null, user)
         }
-        return done(null, false, req.flash('warning<sg', '密碼錯誤請重新輸入'))
+        return done(null, false, { message: '密碼錯誤請重新輸入' })
       })
     }
   )

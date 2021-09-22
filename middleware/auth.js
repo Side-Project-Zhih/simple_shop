@@ -1,3 +1,4 @@
+const passport = require('passport')
 module.exports = {
   checkLoginAndOwner: (req, res, next) => {
     let visitUserId = req.params._id
@@ -26,10 +27,30 @@ module.exports = {
     return next()
   },
   isValidAccount: (req, res, next) => {
-    if(req.user.isValid){
+    if (req.user.isValid) {
       return next()
     }
-    req.flash('warningMsg', "請至個人資料進行帳號email驗證")
+    req.flash('warningMsg', '請至個人資料進行帳號email驗證')
     return res.redirect('back')
+  },
+  localAuthenticate: (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (info) {
+        req.flash('warningMsg', info.message)
+        return res.redirect('/users/login')
+      }
+      if (user) {
+        req.logIn(user, function (err) {
+          if (err) {
+            return next(err)
+          }
+          if (user.role === 'admin') {
+            return res.redirect('/admin/orders')
+          } else {
+            return res.redirect('/')
+          }
+        })
+      }
+    })(req, res, next)
   }
 }
