@@ -3,10 +3,9 @@ const bcrypt  = require('bcryptjs')
 const User = require('../models/user')
 let password = '12345678'
 const userData = Array.from({length:5}).map((_,i) => {
-  password = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
   return {
     name :  `user${i+1}`,
-    password,
+    password :bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
     email: `user${i+1}@example.com`
   }
 })
