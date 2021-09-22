@@ -52,5 +52,12 @@ module.exports = {
         })
       }
     })(req, res, next)
+  },
+  isAdmin: (req, res, next) => {
+    const user = req.user
+    if (user.role === 'admin') {
+      return next()
+    }
+    return res.redirect('/')
   }
 }
