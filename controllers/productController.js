@@ -30,7 +30,7 @@ module.exports = {
           if (wishlistPds && wishlistPds[item._id]) {
             item.isInWishlist = true
           }
-          item.name = item.name.substring(0, 18)
+          item.shortName = item.name.substring(0, 18)
         })
         return products
       })
