@@ -10,10 +10,12 @@ module.exports = {
     if (req.isAuthenticated()) {
       cartId = user.cart
     }
+
     if (cartId) {
       let cart = await Cart.findById(cartId)
         .populate('pdsInfo', '_id name price pic')
         .lean()
+        console.log(cart)
       let pds = cart.pds
       products = cart.pdsInfo
       totalPrice = cart.totalPrice
@@ -160,25 +162,25 @@ module.exports = {
     return res.redirect('back')
   },
   checkCart: async (req, res) => {
-   let cartId = req.session.cart
-   const user = req.user
-   let products = []
-   let totalPrice = 0
-   if (req.isAuthenticated()) {
-     cartId = user.cart
-   }
-   if (cartId) {
-     let cart = await Cart.findById(cartId)
-       .populate('pdsInfo', '_id name price pic')
-       .lean()
-     let pds = cart.pds
-     products = cart.pdsInfo
-     totalPrice = cart.totalPrice
-     products.forEach((pd) => {
-       pd.num = pds[pd._id]
-       pd.totalPrice = pds[pd._id] * pd.price
-     })
-   }
+    let cartId = req.session.cart
+    const user = req.user
+    let products = []
+    let totalPrice = 0
+    if (req.isAuthenticated()) {
+      cartId = user.cart
+    }
+    if (cartId) {
+      let cart = await Cart.findById(cartId)
+        .populate('pdsInfo', '_id name price pic')
+        .lean()
+      let pds = cart.pds
+      products = cart.pdsInfo
+      totalPrice = cart.totalPrice
+      products.forEach((pd) => {
+        pd.num = pds[pd._id]
+        pd.totalPrice = pds[pd._id] * pd.price
+      })
+    }
     res.render('checkCart', { products, totalPrice })
   }
 }

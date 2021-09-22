@@ -11,15 +11,11 @@ module.exports = {
   renderOrderPage: async (req, res) => {
     const orderId = req.params.id
     let order = await Order.findById(orderId)
-      .populate('pdsInfo')
-      .select('pdsInfo _id receiverInfo createdAt status')
-    let products = []
-    let { pds, totalPrice } = order.pdsInfo
-    let { createdAt, _id, receiverInfo, status } = order
-    for (const key of Object.keys(pds)) {
-      pds[key]['totalPrice'] = pds[key]['num'] * pds[key]['price']
-      products.push(pds[key])
-    }
+      .select('pdsInfo _id receiverInfo createdAt status totalPrice')
+      .lean()
+    console.log(order)
+    let { pdsInfo, createdAt, _id, receiverInfo, status, totalPrice } = order
+
     let tradeInfo = {}
     if (status === 'unfinished') {
       tradeInfo = newbPayHepler.genTradeInfo(
@@ -29,9 +25,10 @@ module.exports = {
         `/users`
       )
     }
+    console.log(pdsInfo)
     createdAt = new Date(createdAt).toLocaleString()
     res.render('order', {
-      products,
+      products: pdsInfo,
       totalPrice,
       receiverInfo,
       id: _id,
@@ -86,10 +83,12 @@ module.exports = {
     }
 
     await Promise.all([
-      mailer.sendMail(mailContent),
+      User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders }),
       Cart.findByIdAndDelete(cartId),
-      User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders })
-    ])
+      mailer.sendMail(mailContent),
+    ]).catch(er => {
+      console.log (err)
+    })
 
     res.redirect(`/orders/${order._id.toString()}`)
   },
