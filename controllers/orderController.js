@@ -109,16 +109,15 @@ module.exports = {
     let orders = await Order.find(option)
       .skip(skipNum)
       .limit(orderLimit)
-      .populate('pdsInfo', 'totalPrice -_id')
       .sort({ createdAt: 'desc' })
-      .select('pdsInfo _id createdAt status paymentMethod')
+      .select(' _id createdAt status paymentMethod totalPrice')
       .lean()
     orders.forEach((order) => {
       order.createdAt = new Date(order.createdAt).toLocaleString()
-      order.totalPrice = order.pdsInfo.totalPrice
       delete order.pdsInfo
       order.status = helper.orderStatus(order.status)
     })
+  
     res.render('profile', { orders, pages, prev, page, next })
   },
   payOrder: async (req, res) => {
@@ -128,7 +127,6 @@ module.exports = {
     let orderId = data.Result.MerchantOrderNo
     if (data.Status === 'SUCCESS') {
       let paymentMethod = data.Result.PaymentType
-      console.log(paymentMethod)
       await Order.findByIdAndUpdate(orderId, {
         status: 'finished',
         updatedAt: Date.now(),
