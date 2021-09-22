@@ -15,7 +15,6 @@ module.exports = {
       let cart = await Cart.findById(cartId)
         .populate('pdsInfo', '_id name price pic')
         .lean()
-        console.log(cart)
       let pds = cart.pds
       products = cart.pdsInfo
       totalPrice = cart.totalPrice

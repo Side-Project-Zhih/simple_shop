@@ -37,7 +37,7 @@ module.exports = {
       return options.inverse(this)
     }
   },
-  getPagination: async (model,option, limit, page) => {
+  getPagination: async (model, option, limit, page) => {
     let totalNum = await model.countDocuments(option)
     let totalPage = Math.ceil(totalNum / limit)
     let pages = Array.from({ length: totalPage }, (_, i) => i + 1)
@@ -75,5 +75,11 @@ module.exports = {
       output = '訂單已付款'
     }
     return output
+  },
+  stringToBase64: (string) => {
+    return Buffer.from(string).toString('base64')
+  },
+  base64ToString: (string) => {
+    return Buffer.from(string, 'base64').toString('ascii')
   }
 }

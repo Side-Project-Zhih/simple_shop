@@ -42,21 +42,10 @@ module.exports = {
           email,
           password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
           name
+        }).then(() => {
+          req.flash('successMsg', '帳戶建立成功，稍後請進行email驗證')
+          return res.redirect('/users/login')
         })
-          .then((user) => {
-            return mailer.sendMail({
-              from: process.env.googleAccount,
-              to: 'fufong79570@gmail.com',
-              subject: 'MY SHOP 帳號驗證信',
-              html: `<h2>請點以下連結完成驗證</h2><br>
-            <a href="http://localhost:3000/users/${_id}/validation/${user.email.toString()}">連結</a>
-            `
-            })
-          })
-          .then( () => {
-            req.flash('successMsg', '帳戶建立成功，稍後請進行email驗證')
-            return res.redirect('/users/login')
-          })
       })
       .catch((err) => console.log(error))
   },
@@ -76,7 +65,6 @@ module.exports = {
       return res.redirect('back')
     }
     const { password, newPassword, checkPassword } = req.body
-    const { cardNumber, expYear, expMon } = req.body
     const { name, address, mailNum, phone } = req.body
     //基本訊息
     if (name && address && mailNum && phone) {
@@ -113,28 +101,7 @@ module.exports = {
         return res.redirect('back')
       }
     }
-    //信用卡處理
-    let result = cardValidator.number(cardNumber)
-    if (result.isValid) {
-      await User.findOneAndUpdate(
-        { _id },
-        {
-          creditCard: {
-            cardNumber,
-            expMon,
-            expYear
-          }
-        }
-      )
-      req.flash('successMsg', '信用卡卡號更改成功')
-      return res.redirect('back')
-    }
-    if (!result.isValid) {
-      req.flash('warningMsg', '信用卡卡號錯誤')
-      return res.redirect('back')
-    }
-
-    req.flash('warning', '請勿填寫每一個欄位')
+    req.flash('warning', '請填寫每一個欄位')
     return res.redirect('back')
   },
   sendValidationMail: async (req, res) => {
@@ -143,13 +110,14 @@ module.exports = {
     if (user._id.toString() !== _id) {
       return res.redirect('back')
     }
-    let mail
+    let mail = req.user.email.toString()
+    let encodeMail = helper.stringToBase64(mail)
     let validMail = {
       from: process.env.googleAccount,
-      to: 'fufong79570@gmail.com',
+      to: mail,
       subject: 'MY SHOP 帳號驗證信',
       html: `<h2>請點以下連結完成驗證</h2><br>
-            <a href="http://localhost:3000/users/${_id}/validation/${user.email.toString()}">連結</a>
+            <a href="http://localhost:3000/users/${_id}/validation/${encodeMail}">連結</a>
             `
     }
     let info = await mailer
@@ -159,12 +127,13 @@ module.exports = {
     res.redirect('back')
   },
   checkValidationMail: async (req, res) => {
-    let email = req.params.email
+    let email = helper.base64ToString(req.params.email) 
     const user = req.user
     if (user.email.toString() !== email) {
       return res.render('mailValid')
     }
     await User.findOneAndUpdate({ email }, { isValid: true })
-    res.render('mailValid',{isValid:true})
+    req.user.isValid = true
+    res.render('mailValid', { isValid: true })
   }
 }
