@@ -10,28 +10,33 @@ module.exports = {
     if (req.isAuthenticated()) {
       //wishlist 有wishlistId
       if (user.cart) {
-        let cart = await Cart.findById(user.cart).lean()
+        let cart = await Cart.findById(user.cart)
+          .populate('pdsInfo', '_id name price pic')
+          .lean()
         let pds = cart.pds
+        products = cart.pdsInfo
         totalPrice = cart.totalPrice
-        for (const key of Object.keys(pds)) {
-          products.push(pds[key])
-        }
+        products.forEach((pd) => {
+          pd.num = pds[pd._id]
+          pd.totalPrice = pds[pd._id] * pd.price
+        })
       }
     } else {
       //未登入狀態
       if (cartId) {
         //session有wishlistId
-        let cart = await Cart.findById(cartId).lean()
+        let cart = await Cart.findById(cartId)
+          .populate('pdsInfo', '_id name price pic')
+          .lean()
         let pds = cart.pds
+        products = cart.pdsInfo
         totalPrice = cart.totalPrice
-        for (const key of Object.keys(pds)) {
-          products.push(pds[key])
-        }
+        products.forEach((pd) => {
+          pd.num = pds[pd._id]
+          pd.totalPrice = pds[pd._id] * pd.price
+        })
       }
     }
-    products.forEach((pd) => {
-      pd.totalPrice = pd.price * pd.num
-    })
     res.render('carts', { products, totalPrice })
   },
   postCart: async (req, res) => {
@@ -47,7 +52,7 @@ module.exports = {
     let totalPrice = pd.price * num
     let pds = {}
     let pdsInfo = [pdId]
-    pds[pd._id] = [num, pd.price]
+    pds[pd._id] = num
     // 登入狀態
     if (req.isAuthenticated()) {
       //session 未存cartID
@@ -68,16 +73,16 @@ module.exports = {
         pdsInfo = cart.pdsInfo
         let cartPd = pds[pd._id]
         if (cartPd) {
-          let pdNum = cartPd[0]
+          let pdNum = cartPd
           if (pdNum + num > pd.amount) {
             let diff = pd.amount - pdNum
             totalPrice = pd.price * diff
-            cart.pds[pd._id][0] = pd.amount
+            cart.pds[pd._id] = pd.amount
           } else {
-            cart.pds[pd._id][0] += num
+            cart.pds[pd._id] += num
           }
         } else {
-          pds[pd._id] = [num, pd.price]
+          pds[pd._id] = num
           pdsInfo.push(pd._id)
         }
         cart.totalPrice += totalPrice
@@ -101,20 +106,19 @@ module.exports = {
         pdsInfo = cart.pdsInfo
         let cartPd = pds[pd._id]
         if (cartPd) {
-          let pdNum = cartPd[0]
+          let pdNum = cartPd
           if (pdNum + num > pd.amount) {
             let diff = pd.amount - pdNum
             totalPrice = pd.price * diff
-            cart.pds[pd._id][0] = pd.amount
+            cart.pds[pd._id] = pd.amount
           } else {
-            cart.pds[pd._id][0] += num
+            cart.pds[pd._id] += num
           }
         } else {
-          pds[pd._id] = [num, pd.price]
+          pds[pd._id] = num
           pdsInfo.push(pd._id)
         }
         cart.totalPrice += totalPrice
-        console.log(cart)
         await Cart.findByIdAndUpdate(cartId, cart)
       }
     }
@@ -125,21 +129,22 @@ module.exports = {
     let cartId = req.session.cart
     const user = req.user
     if (req.isAuthenticated()) {
-      //wishlist 有wishlistId
+      //user 有 cart
       if (user.cart) {
         let cart = await Cart.findById(user.cart).lean()
-        let cartPd = cart.pds[pdId]
+        let cartPd = cart.pds[pdId][0]
         if (cartPd.num === 1) {
           return res.redirect('back')
         }
-        --cartPd.num
+        --cart.pds[pdId][0]
         cart.totalPrice -= cartPd.price
+        console.log(cart)
         await Cart.findByIdAndUpdate(user.cart, cart)
       }
     } else {
       //未登入狀態
       if (cartId) {
-        //session有wishlistId
+        //session有 cart
         let cart = await Cart.findById(cartId).lean()
         let cartPd = cart.pds[pdId]
         if (cartPd.num === 1) {
