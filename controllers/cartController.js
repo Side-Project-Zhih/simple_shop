@@ -126,35 +126,23 @@ module.exports = {
   },
   putCart: async (req, res) => {
     const pdId = req.body.id
-    let cartId = req.session.cart
     const user = req.user
+    let cartId = req.session.cart
     if (req.isAuthenticated()) {
-      //user 有 cart
-      if (user.cart) {
-        let cart = await Cart.findById(user.cart).lean()
-        let cartPd = cart.pds[pdId][0]
-        if (cartPd.num === 1) {
-          return res.redirect('back')
-        }
-        --cart.pds[pdId][0]
-        cart.totalPrice -= cartPd.price
-        console.log(cart)
-        await Cart.findByIdAndUpdate(user.cart, cart)
-      }
-    } else {
-      //未登入狀態
-      if (cartId) {
-        //session有 cart
-        let cart = await Cart.findById(cartId).lean()
-        let cartPd = cart.pds[pdId]
-        if (cartPd.num === 1) {
-          return res.redirect('back')
-        }
-        --cartPd.num
-        cart.totalPrice -= cartPd.price
-        await Cart.findByIdAndUpdate(user.cart, cart)
-      }
+      cartId = user.cart
     }
+    //session有 cart
+    let cart = await Cart.findById(cartId)
+      .populate('pdsInfo', '_id price')
+      .lean()
+    let cartPd = cart.pds[pdId]
+    let pd = cart.pdsInfo.find((item) => item._id.toString() === pdId)
+    if (cartPd.num === 1) {
+      return res.redirect('back')
+    }
+    --cartPd.num
+    cart.totalPrice -= pd.price
+    await Cart.findByIdAndUpdate(cartId, cart)
     return res.redirect('back')
   },
   deleteCart: async (req, res) => {
