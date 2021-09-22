@@ -147,34 +147,31 @@ module.exports = {
   },
   deleteCart: async (req, res) => {
     const pdId = req.body.id
-    let cartId = req.session.cart
     const user = req.user
+    let cartId = req.session.cart
     if (req.isAuthenticated()) {
-      //wishlist 有cart
-      if (user.cart) {
-        let cart = await Cart.findById(user.cart)
-        let cartPd = cart.pds[pdId]
-        cart.totalPrice -= cartPd.price * cartPd.num
-        if (cart.totalPrice <= 0) {
-          cart.totalPrice = 0
-        }
-        delete cart.pds[pdId]
-        await Cart.findByIdAndUpdate(user.cart, cart)
-      }
-    } else {
-      //未登入狀態
-      if (cartId) {
-        //session有card
-        let cart = await Cart.findById(cartId)
-        let cartPd = cart.pds[pdId]
-        cart.totalPrice -= cartPd.price * cartPd.num
-        if (cart.totalPrice <= 0) {
-          cart.totalPrice = 0
-        }
-        delete cart.pds[pdId]
-        await Cart.findByIdAndUpdate(cartId, cart)
-      }
+      cartId = user.cart
     }
+    let cart = await Cart.findById(cartId)
+      .populate('pdsInfo', '_id price')
+      .lean()
+    let num = cart.pds[pdId]
+    let pdPrice = 0
+    let pdsInfo = []
+    cart.pdsInfo.forEach((pd) => {
+      if (pd._id.toString() === pdId) {
+        pdPrice = pd.price
+      } else {
+        pdsInfo.push(pd._id.toString())
+      }
+    })
+    cart.pdsInfo = pdsInfo
+    cart.totalPrice -= pdPrice * num
+    if (cart.totalPrice <= 0) {
+      cart.totalPrice = 0
+    }
+    delete cart.pds[pdId]
+    await Cart.findByIdAndUpdate(cartId, cart)
     return res.redirect('back')
   },
   checkCart: async (req, res) => {
