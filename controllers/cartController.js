@@ -47,6 +47,7 @@ module.exports = {
     let totalPrice = pd.price * num
     let pds = {}
     pd.num = num
+    console.log(pd.num)
     pds[pd._id] = pd
     // 登入狀態
     if (req.isAuthenticated()) {
@@ -60,9 +61,8 @@ module.exports = {
           cart: cart._id.toString()
         })
         req.user.cart = cart._id.toString()
-      }
-      //cart 有cartId
-      if (user.cart) {
+      } else if (user.cart) {
+        //cart 有cartId 
         let cart = await Cart.findById(user.cart).lean()
         pds = cart.pds
         let cartPd = pds[pd._id]
