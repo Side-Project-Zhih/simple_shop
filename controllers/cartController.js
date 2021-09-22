@@ -47,7 +47,6 @@ module.exports = {
     let totalPrice = pd.price * num
     let pds = {}
     pd.num = num
-    console.log(pd.num)
     pds[pd._id] = pd
     // 登入狀態
     if (req.isAuthenticated()) {
@@ -62,14 +61,17 @@ module.exports = {
         })
         req.user.cart = cart._id.toString()
       } else if (user.cart) {
-        //cart 有cartId 
+        //cart 有cartId
         let cart = await Cart.findById(user.cart).lean()
         pds = cart.pds
         let cartPd = pds[pd._id]
         if (cartPd) {
-          cartPd.num += num
-          if (cartPd.num > pd.amount) {
+          if (cartPd.num + num > pd.amount) {
+            let diff = pd.amount - cartPd.num
+            totalPrice = pd.price * diff
             cartPd.num = pd.amount
+          } else {
+            cartPd.num += num
           }
         } else {
           pds[pd._id] = pd
@@ -92,9 +94,12 @@ module.exports = {
         pds = cart.pds
         let cartPd = pds[pd._id]
         if (cartPd) {
-          cartPd.num += num
-          if (cartPd.num > pd.amount) {
+          if (cartPd.num + num > pd.amount) {
+            let diff = pd.amount - cartPd.num
+            totalPrice = pd.price * diff
             cartPd.num = pd.amount
+          } else {
+            cartPd.num += num
           }
         } else {
           pds[pd._id] = pd
