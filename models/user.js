@@ -15,6 +15,10 @@ const User = new Schema(
       type: String,
       required: true
     },
+    role: {
+      type: String,
+      default: 'user'
+    },
     isValid: {
       type: Boolean,
       required: true,
