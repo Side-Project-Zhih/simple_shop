@@ -8,34 +8,19 @@ module.exports = {
     let products = []
     let totalPrice = 0
     if (req.isAuthenticated()) {
-      //wishlist 有wishlistId
-      if (user.cart) {
-        let cart = await Cart.findById(user.cart)
-          .populate('pdsInfo', '_id name price pic')
-          .lean()
-        let pds = cart.pds
-        products = cart.pdsInfo
-        totalPrice = cart.totalPrice
-        products.forEach((pd) => {
-          pd.num = pds[pd._id]
-          pd.totalPrice = pds[pd._id] * pd.price
-        })
-      }
-    } else {
-      //未登入狀態
-      if (cartId) {
-        //session有wishlistId
-        let cart = await Cart.findById(cartId)
-          .populate('pdsInfo', '_id name price pic')
-          .lean()
-        let pds = cart.pds
-        products = cart.pdsInfo
-        totalPrice = cart.totalPrice
-        products.forEach((pd) => {
-          pd.num = pds[pd._id]
-          pd.totalPrice = pds[pd._id] * pd.price
-        })
-      }
+      cartId = user.cart
+    }
+    if (cartId) {
+      let cart = await Cart.findById(cartId)
+        .populate('pdsInfo', '_id name price pic')
+        .lean()
+      let pds = cart.pds
+      products = cart.pdsInfo
+      totalPrice = cart.totalPrice
+      products.forEach((pd) => {
+        pd.num = pds[pd._id]
+        pd.totalPrice = pds[pd._id] * pd.price
+      })
     }
     res.render('carts', { products, totalPrice })
   },
