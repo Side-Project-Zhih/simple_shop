@@ -4,10 +4,10 @@ const Schema = mongoose.Schema
 const order = new Schema({
   customerId: String,
   pdsInfo: {
-    type: Schema.Types.ObjectId,
-    ref: 'Cart',
+    type: Array,
     required: true
   },
+  totalPrice:Number,
   customerInfo: {
     type: Object,
     required: true

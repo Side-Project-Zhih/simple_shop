@@ -3,6 +3,9 @@ const Order = require('../models/order')
 const helper = require('../helper/helper')
 const newbPayHepler = require('../helper/newbPayHepler')
 const mailer = require('../config/mailer')
+const Cart = require('../models/cart')
+const Product = require('../models/product')
+
 let orderLimit = 10
 module.exports = {
   renderOrderPage: async (req, res) => {
@@ -45,12 +48,25 @@ module.exports = {
   },
   postOrder: async (req, res) => {
     let user = req.user
-    cartId = user.cart
+    let cartId = user.cart
     let receiverInfo = req.body
-
+    let cart = await Cart.findById(cartId).populate(
+      'pdsInfo',
+      '_id name price amount '
+    ).lean()
+    let error = []
+    let totalPrice = cart.totalPrice
+    let { pdsInfo, pds} = cart
+    for (let pd of pdsInfo) {
+      let num = pds[pd._id]
+      pd.num = num
+      pd.totalPrice = pd.price * num 
+      delete pd.amount
+    }
     let orderInfo = {
       customerId: user._id,
-      pdsInfo: cartId,
+      pdsInfo,
+      totalPrice,
       customerInfo: {
         name: user.name,
         email: user.email,
@@ -58,9 +74,7 @@ module.exports = {
       },
       receiverInfo
     }
-
     let order = await Order.create(orderInfo)
-    console.log(user.orders)
     user.orders[order._id.toString()] = true
     const mailContent = {
       from: process.env.googleAccount,
@@ -70,8 +84,10 @@ module.exports = {
       <h2>您的訂單編號為  ${order._id}</h2><br>
       <h2>詳細內容請至商店個人資料查詢</h2><br>`
     }
+
     await Promise.all([
       mailer.sendMail(mailContent),
+      Cart.findByIdAndDelete(cartId),
       User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders })
     ])
 
