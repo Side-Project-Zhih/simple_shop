@@ -13,7 +13,6 @@ module.exports = {
     let order = await Order.findById(orderId)
       .select('pdsInfo _id receiverInfo createdAt status totalPrice')
       .lean()
-    console.log(order)
     let { pdsInfo, createdAt, _id, receiverInfo, status, totalPrice } = order
 
     let tradeInfo = {}
@@ -25,7 +24,6 @@ module.exports = {
         `/users`
       )
     }
-    console.log(pdsInfo)
     createdAt = new Date(createdAt).toLocaleString()
     res.render('order', {
       products: pdsInfo,
