@@ -14,10 +14,6 @@
         class='list-group-item list-group-item-action list-group-item-light'
       >修改密碼</a>
       <a
-        href='/users/{{user._id}}?credit=true'
-        class='list-group-item list-group-item-action list-group-item-light'
-      >信用卡資訊</a>
-      <a
         href='/users/{{user._id}}/orders'
         class='list-group-item list-group-item-action list-group-item-light'
       >訂單紀錄</a>
@@ -182,50 +178,6 @@
         </form>
       </div>
     {{/if}}
-    {{#if isCredit}}
-      <div class='col-9 mt-5'>
-        {{>message}}
-        <form action="/users/{{user._id}}?_method=PUT" method="POST">
-          <div class='form-group row mb-5'>
-            <label for='cardNumber' class='col-sm-2 col-form-label'>卡號</label>
-            <div class='col-sm-10'>
-              <input
-                type='text'
-                class='form-control'
-                id='cardNumber'
-                name='cardNumber'
-                value='{{user.creditCard.cardNumber}}'
-              />
-            </div>
-          </div>
-          <div class='form-group row mb-5'>
-            <label for='expMon' class='col-sm-2 col-form-label'>到期月份</label>
-            <div class='col-sm-3'>
-              <input
-                type='text'
-                class='form-control'
-                id='expMon'
-                name='expMon'
-                value='{{user.creditCard.expMon}}'
-              />
-            </div>
-            <label for='expYear' class='col-sm- col-form-label'>到期年份</label>
-            <div class='col-sm-3'>
-              <input
-                type='text'
-                class='form-control'
-                id='expYear'
-                name='expYear'
-                value='{{user.creditCard.expYear}}'
-              />
-            </div>
-          </div>
-          <div class='row d-flex justify-content-end mr-1'>
-            <button type="submit" class='col-3 btn btn-secondary'>儲存</button>
-          </div>
-        </form>
-      </div>
-    {{/if}}
     {{#if orders}}
       <div class='col-9 '>
         <table class='table border-bottom'>
@@ -235,8 +187,8 @@
               <th scope='col'>下訂時間</th>
               <th scope='col'>總價</th>
               <th scope='col'>狀態</th>
-              <th scope='col'>取消訂單</th>
-              <th scope='col'>前去付款</th>
+              <th scope='col'>付費方式</th>
+              <th scope='col'>#</th>
             </tr>
           </thead>
           <tbody>
@@ -252,21 +204,30 @@
                 {{this.status}}
               </td>
               <td>
+                {{#if this.paymentMethod}}
+                {{this.paymentMethod}}
+                {{else}}
+                NONE
+                {{/if}}
+              </td>
+              <td class="d-flex">
+                {{#ifCond this.status '訂單已付款'}}
+                #
+                  {{else}}
                 <form action="/orders/{{this._id}}?_method=DELETE" method="POST">
                   <button type="submit" class="btn btn-danger" 
                   {{#ifCond this.status '訂單已取消'}}
                   disabled
-                  {{/ifCond}}>取消訂單</button>
+                  {{/ifCond}}>取消</button>
                 </form>
-              </td>
-                 <td>
                 <form action="/orders/{{this._id}}">
                   <button type="submit" class="btn btn-info" 
                   {{#ifCond this.status '尚未付款'}}
                   {{else}}
                   disabled
-                  {{/ifCond}}>前去付款</button>
+                  {{/ifCond}}>付款</button>
                 </form>
+                {{/ifCond}}
               </td>
             </tr>
           {{/each}}

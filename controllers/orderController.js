@@ -96,7 +96,7 @@ module.exports = {
       .limit(orderLimit)
       .populate('pdsInfo', 'totalPrice -_id')
       .sort({ createdAt: 'desc' })
-      .select('pdsInfo _id createdAt status')
+      .select('pdsInfo _id createdAt status paymentMethod')
       .lean()
     orders.forEach((order) => {
       order.createdAt = new Date(order.createdAt).toLocaleString()
