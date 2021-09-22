@@ -6,6 +6,10 @@ const cart = new Schema(
       type: Object,
       default: {}
     },
+    pdsInfo:[{
+      type: Schema.Types.ObjectId,
+      ref: 'Product' 
+    }],
     totalPrice: Number
   },
   { minimize: false }

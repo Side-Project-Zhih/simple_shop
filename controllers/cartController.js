@@ -46,14 +46,15 @@ module.exports = {
     }
     let totalPrice = pd.price * num
     let pds = {}
-    pd.num = num
-    pds[pd._id] = pd
+    let pdsInfo = [pdId]
+    pds[pd._id] = [num, pd.price]
     // 登入狀態
     if (req.isAuthenticated()) {
       //session 未存cartID
       if (!user.cart && !cartId) {
         let cart = await Cart.create({
           pds,
+          pdsInfo,
           totalPrice
         })
         await User.findByIdAndUpdate(user._id.toString(), {
@@ -64,19 +65,23 @@ module.exports = {
         //cart 有cartId
         let cart = await Cart.findById(user.cart).lean()
         pds = cart.pds
+        pdsInfo = cart.pdsInfo
         let cartPd = pds[pd._id]
         if (cartPd) {
-          if (cartPd.num + num > pd.amount) {
-            let diff = pd.amount - cartPd.num
+          let pdNum = cartPd[0]
+          if (pdNum + num > pd.amount) {
+            let diff = pd.amount - pdNum
             totalPrice = pd.price * diff
-            cartPd.num = pd.amount
+            cart.pds[pd._id][0] = pd.amount
           } else {
-            cartPd.num += num
+            cart.pds[pd._id][0] += num
           }
         } else {
-          pds[pd._id] = pd
+          pds[pd._id] = [num, pd.price]
+          pdsInfo.push(pd._id)
         }
         cart.totalPrice += totalPrice
+        console.log(cart)
         await Cart.findByIdAndUpdate(user.cart, cart)
       }
     } else {
@@ -85,6 +90,7 @@ module.exports = {
         //session內沒有cartId
         let cart = await Cart.create({
           pds,
+          pdsInfo,
           totalPrice
         })
         req.session.cart = cart._id
@@ -92,19 +98,23 @@ module.exports = {
         //session有cartId
         let cart = await Cart.findById(cartId).lean()
         pds = cart.pds
+        pdsInfo = cart.pdsInfo
         let cartPd = pds[pd._id]
         if (cartPd) {
-          if (cartPd.num + num > pd.amount) {
-            let diff = pd.amount - cartPd.num
+          let pdNum = cartPd[0]
+          if (pdNum + num > pd.amount) {
+            let diff = pd.amount - pdNum
             totalPrice = pd.price * diff
-            cartPd.num = pd.amount
+            cart.pds[pd._id][0] = pd.amount
           } else {
-            cartPd.num += num
+            cart.pds[pd._id][0] += num
           }
         } else {
-          pds[pd._id] = pd
+          pds[pd._id] = [num, pd.price]
+          pdsInfo.push(pd._id)
         }
         cart.totalPrice += totalPrice
+        console.log(cart)
         await Cart.findByIdAndUpdate(cartId, cart)
       }
     }
