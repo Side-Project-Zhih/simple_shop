@@ -47,11 +47,16 @@ module.exports = {
     let user = req.user
     let cartId = user.cart
     let receiverInfo = req.body
+    for(let key of Object.keys(receiverInfo)){
+      if(!receiverInfo[key]) {
+        req.flash('warningMsg', '寄件資訊每一欄都必須填寫')
+        return res.render(`/cart/check`)
+      }
+    }
     let cart = await Cart.findById(cartId).populate(
       'pdsInfo',
       '_id name price amount '
     ).lean()
-    let error = []
     let totalPrice = cart.totalPrice
     let { pdsInfo, pds} = cart
     for (let pd of pdsInfo) {

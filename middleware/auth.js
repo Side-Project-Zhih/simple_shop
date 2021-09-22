@@ -24,5 +24,12 @@ module.exports = {
       return res.redirect('back')
     }
     return next()
+  },
+  isValidAccount: (req, res, next) => {
+    if(req.user.isValid){
+      return next()
+    }
+    req.flash('warningMsg', "請至個人資料進行帳號email驗證")
+    return res.redirect('back')
   }
 }
