@@ -48,12 +48,13 @@ module.exports = {
   searchProduct: async (req, res) => {
     const wishlistPds = req.wishlistPds
     let { category,keyword, order, page } = req.query
-    if (!keyword) return res.redirect('back')
-
+    if (!keyword) return res.redirect('/')
+    page = +page ? +page : 1
     const pdOption = {
-      name: { $regex: keyword, $options: 'i' }
+      name: { $regex: keyword, $options: 'i' },
+      category,
     }
-    const { pages, prev, next } = helper.getPagination(Product,
+    const { pages, prev, next } =await  helper.getPagination(Product,
       pdOption,
       pdNumLimit,
       page
@@ -70,7 +71,7 @@ module.exports = {
           if (wishlistPds && wishlistPds[item._id]) {
             item.isInWishlist = true
           }
-          item.name = item.name.substring(0, 18)
+          item.shortName = item.name.substring(0, 18)
         })
         return products
       })

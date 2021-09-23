@@ -9,7 +9,7 @@
 
     </div>
     <div class='col-12 row justify-content-between'>
-      <form action='/products/search? ' class='col-4 p-0'>
+      <form action='/admin/products/search ' class='col-4 p-0'>
         <div class='input-group'>
           <input
             type='text'
@@ -31,7 +31,6 @@
           {{#if order}}
           <input type="text" hidden name="order" value="{{order}}">
           {{/if}}
-
           <div class='input-group-append'>
             <button class='btn btn-major' type='submit' id='search-button'><i
                 class='fas fa-search'
@@ -55,25 +54,25 @@
         {{/if}}
         </button>
         {{#if keyword}}
-          {{#if category}}
+         {{#if category}}
             <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
               <a
-                href='/products/search?order=low-high&keyword={{keyword}}&category={{category}}'
+                href='/admin/products/search?order=low-high&keyword={{keyword}}&category={{category}}'
                 class='dropdown-item'
                 type='button'
               >價錢低到高</a>
               <a
-                href='/products/search?order=high-low&keyword={{keyword}}&category={{category}}'
+                href='/admin/products/search?order=high-low&keyword={{keyword}}&category={{category}}'
                 class='dropdown-item'
                 type='button'
               >價錢高到低</a>
               <a
-                href='/products/search?order=A-Z&keyword={{keyword}}&category={{category}}'
+                href='/admin/products/search?order=A-Z&keyword={{keyword}}&category={{category}}'
                 class='dropdown-item'
                 type='button'
               >A-Z</a>
               <a
-                href='/products/search?order=Z-A&keyword={{keyword}}&category={{category}}'
+                href='/admin/products/search?order=Z-A&keyword={{keyword}}&category={{category}}'
                 class='dropdown-item'
                 type='button'
               >Z-A</a>
@@ -81,22 +80,22 @@
           {{else}}
               <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
                 <a
-                  href='/products/search?order=low-high&keyword={{keyword}}'
+                  href='/admin/products/search?order=low-high&keyword={{keyword}}'
                   class='dropdown-item'
                   type='button'
                 >價錢低到高</a>
                 <a
-                  href='/products/search?order=high-low&keyword={{keyword}}'
+                  href='/admin/products/search?order=high-low&keyword={{keyword}}'
                   class='dropdown-item'
                   type='button'
                 >價錢高到低</a>
                 <a
-                  href='/products/search?order=A-Z&keyword={{keyword}}'
+                  href='/admin/products/search?order=A-Z&keyword={{keyword}}'
                   class='dropdown-item'
                   type='button'
                 >A-Z</a>
                 <a
-                  href='/products/search?order=Z-A&keyword={{keyword}}'
+                  href='/admin/products/search?order=Z-A&keyword={{keyword}}'
                   class='dropdown-item'
                   type='button'
                 >Z-A</a>
@@ -105,22 +104,22 @@
         {{else}}
           <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
           <a
-            href='/?order=low-high&category={{this.category}}'
+            href='/admin/products?order=low-high&category={{this.category}}'
             class='dropdown-item'
             type='button'
           >價錢低到高</a>
           <a
-            href='/?order=high-low&category={{this.category}}'
+            href='/admin/products?order=high-low&category={{this.category}}'
             class='dropdown-item'
             type='button'
           >價錢高到低</a>
           <a
-            href='/?order=A-Z&category={{this.category}}'
+            href='/admin/products?order=A-Z&category={{this.category}}'
             class='dropdown-item'
             type='button'
           >A-Z</a>
           <a
-            href='/?order=Z-A&category={{this.category}}'
+            href='/admin/products?order=Z-A&category={{this.category}}'
             class='dropdown-item'
             type='button'
           >Z-A</a>
@@ -138,7 +137,7 @@
   <div class='row '>
     <div class='col-2 list-group'>
       <a class='list-group-item bg-light '>商品分類</a>
-      <a href="/"
+      <a href="/admin/products"
         class='list-group-item list-group-item-action list-group-item-light 
         {{#if category}}
         {{else}}
@@ -147,7 +146,7 @@
         aria-disabled='true'
       >全部</a>
       {{#each categories}}
-      <a href="/?category={{this.url}}"
+      <a href="/admin/products?category={{this.url}}"
         class='list-group-item list-group-item-action list-group-item-light 
         {{#ifCond ../category this.name}}
         active {{../category}}
@@ -158,81 +157,49 @@
     </div>
     <div class='row col-md-10 col-12 mx-auto justify-content-start'>
       {{#each products}}
-      <div class='col-md-4 col-12'>
+      <div class='col-md-4 col-12 mb-3'>
         <div class='text-secondary w-100'>
-          <a href='/products/{{this._id}}' class='card rounded-0 text-decoration-none'>
+          <a href='/admin/products/{{this._id}}/edit' class='card rounded-0 text-decoration-none'>
             <img class='card-img-top' src='{{this.pic}}' alt='{{this.pic}}' style="height: 183px;" />
             <div class='card-body pb-0 text-secondary'>
-              <h5 class='card-title mb-1'>{{this.shortName}}</h5>
-              <span class='badge badge-primary'>Primary</span>
-              <h6 class='card-title mb-'>$ {{this.price}}</h6>
+              <h6 class='card-title mb-2'>{{this.name}}</h6>
+              <div class="d-flex justify-content-between">
+                <h6 class='bg-primary text-white p-1 rounded card-title mb-2'>單價{{this.price}} 元</h5>
+                <h6 class='bg-info text-white p-1 rounded card-title mb-2'>庫存{{this.amount}} </h6>
+              </div>
             </div>
           </a>
-          <div class='w-100 row no-gutters'>
-            {{#if this.isInWishlist}}
-             <form
-              action='/wishlist?_method=PUT'
-              method='POST'
-              class='col-6 p-0'
-            >
-            <input type="text" hidden name='id' value="{{this._id}}">
-              <button
-                class='w-100 h-100 btn btn-info rounded-0'
-              >移除願望清單</button>
-            </form>
-            {{else}}
-            <form
-              action='/wishlist'
-              method='POST'
-              class='col-6 p-0'
-            >
-            <input type="text" hidden name='id' value="{{this._id}}">
-            <input type="text" hidden name='pic' value="{{this.pic}}">
-            <input type="text" hidden name='name' value="{{this.name}}">
-            <input type="text" hidden name="price" value="{{this.price}}">
-              <button
-                class='w-100 h-100 btn btn-warning rounded-0'
-              >加入願望清單</button>
-            </form>
-            {{/if}}
-            <form
-              action='/cart'
-              method='POST'
-              class='col-6 p-0'
-            >
-            <input type="hidden" name="id" value="{{this._id}}">
-            <input type="hidden" name="num" value="1">
-              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
-            </form>
+          <div class='w-100'>
+              <a href='/admin/products/{{this._id}}/edit' class='w-100 btn btn-danger rounded-0'>修改商品</a>
           </div>
         </div>
       </div>
       {{/each}}
       <div class="col-12 row justify-content-center">
     <nav aria-label="Page navigation col-8 ">
-      {{#if keyword}}
+     {{#if keyword}}
       <ul class="pagination mt-4">
 
-        <li class="page-item"><a class="page-link" href="/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="/admin/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
          {{#each pages}}
         <li class="page-item         
         {{#ifCond ../page this}}
         active
-        {{/ifCond}}"><a class="page-link" href="/products/search?keyword={{keyword}}?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
+        {{/ifCond}}"><a class="page-link" href="/admin/products/search?keyword={{keyword}}&category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
         {{/each}}
-        <li class="page-item"><a class="page-link" href="/products/search?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="/admin/products/search?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
       </ul>
       {{else}}
       <ul class="pagination mt-4">
 
-        <li class="page-item"><a class="page-link" href="?category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="/admin/products?category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
          {{#each pages}}
         <li class="page-item         
         {{#ifCond ../page this}}
         active
-        {{/ifCond}}"><a class="page-link" href="/?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
+        {{/ifCond}}"><a class="page-link" href="/admin/products?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
         {{/each}}
-        <li class="page-item"><a class="page-link" href="/?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="/admin/products?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
       </ul>
       {{/if}}
     </nav>

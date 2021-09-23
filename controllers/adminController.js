@@ -1,6 +1,8 @@
 const Order = require('../models/order')
+const Product = require('../models/product')
 const helper = require('../helper/helper')
 let orderLimit = 10
+let pdNumLimit = 12
 module.exports = {
   renderOrders: async (req, res) => {
     let { page } = req.query
@@ -136,6 +138,7 @@ module.exports = {
   searchOrder: async (req, res) => {
     let { keyword } = req.query
     if (!keyword) return res.redirect('/admin/orders')
+    page = +page ? +page : 1
     keyword = keyword.trim()
     const order = await Order.findById(keyword).select('-pdsInfo').lean()
     keyword = encodeURIComponent(keyword)
@@ -145,7 +148,75 @@ module.exports = {
     res.render('./admin/orders', {
       orders: [order],
       keyword,
-      search:true
+      search: true
+    })
+  },
+  renderProducts: async (req, res) => {
+    let { category, order, page } = req.query
+    let pdOption = {}
+    page = +page ? +page : 1
+    if (category) {
+      pdOption = {
+        category
+      }
+    }
+    const [orderOption, orderName_cht] = helper.orderType(order)
+    const { pages, prev, next } = await helper.getPagination(
+      Product,
+      pdOption,
+      pdNumLimit,
+      page
+    )
+    let skipNum = pdNumLimit * (page - 1)
+    let products = await Product.find(pdOption)
+      .skip(skipNum)
+      .limit(pdNumLimit)
+      .sort(orderOption)
+      .lean()
+    res.render('./admin/products', {
+      products,
+      category,
+      orderName_cht,
+      order,
+      pages,
+      prev,
+      page,
+      next
+    })
+  },
+  searchProducts: async (req, res) => {
+    let { category, keyword, order, page } = req.query
+    if (!keyword) return res.redirect('/admin/products')
+    page = +page ? +page : 1
+    keyword = keyword.trim()
+    const pdOption = {
+      name: { $regex: keyword, $options: 'i' },
+      category
+    }
+    const { pages, prev, next } = await helper.getPagination(
+      Product,
+      pdOption,
+      pdNumLimit,
+      page
+    )
+    const [orderOption, orderName_cht] = helper.orderType(order)
+    let skipNum = pdNumLimit * (page - 1)
+    const products = await Product.find(pdOption)
+      .skip(skipNum)
+      .limit(pdNumLimit)
+      .sort(orderOption)
+      .lean()
+    keyword = encodeURIComponent(keyword)
+    res.render('./admin/products', {
+      products,
+      category,
+      orderName_cht,
+      order,
+      pages,
+      prev,
+      page,
+      next,
+      keyword
     })
   }
 }
