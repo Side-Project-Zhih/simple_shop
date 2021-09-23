@@ -5,36 +5,40 @@ const order = new Schema({
   customerId: String,
   pdsInfo: {
     type: Array,
-    required: true
+    required: true,
   },
-  totalPrice:Number,
+  totalPrice: Number,
   customerInfo: {
     type: Object,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    default: 'unfinished'
+    default: 'unfinished',
   },
   payment: {
-    type: String
+    type: String,
   },
   receiverInfo: {
     type: Object,
-    required: true
+    required: true,
   },
   paymentMethod: {
     type: String,
-    default:null
+    default: null,
   },
   createdAt: {
     type: Date,
-    default: new Date()
+    default: new Date(),
   },
   updatedAt: {
     type: Date,
-    default: new Date()
-  }
+    default: new Date(),
+  },
+  isSend: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 module.exports = mongoose.model('Order', order)
