@@ -42,7 +42,19 @@
           selected
           {{/ifCond}}>已付款</option>
         </select>
-      </label> </h3>
+      </label> </h6>
+      <h6><label for="isSent">
+        出貨狀態:  
+        <select name="isSent" id="isSent">
+          {{#if isSent}}
+            <option value="1" selected>已出貨</option>
+            <option value="0">尚未出貨</option>
+          {{else}}
+            <option value="1">已出貨</option>
+            <option value="0" selected>尚未出貨</option>
+          {{/if}}
+        </select>
+      </label> </h6>
     </div>
      <h3 class=''>
       訂單原始 共

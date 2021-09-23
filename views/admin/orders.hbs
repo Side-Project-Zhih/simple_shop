@@ -57,7 +57,17 @@
                 {{/if}}
               </td>
               <td>
-                test{{d}}
+                {{#if this.isSent}}
+                  <form action="/admin/orders/{{this._id}}?_method=PUT" method="POST">
+                    <input type="text" name='isSent' hidden value="0">
+                    <button class="btn btn-primary">是</button>
+                  </form>
+                {{else}}
+                  <form action="/admin/orders/{{this._id}}?_method=PUT" method="POST">
+                    <input type="text" name='isSent' hidden value="1">
+                    <button class="btn btn-danger">否</button>
+                  </form>
+                {{/if}}
               </td>
               <td >
                   <a href="/admin/orders/{{this._id}}"type="submit" class="btn btn-info" >修改</a>

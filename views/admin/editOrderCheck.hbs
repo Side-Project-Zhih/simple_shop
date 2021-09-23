@@ -26,7 +26,15 @@
       <h6>訂單編號: {{id}}</h6>
       <h6>下訂時間:  {{createdAt}}</h6>
       <h5 class="text-danger">
-        訂單狀態: {{status}}  </h6>
+        訂單狀態: {{status}}  </h5>
+       <h5 class="text-danger">
+        出貨狀態: 
+        {{#if isSent}}
+        已出貨
+        {{else}}
+        尚未出貨
+        {{/if}}
+        </h5>
     </div>
     <div class="text-right">
       <h3 class='text-danger'>

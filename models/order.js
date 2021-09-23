@@ -35,7 +35,7 @@ const order = new Schema({
     type: Date,
     default: new Date(),
   },
-  isSend: {
+  isSent: {
     type: Boolean,
     default: false,
   },
