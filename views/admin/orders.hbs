@@ -1,0 +1,87 @@
+<div class="container">
+  <div class='row no-gutters'>
+  <div class='col-12 '>
+      {{>message}}
+     <form action='/admin/orders/search ' class='col-4 p-0'>
+        <div class='input-group'>
+          <input
+            type='text'
+            name='keyword'
+            class='form-control'
+            placeholder='輸入訂單編號'
+            aria-label='Restaurant Name...'
+            value= 
+            {{#if keyword}}
+            {{keyword}}
+            {{else}}
+            ''
+            {{/if}}
+            aria-describedby='search-button'
+          />
+          <div class='input-group-append'>
+            <button class='btn btn-major' type='submit' id='search-button'><i
+                class='fas fa-search'
+              ></i></button>
+          </div>
+        </div>
+      </form>
+    <table class='table border-bottom'>
+          <thead class='thead-dark'>
+            <tr>
+              <th scope='col'>訂單編號</th>
+              <th scope='col'>下訂時間</th>
+              <th scope='col'>總價</th>
+              <th scope='col'>狀態</th>
+              <th scope='col'>付費方式</th>
+              <th scope='col'>出貨</th>
+              <th scope='col'>修改</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          {{#each orders}}
+            <tr>
+              <th scope='row'>
+                {{this._id}}
+               </th>
+              <td>{{this.createdAt}}</td>
+              <td>$ {{this.totalPrice}}</td>
+              <td>
+                {{this.status}}
+              </td>
+              <td>
+                {{#if this.paymentMethod}}
+                {{this.paymentMethod}}
+                {{else}}
+                NONE
+                {{/if}}
+              </td>
+              <td>
+                test{{d}}
+              </td>
+              <td >
+                  <a href="/admin/orders/{{this._id}}"type="submit" class="btn btn-info" >修改</a>
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+    </table>
+    <nav aria-label="Page navigation col-9  ">
+      <ul class="pagination mt-4 d-flex justify-content-center">
+
+        <li class="page-item"><a class="page-link" href="/admin/orders?page={{prev}}">Previous</a></li>
+         {{#each pages}}
+        <li class="page-item         
+        {{#ifCond ../page this}}
+        active
+        {{/ifCond}}"><a class="page-link" href="/admin/orders?page={{this}}">{{this}}</a></li>
+        {{/each}}
+        <li class="page-item"><a class="page-link" href="/admin/orders?page={{next}}">Next</a></li>
+      </ul>
+    </nav>
+      
+
+  </div>
+
+</div>
+   

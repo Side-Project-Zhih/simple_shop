@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const mailer = require('../config/mailer')
 const helper = require('../helper/helper')
-const cardValidator = require('card-validator')
 module.exports = {
   renderLoginPage: (req, res) => {
     res.render('login')
