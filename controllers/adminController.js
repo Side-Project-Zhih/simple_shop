@@ -17,11 +17,10 @@ module.exports = {
       .skip(skipNum)
       .limit(orderLimit)
       .sort({ createdAt: 'desc' })
-      .select(' _id createdAt status paymentMethod totalPrice isSent')
+      .select('_id createdAt status paymentMethod totalPrice isSent')
       .lean()
     orders.forEach((order) => {
       order.createdAt = new Date(order.createdAt).toLocaleString()
-      delete order.pdsInfo
       order.status = helper.orderStatus(order.status)
     })
     res.render('./admin/orders', { orders, pages, prev, page, next })
@@ -53,7 +52,7 @@ module.exports = {
       user: customerInfo,
       createdAt,
       status,
-      isSent,
+      isSent
     })
   },
   checkOrderChange: async (req, res) => {
@@ -64,7 +63,7 @@ module.exports = {
         'pdsInfo _id customerInfo receiverInfo createdAt status totalPrice'
       )
       .lean()
-    let { pdsInfo, totalPrice, customerInfo, createdAt, _id} = order
+    let { pdsInfo, totalPrice, customerInfo, createdAt, _id } = order
     let modify_totalPrice = 0
     pdsInfo.forEach((pd) => {
       let id = pd._id
@@ -83,8 +82,8 @@ module.exports = {
         name: data.name,
         phone: data.phone,
         mailNum: +data.mailNum,
-        address: data.address,
-      },
+        address: data.address
+      }
     }
     modifyOrder = JSON.stringify(modifyOrder)
     res.render('./admin/editOrderCheck', {
@@ -100,18 +99,18 @@ module.exports = {
         name: data.name,
         phone: data.phone,
         mailNum: +data.mailNum,
-        address: data.address,
+        address: data.address
       },
-      modifyOrder,
+      modifyOrder
     })
   },
   putOrder: async (req, res) => {
     const orderId = req.params.id
     let isSent = req.body.isSent
     if (isSent) {
-        isSent = Boolean(+isSent)
-        await Order.findByIdAndUpdate(orderId, {isSent})
-        return res.redirect('back')
+      isSent = Boolean(+isSent)
+      await Order.findByIdAndUpdate(orderId, { isSent })
+      return res.redirect('back')
     }
     let modifyOrder = JSON.parse(req.body.data)
     modifyOrder.pdsInfo.forEach((pd) => {
@@ -134,4 +133,19 @@ module.exports = {
       res.redirect('/admin/orders')
     }
   },
+  searchOrder: async (req, res) => {
+    let { keyword } = req.query
+    if (!keyword) return res.redirect('/admin/orders')
+    keyword = keyword.trim()
+    const order = await Order.findById(keyword).select('-pdsInfo').lean()
+    keyword = encodeURIComponent(keyword)
+    order.createdAt = new Date(order.createdAt).toLocaleString()
+    order.status = helper.orderStatus(order.status)
+    keyword = encodeURIComponent(keyword)
+    res.render('./admin/orders', {
+      orders: [order],
+      keyword,
+      search:true
+    })
+  }
 }

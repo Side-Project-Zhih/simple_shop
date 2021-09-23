@@ -76,6 +76,8 @@
           {{/each}}
           </tbody>
     </table>
+    {{#if search}}
+    {{else}}
     <nav aria-label="Page navigation col-9  ">
       <ul class="pagination mt-4 d-flex justify-content-center">
 
@@ -89,6 +91,7 @@
         <li class="page-item"><a class="page-link" href="/admin/orders?page={{next}}">Next</a></li>
       </ul>
     </nav>
+    {{/if}}
       
 
   </div>
