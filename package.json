@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "seed": "node ./seeds/userSeeder.js && node ./seeds/categorySeed.js && node ./seeds/productSeeder.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

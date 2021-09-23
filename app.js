@@ -31,7 +31,7 @@ app.use(
   session({
     secret: 'test',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 )
 app.use(passport.initialize())
@@ -44,7 +44,7 @@ app.engine(
   exphbs({
     defaultLayout: 'main',
     extname: 'hbs',
-    helpers: require('./helper/helper')
+    helpers: require('./helper/helper'),
   })
 )
 app.set('view engine', 'hbs')
