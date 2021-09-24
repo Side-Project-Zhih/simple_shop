@@ -1,6 +1,7 @@
 const Order = require('../models/order')
 const Product = require('../models/product')
 const helper = require('../helper/helper')
+const fs = require('fs')
 let orderLimit = 10
 let pdNumLimit = 12
 module.exports = {
@@ -42,7 +43,7 @@ module.exports = {
       receiverInfo,
       status,
       totalPrice,
-      isSent
+      isSent,
     } = order
 
     createdAt = new Date(createdAt).toLocaleString()
@@ -54,7 +55,7 @@ module.exports = {
       user: customerInfo,
       createdAt,
       status,
-      isSent
+      isSent,
     })
   },
   checkOrderChange: async (req, res) => {
@@ -84,8 +85,8 @@ module.exports = {
         name: data.name,
         phone: data.phone,
         mailNum: +data.mailNum,
-        address: data.address
-      }
+        address: data.address,
+      },
     }
     modifyOrder = JSON.stringify(modifyOrder)
     res.render('./admin/editOrderCheck', {
@@ -101,9 +102,9 @@ module.exports = {
         name: data.name,
         phone: data.phone,
         mailNum: +data.mailNum,
-        address: data.address
+        address: data.address,
       },
-      modifyOrder
+      modifyOrder,
     })
   },
   putOrder: async (req, res) => {
@@ -148,7 +149,7 @@ module.exports = {
     res.render('./admin/orders', {
       orders: [order],
       keyword,
-      search: true
+      search: true,
     })
   },
   renderProducts: async (req, res) => {
@@ -157,7 +158,7 @@ module.exports = {
     page = +page ? +page : 1
     if (category) {
       pdOption = {
-        category
+        category,
       }
     }
     const [orderOption, orderName_cht] = helper.orderType(order)
@@ -181,7 +182,7 @@ module.exports = {
       pages,
       prev,
       page,
-      next
+      next,
     })
   },
   searchProducts: async (req, res) => {
@@ -191,7 +192,7 @@ module.exports = {
     keyword = keyword.trim()
     const pdOption = {
       name: { $regex: keyword, $options: 'i' },
-      category
+      category,
     }
     const { pages, prev, next } = await helper.getPagination(
       Product,
@@ -216,13 +217,51 @@ module.exports = {
       prev,
       page,
       next,
-      keyword
+      keyword,
     })
   },
-  editProductPage:async (req, res) => {
+  editProductPage: async (req, res) => {
     const pdId = req.params.id
     let product = await Product.findById(pdId).lean()
-
-    res.render('./admin/editProduct', {product})
-  }
+    res.render('./admin/editProduct', { product })
+  },
+  putProduct: async (req, res) => {
+    const pdId = req.params.id
+    const file = req.file
+    let { name, price, amount, description, category } = req.body
+    price = +price
+    amount = +amount
+    if (file) {
+      let data = await fs.promises.readFile(file.path)
+      await fs.promises.writeFile(`./public/pic/upload/${file.originalname}`, data)
+      let pic = `/pic/upload/${file.originalname}`
+      try {
+        await Product.findByIdAndUpdate(pdId, {
+          name,
+          price,
+          amount,
+          description,
+          pic,
+          category
+        })
+        req.flash('successMsg', '商品資訊修改成功')
+      } catch (err) {
+        req.flash('warningMsg', '商品資訊修改失敗')
+      }
+    } else {
+      try {
+        await Product.findByIdAndUpdate(pdId, {
+          name,
+          price,
+          amount,
+          description,
+          category,
+        })
+        req.flash('successMsg', '商品資訊修改成功')
+      } catch (err) {
+        req.flash('warningMsg', '商品資訊修改失敗')
+      }
+    }
+    return res.redirect(`/admin/products/${pdId}`)
+  },
 }

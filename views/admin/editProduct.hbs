@@ -1,89 +1,113 @@
 <h1 class='restaurant-show-title'>My Shop</h1>
 <div class='container'>
-
-    <form class="media row mb-5 border"
-      action='/admin/products/{{product._id}}?_method=PUT'
-      method='POST'
-      {{!-- enctype='multipart/form-data' --}}
-    >
+  {{>message}}
+  <form
+    class='media row mb-5 border'
+    action='/admin/products/{{product._id}}?_method=PUT'
+    method='POST'
+    enctype='multipart/form-data'
+  >
     <img
       src='{{product.pic}}'
       class='col-4 align-self-start border rounded mr-3 m-3'
       alt='...'
     />
-      <div class='row col-8 media-body flex-column'>
-        <div class='form-group row'>
-          <label for='name' class='col-sm-2 col-form-label mt-3'>品名</label>
-          <div class='col-sm-8 mt-3'>
-            <input
-              type='text'
-              class='form-control'
-              id='name'
-              ,
-              name='name'
-              value='{{product.name}}'
-            />
-          </div>
-        </div>
-        <div class='form-group row'>
-          <label for='price' class='col-sm-2 col-form-label'>單價</label>
-          <div class='col-sm-8'>
-            <input
-              type='text'
-              class='form-control'
-              id='price'
-              ,
-              name='price'
-              value='{{product.price}}'
-            />
-          </div>
-        </div>
-        <div class='form-group row'>
-          <label for='amount' class='col-sm-2 col-form-label'>庫存</label>
-          <div class='col-sm-8'>
-            <input
-              type='text'
-              class='form-control'
-              id='amount'
-              ,
-              name='amount'
-              value='{{product.amount}}'
-            />
-          </div>
-        </div>
-        <div class='form-group row'>
-          <label for='pic' class='col-sm-2 col-form-label'>照片上傳</label>
-          <div class='col-sm-4'>
-            <input
-              type='file'
-              class='form-control p-1 mb-3'
-              id='pic'
-              ,
-              name='pic'
-            />
-            <p class='text-danger'>格式: png、jpg</p>
-          </div>
+    <div class='row col-8 media-body flex-column'>
+      <div class='form-group row'>
+        <label for='name' class='col-sm-2 col-form-label mt-3'>品名</label>
+        <div class='col-sm-8 mt-3'>
+          <input
+            type='text'
+            class='form-control'
+            id='name'
+            ,
+            name='name'
+            value='{{product.name}}'
+          />
         </div>
       </div>
-      <div class='col-12 form-group row'>
-        <label for='pic' class='col-sm-2 col-form-label'>商品介紹</label>
-        <div class='col-sm-12'>
-          <textarea
-            name='description'
-            id='editor'
-          >{{product.description}}</textarea>
+      <div class='form-group row'>
+        <label for='price' class='col-sm-2 col-form-label'>單價</label>
+        <div class='col-sm-8'>
+          <input
+            type='text'
+            class='form-control'
+            id='price'
+            ,
+            name='price'
+            value='{{product.price}}'
+          />
         </div>
       </div>
-      <div class='col-12 form-group row justify-content-end'>
-        <button class='col-3 btn btn-secondary m-3'>確定修改</button>
+      <div class='form-group row'>
+        <label for='amount' class='col-sm-2 col-form-label'>庫存</label>
+        <div class='col-sm-8'>
+          <input
+            type='text'
+            class='form-control'
+            id='amount'
+            ,
+            name='amount'
+            value='{{product.amount}}'
+          />
+        </div>
       </div>
-    </form>
+      <div class='form-group row '>
+        <label for='category' class='col-sm-2 col-form-label'>分類</label>
+        <div class="col-sm-8 mb-3">
+          <select class=" form-control" name="category" id="category">
+              {{#each categories}}
+              <option value="{{this.name}}" 
+              {{#ifCond this.name ../product.category}}
+              selected
+              {{/ifCond}}
+              >{{this.name}}</option>
+              {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class='form-group row'>
+        <label for='pic' class='col-sm-2 col-form-label'>照片上傳</label>
+        <div class='col-sm-4'>
+          <input
+            type='file'
+            class='form-control p-1 mb-3'
+            id='pic'
+            ,
+            name='pic'
+          />
+          <p class='text-danger'>格式: png、jpg</p>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 form-group row mt-3'>
+      <h4 class='col-sm-2 mb-3'>商品介紹</h5>
+      <div class='col-sm-12'>
+        <textarea
+          name='description'
+          id='editor'
+        >{{product.description}}</textarea>
+      </div>
+    </div>
+    <div class='col-12 form-group row justify-content-end'>
+      <a href="/admin/products" class="col-3 btn btn-primary m-3">返回</a>
+      <button
+        type='submit'
+        class='col-3 btn btn-secondary m-3'
+      >確定修改</button>
+    </div>
+  </form>
 
 </div>
 <script
   src='https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js'
 ></script>
 <script>
-  ClassicEditor .create( document.querySelector( '#editor' ) ) .catch( error =>
+  ClassicEditor .create( document.querySelector( '#editor' ) ,{
+   toolbar:[
+  'heading','bold', 'italic', 'link', 'uploadImage','undo', 'redo',
+  'numberedList', 'bulletedList'],
+  ckfinder: { uploadUrl:
+  "http://localhost:3000/admin/products/upload" } }) .catch( error =>
   { console.error( error ); } );
 </script>
