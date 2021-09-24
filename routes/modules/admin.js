@@ -16,8 +16,10 @@ router.get('/products/search', adminController.searchProducts)
 router.post('/products/upload',upload.single('upload'), (req, res) => {
   console.log(req.file)
 })
+router.get('/products/create', adminController.renderCreatePage)
 router.get('/products/:id', adminController.editProductPage)
 router.put('/products/:id', upload.single('pic'), adminController.putProduct)
+router.post('/products',upload.single('pic'), adminController.createProduct)
 
 router.get('/categories', adminController.renderCategories)
 router.post('/categories', adminController.createCategory)

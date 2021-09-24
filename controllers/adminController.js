@@ -44,7 +44,7 @@ module.exports = {
       receiverInfo,
       status,
       totalPrice,
-      isSent,
+      isSent
     } = order
 
     createdAt = new Date(createdAt).toLocaleString()
@@ -56,7 +56,7 @@ module.exports = {
       user: customerInfo,
       createdAt,
       status,
-      isSent,
+      isSent
     })
   },
   checkOrderChange: async (req, res) => {
@@ -86,8 +86,8 @@ module.exports = {
         name: data.name,
         phone: data.phone,
         mailNum: +data.mailNum,
-        address: data.address,
-      },
+        address: data.address
+      }
     }
     modifyOrder = JSON.stringify(modifyOrder)
     res.render('./admin/editOrderCheck', {
@@ -103,9 +103,9 @@ module.exports = {
         name: data.name,
         phone: data.phone,
         mailNum: +data.mailNum,
-        address: data.address,
+        address: data.address
       },
-      modifyOrder,
+      modifyOrder
     })
   },
   putOrder: async (req, res) => {
@@ -150,7 +150,7 @@ module.exports = {
     res.render('./admin/orders', {
       orders: [order],
       keyword,
-      search: true,
+      search: true
     })
   },
   renderProducts: async (req, res) => {
@@ -159,7 +159,7 @@ module.exports = {
     page = +page ? +page : 1
     if (category) {
       pdOption = {
-        category,
+        category
       }
     }
     const [orderOption, orderName_cht] = helper.orderType(order)
@@ -183,7 +183,7 @@ module.exports = {
       pages,
       prev,
       page,
-      next,
+      next
     })
   },
   searchProducts: async (req, res) => {
@@ -193,7 +193,7 @@ module.exports = {
     keyword = keyword.trim()
     const pdOption = {
       name: { $regex: keyword, $options: 'i' },
-      category,
+      category
     }
     const { pages, prev, next } = await helper.getPagination(
       Product,
@@ -218,7 +218,7 @@ module.exports = {
       prev,
       page,
       next,
-      keyword,
+      keyword
     })
   },
   editProductPage: async (req, res) => {
@@ -246,7 +246,7 @@ module.exports = {
           amount,
           description,
           pic,
-          category,
+          category
         })
         req.flash('successMsg', '商品資訊修改成功')
       } catch (err) {
@@ -259,7 +259,7 @@ module.exports = {
           price,
           amount,
           description,
-          category,
+          category
         })
         req.flash('successMsg', '商品資訊修改成功')
       } catch (err) {
@@ -267,6 +267,50 @@ module.exports = {
       }
     }
     return res.redirect(`/admin/products/${pdId}`)
+  },
+  renderCreatePage: (req, res) => {
+    res.render('./admin/createProduct.hbs')
+  },
+  createProduct: async (req, res) => {
+    let { name, category, price, description, amount } = req.body
+    if (!name || !category || !price || !description || !amount) {
+      req.flash('warningMsg', '請填寫必填欄位')
+      return res.redirect('back')
+    }
+    let file = req.file
+    let product
+    try {
+      if (file) {
+        let data = await fs.promises.readFile(file.path)
+        let pic = `/pic/upload/${file.originalname}.jpg`
+        await fs.promises.writeFile(
+          `./public/pic/upload/${file.originalname}.jpg`,
+          data
+        )
+        product = await Product.create({
+          name,
+          category,
+          pic,
+          price: +price,
+          description,
+          amount: +amount
+        })
+      } else {
+        product = await Product.create({
+          name,
+          category,
+          price: +price,
+          description,
+          amount: +amount
+        })
+      }
+      req.flash('successMsg', '商品建立成功')
+      return res.redirect(`/admin/products/${product._id}`)
+    } catch (err) {
+      console.error(err)
+      req.flash('warningMsg', '商品建立失敗')
+      return res.redirect('back')
+    }
   },
   renderCategories: async (req, res) => {
     let categoryId = req.query.id
@@ -314,5 +358,5 @@ module.exports = {
       req.flash('warningMsg', '刪除失敗')
     }
     res.redirect('/admin/categories')
-  },
+  }
 }
