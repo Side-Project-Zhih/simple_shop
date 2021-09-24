@@ -2,6 +2,7 @@ const Order = require('../models/order')
 const Product = require('../models/product')
 const Category = require('../models/category')
 const helper = require('../helper/helper')
+const s3 = require('../config/s3')
 const fs = require('fs')
 let orderLimit = 10
 let pdNumLimit = 12
