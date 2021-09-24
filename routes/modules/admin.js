@@ -18,4 +18,12 @@ router.post('/products/upload',upload.single('upload'), (req, res) => {
 })
 router.get('/products/:id', adminController.editProductPage)
 router.put('/products/:id', upload.single('pic'), adminController.putProduct)
+
+router.get('/categories', adminController.renderCategories)
+router.post('/categories', adminController.createCategory)
+router.put('/categories/:id', adminController.putCategory)
+router.delete('/categories/:id', adminController.deleteCategory)
+
+
+
 module.exports = router

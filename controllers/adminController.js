@@ -1,5 +1,6 @@
 const Order = require('../models/order')
 const Product = require('../models/product')
+const Category = require('../models/category')
 const helper = require('../helper/helper')
 const fs = require('fs')
 let orderLimit = 10
@@ -233,7 +234,10 @@ module.exports = {
     amount = +amount
     if (file) {
       let data = await fs.promises.readFile(file.path)
-      await fs.promises.writeFile(`./public/pic/upload/${file.originalname}`, data)
+      await fs.promises.writeFile(
+        `./public/pic/upload/${file.originalname}`,
+        data
+      )
       let pic = `/pic/upload/${file.originalname}`
       try {
         await Product.findByIdAndUpdate(pdId, {
@@ -242,7 +246,7 @@ module.exports = {
           amount,
           description,
           pic,
-          category
+          category,
         })
         req.flash('successMsg', '商品資訊修改成功')
       } catch (err) {
@@ -263,5 +267,52 @@ module.exports = {
       }
     }
     return res.redirect(`/admin/products/${pdId}`)
+  },
+  renderCategories: async (req, res) => {
+    let categoryId = req.query.id
+    let category = await Category.findById(categoryId).lean()
+    res.render('./admin/category', { category })
+  },
+  createCategory: async (req, res) => {
+    const { name } = req.body
+    if (!name) {
+      req.flash('warningMsg', '不能為空白')
+      return res.redirect('back')
+    }
+    try {
+      await Category.create({ name })
+      req.flash('warningMsg', `種類: ${name} 建立成功`)
+    } catch (err) {
+      console.log(err)
+      req.flash('warningMsg', '種類建立失敗')
+    }
+    res.redirect('back')
+  },
+  putCategory: async (req, res) => {
+    const { name } = req.body
+    const categoryId = req.params.id
+    if (!name) {
+      req.flash('warningMsg', '不能為空白')
+      return res.redirect('back')
+    }
+    try {
+      let category = await Category.findById(categoryId)
+      category.name = name
+      await category.save()
+      req.flash('warningMsg', `種類:將 ${category.name} 修改為 ${name}`)
+    } catch (err) {
+      req.flash('warningMsg', '種類建立失敗')
+    }
+    res.redirect('/admin/categories')
+  },
+  deleteCategory: async (req, res) => {
+    const categoryId = req.params.id
+    try {
+      let category = await Category.findByIdAndDelete(categoryId)
+      req.flash('warningMsg', `種類: ${category.name} 刪除成功`)
+    } catch (err) {
+      req.flash('warningMsg', '刪除失敗')
+    }
+    res.redirect('/admin/categories')
   },
 }

@@ -53,7 +53,7 @@ app.use(async (req, res, next) => {
   res.locals.warningMsg = req.flash('warningMsg')
   res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()
-  let categories = await Category.find().select('name -_id')
+  let categories = await Category.find().select('name')
     .lean()
   categories.forEach((item) => {
     item.url = encodeURIComponent(item.name)
