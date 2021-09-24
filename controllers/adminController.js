@@ -312,6 +312,20 @@ module.exports = {
       return res.redirect('back')
     }
   },
+  deleteProduct: async (req, res) => {
+    const pdId = req.params.id
+    try {
+      let product = await Product.findById(pdId)
+      let pic = product.pic
+      await fs.promises.unlink(`./public${pic}`)
+      await product.remove()
+      req.flash('successMsg', `刪除 ${product.name} 成功`)
+    } catch (err) {
+      console.log(err)
+      req.flash('warningMsg', '刪除失敗')
+    }
+    return res.redirect('back')
+  },
   renderCategories: async (req, res) => {
     let categoryId = req.query.id
     let category = await Category.findById(categoryId).lean()

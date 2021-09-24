@@ -169,8 +169,21 @@
               </div>
             </div>
           </a>
-          <div class='w-100'>
-              <a href='/admin/products/{{this._id}}/edit' class='w-100 btn btn-danger rounded-0'>修改商品</a>
+          <div class='w-100 row no-gutters'>
+             <form
+              action='/admin/products/{{this._id}}?_method=DELETE'
+              method='POST'
+              class='col-6 p-0'
+            >
+              <button
+                class='w-100 h-100 btn btn-danger rounded-0'
+              >刪除商品</button>
+            </form>
+            <div
+              class='col-6 p-0'
+            >
+              <a href="/admin/products/{{this._id}}" class='col btn btn-info rounded-0'>修改商品</a>
+            </div>
           </div>
         </div>
       </div>
