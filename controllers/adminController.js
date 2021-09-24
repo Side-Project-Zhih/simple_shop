@@ -218,5 +218,11 @@ module.exports = {
       next,
       keyword
     })
+  },
+  editProductPage:async (req, res) => {
+    const pdId = req.params.id
+    let product = await Product.findById(pdId).lean()
+
+    res.render('./admin/editProduct', {product})
   }
 }
