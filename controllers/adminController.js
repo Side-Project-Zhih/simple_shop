@@ -268,6 +268,34 @@ module.exports = {
     }
     return res.redirect(`/admin/products/${pdId}`)
   },
+  createProduct: async (req, res) => {
+    let { name, category, price, description } = req.body
+    if (!name || !category || !price || !description) {
+      req.flash('warnigMsg', '請填寫必填欄位')
+      return res.redirect('back')
+    }
+    let file = req.file
+    if (file) {
+      let data = await fs.promises.readFile(file.path)
+      let pic = `/pic/upload/${file.originalname}.jpg`
+      await fs.writeFile(`./public/pic/upload/${file.originalname}`, data)
+      await Product.create({
+        name,
+        category,
+        pic,
+        price,
+        desciption,
+      })
+    } else {
+      await Product.create({
+        name,
+        category,
+        price,
+        desciption,
+      })
+    }
+    res.redirect('back')
+  },
   renderCategories: async (req, res) => {
     let categoryId = req.query.id
     let category = await Category.findById(categoryId).lean()
