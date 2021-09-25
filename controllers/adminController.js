@@ -192,8 +192,10 @@ module.exports = {
     page = +page ? +page : 1
     keyword = keyword.trim()
     const pdOption = {
-      name: { $regex: keyword, $options: 'i' },
-      category
+      name: { $regex: keyword, $options: 'i' }
+    }
+    if (category) {
+      pdOption.category = category
     }
     const { pages, prev, next } = await helper.getPagination(
       Product,

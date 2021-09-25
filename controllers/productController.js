@@ -52,7 +52,9 @@ module.exports = {
     page = +page ? +page : 1
     const pdOption = {
       name: { $regex: keyword, $options: 'i' },
-      category,
+    }
+    if(category){
+      pdOption.category = category
     }
     const { pages, prev, next } =await  helper.getPagination(Product,
       pdOption,
