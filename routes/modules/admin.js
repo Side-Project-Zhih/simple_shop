@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
+const fs = require('fs')
 const adminController = require('../../controllers/adminController')
 const { isAdmin, checkLogin } = require('../../middleware/auth')
 // router.use(checkLogin, isAdmin)
@@ -13,20 +14,16 @@ router.put('/orders/:id', adminController.putOrder)
 
 router.get('/products', adminController.renderProducts)
 router.get('/products/search', adminController.searchProducts)
-router.post('/products/upload',upload.single('upload'), (req, res) => {
-  console.log(req.file)
-})
+router.post('/products/upload', upload.single('upload'), adminController.uploadImgFromDescription)
 router.get('/products/create', adminController.renderCreatePage)
 router.get('/products/:id', adminController.editProductPage)
 router.put('/products/:id', upload.single('pic'), adminController.putProduct)
 router.delete('/products/:id', adminController.deleteProduct)
-router.post('/products',upload.single('pic'), adminController.createProduct)
+router.post('/products', upload.single('pic'), adminController.createProduct)
 
 router.get('/categories', adminController.renderCategories)
 router.post('/categories', adminController.createCategory)
 router.put('/categories/:id', adminController.putCategory)
 router.delete('/categories/:id', adminController.deleteCategory)
-
-
 
 module.exports = router

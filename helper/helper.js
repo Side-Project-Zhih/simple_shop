@@ -1,4 +1,5 @@
 const Product = require('../models/product')
+const s3 = require('../config/s3')
 module.exports = {
   orderType: (order) => {
     let orderOption = {}
@@ -81,5 +82,27 @@ module.exports = {
   },
   base64ToString: (string) => {
     return Buffer.from(string, 'base64').toString('ascii')
+  },
+  uploadToS3: (params) => {
+    return new Promise((res, rej) => {
+      s3.upload(params, function (err, data) {
+        if (err) {
+          rej(err)
+        } else {
+          res(data)
+        }
+      })
+    })
+  },
+  removeFromS3: (params) => {
+    return new Promise((res, rej) => {
+      s3.deleteObject(params, function (err, data) {
+        if (err) {
+          rej(err)
+        } else {
+          res(data)
+        }
+      })
+    })
   }
 }

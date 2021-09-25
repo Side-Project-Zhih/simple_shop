@@ -389,5 +389,19 @@ module.exports = {
       req.flash('warningMsg', '刪除失敗')
     }
     res.redirect('/admin/categories')
+  },
+  uploadImgFromDescription: async (req, res) => {
+    let file = req.file
+    let data = await fs.promises.readFile(file.path)
+    const params = {
+      Bucket: 'zhih-bucket/description',
+      Key: file.originalname, // 你希望儲存在 S3 上的檔案名稱
+      Body: data, // 檔案
+      ACL: 'public-read', // 檔案權限
+      ContentType: file.mimetype // 副檔名
+    }
+    let info = await helper.uploadToS3(params)
+    let url = info.Location
+    res.json({ uploaded: true, url })
   }
 }
