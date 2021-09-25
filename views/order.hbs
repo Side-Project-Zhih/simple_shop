@@ -1,128 +1,127 @@
-<h1 class='restaurant-show-title'>訂單</h1>
-<div class='container'>
-  <table class='table border-bottom'>
-    <thead class='thead-dark'>
+<h1 class="restaurant-show-title">
+  訂單
+</h1>
+<div class="container">
+  <table class="table border-bottom">
+    <thead class="thead-dark">
       <tr>
-        <th scope='col'>商品名稱</th>
-        <th scope='col'>單價</th>
-        <th scope='col'>數量</th>
-        <th scope='col'>總額</th>
+        <th scope="col">
+          商品名稱
+        </th>
+        <th scope="col">
+          單價
+        </th>
+        <th scope="col">
+          數量
+        </th>
+        <th scope="col">
+          總額
+        </th>
       </tr>
     </thead>
     <tbody>
-
       {{#each products}}
-        <tr>
-          <th scope='row'>{{this.name}}</th>
-          <td>{{this.price}}</td>
-          <td>{{this.num}}</td>
-          <td>
-            {{this.totalPrice}}
-          </td>
-        </tr>
+      <tr>
+        <th scope="row">
+          {{this.name}}
+        </th>
+        <td>
+          {{this.price}}
+        </td>
+        <td>
+          {{this.num}}
+        </td>
+        <td>
+          {{this.totalPrice}}
+        </td>
+      </tr>
       {{/each}}
     </tbody>
   </table>
-  <div class='d-flex justify-content-between'>
-    <div class=""> 
-      <h6>訂單編號: {{id}}</h3>
-      <h6>下訂時間:  {{createdAt}}</h3>
-      <h6>訂單狀態:  {{status}}</h3>
+  <div class="d-flex justify-content-between">
+    <div class="">
+      <h6>
+        訂單編號: {{id}}
+      </h6>
+      <h6>
+        下訂時間: {{createdAt}}
+      </h6>
+      <h6>
+        訂單狀態: {{status}}
+      </h6>
     </div>
-    <h3 class=''>
+    <h3 class="">
       共
       {{totalPrice}}元
     </h3>
   </div>
 
-
-    <div
-    class='text-right border-top row justify-content-center'
-  >
-      <h3 class="col-12 text-center  mt-5 mb-5">寄件資訊</h3>
-  <div class="col-9">
-      <div class='form-group row'>
-      <label for='staticEmail' class='col-sm-2 col-form-label text-center'>Email</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          disabled
-          class='form-control'
-          id='staticEmail'
-          value='{{email}}'
-        />
+  <div class="text-right border-top row justify-content-center">
+    <h3 class="col-12 text-center  mt-5 mb-5">
+      寄件資訊
+    </h3>
+    <div class="col-9">
+      <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label text-center">
+          Email
+        </label>
+        <div class="col-sm-10">
+          <input type="text" disabled class="form-control" id="staticEmail" value="{{email}}" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputName" class="col-sm-2 col-form-label text-center">
+          姓名
+        </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputName" name="name" disabled value="{{receiverInfo.name}}" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPhone" class="col-sm-2 col-form-label text-center">
+          手機
+        </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputPhone" name="phone" disabled
+            value="{{receiverInfo.phone}}" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputMailNum" class="col-sm-2 col-form-label text-center">
+          郵遞區號
+        </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputMailNum" , name="mailNum" disabled
+            value="{{receiverInfo.mailNum}}" />
+        </div>
+      </div>
+      <div class="form-group row mb-5 text-center">
+        <label for="inputAddress" class="col-sm-2 col-form-label">
+          地址
+        </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputAddress" , name="address" disabled
+            value="{{receiverInfo.address}}" />
+        </div>
       </div>
     </div>
-    <div class='form-group row'>
-      <label for='inputName' class='col-sm-2 col-form-label text-center'>姓名</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputName'
-          name='name'
-          disabled
-          value='{{receiverInfo.name}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row'>
-      <label for='inputPhone' class='col-sm-2 col-form-label text-center'>手機</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputPhone'
-          name='phone'
-          disabled
-          value='{{receiverInfo.phone}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row'>
-      <label for='inputMailNum' class='col-sm-2 col-form-label text-center'>郵遞區號</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputMailNum'
-          ,
-          name='mailNum'
-          disabled
-          value='{{receiverInfo.mailNum}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row mb-5 text-center'>
-      <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputAddress'
-          ,
-          name='address'
-          disabled
-          value='{{receiverInfo.address}}'
-        />
-      </div>
-    </div>
+    {{#ifCond "尚未付款" status}}
+    <form class="col-9 row justify-content-center" name="Spgateway" action="{{tradeInfo.PayGateWay}}" method="POST">
+      <input type="text" hidden name="MerchantID" value="{{tradeInfo.MerchantID}}" />
+      <br />
+      <input type="text" hidden name="TradeInfo" value="{{tradeInfo.TradeInfo}}" />
+      <br />
+      <input type="text" hidden name="TradeSha" value="{{tradeInfo.TradeSha}}" />
+      <br />
+      <input type="text" hidden name="Version" value="{{tradeInfo.Version}}" />
+      <br />
+      <h5 class="text-danger">
+        *付費方式:信用卡一次付清(JCB、MASTERCARD、VISA)、WEBATM(華南銀行)
+      </h5>
+      <button class="col-6 btn btn-info" style="height:50;">
+        立即付款
+      </button>
+    </form>
+    {{/ifCond}}
   </div>
-  {{#ifCond '尚未付款' status}}
-
-  
-  <form class="col-9 row justify-content-center" name='Spgateway'  action='{{tradeInfo.PayGateWay}}' method="POST">
-    <input type="text" hidden name="MerchantID" value="{{tradeInfo.MerchantID}}"><br>
-    <input type="text" hidden name="TradeInfo" value="{{tradeInfo.TradeInfo}}"><br>
-    <input type="text" hidden name="TradeSha" value="{{tradeInfo.TradeSha}}"><br>
-    <input type="text" hidden name="Version" value="{{tradeInfo.Version}}"><br>
-    <h5 class="text-danger">
-      *付費方式:信用卡一次付清(JCB、MASTERCARD、VISA)、WEBATM(華南銀行)
-    </h5>
-    <button class='col-6 btn btn-info ' style="height:50;" >立即付款</button>
-  </form>
-
-  {{/ifCond}}
-  </div>
-
 </div>

@@ -5,248 +5,154 @@
       <h3 class='list-group-item list-group-item-action'>
         個人資料
       </h3>
-      <a
-        href='/users/{{user._id}}'
-        class='list-group-item list-group-item-action list-group-item-light'
-      >基本資料</a>
-      <a
-        href='/users/{{user._id}}?editPwd=true'
-        class='list-group-item list-group-item-action list-group-item-light'
-      >修改密碼</a>
-      <a
-        href='/users/{{user._id}}/orders'
-        class='list-group-item list-group-item-action list-group-item-light'
-      >訂單紀錄</a>
+      <a href='/users/{{user._id}}' class='list-group-item list-group-item-action list-group-item-light'>基本資料</a>
+      <a href='/users/{{user._id}}?editPwd=true'
+        class='list-group-item list-group-item-action list-group-item-light'>修改密碼</a>
+      <a href='/users/{{user._id}}/orders' class='list-group-item list-group-item-action list-group-item-light'>訂單紀錄</a>
     </div>
     {{#if isProfile}}
-      <div class='col-9'>
-        {{>message}}
-        {{#if user.isValid}}
-        {{else}}
-        <form class="d-flex justify-content-between border p-2" method="POST" action="/users/{{user._id}}/validation">
-          <h3>帳戶尚未驗證，請按下按鈕接收驗證信</h3>
-          <button class="btn btn-danger">發送驗證信</button>
-        </form>
-        {{/if}}
-        <form action="/users/{{user._id}}?_method=PUT" method="POST">
-          <div class='form-group row'>
-            <label
-              for='staticEmail'
-              class='col-sm-2 col-form-label'
-            >Email</label>
-            <div class='col-sm-10'>
-              <input
-                type='text'
-                readonly
-                class='form-control-plaintext'
-                id='staticEmail'
-                value='{{user.email}}'
-              />
-            </div>
+    <div class='col-9'>
+      {{>message}}
+      {{#if user.isValid}}
+      {{else}}
+      <form class="d-flex justify-content-between border p-2" method="POST" action="/users/{{user._id}}/validation">
+        <h3>帳戶尚未驗證，請按下按鈕接收驗證信</h3>
+        <button class="btn btn-danger">發送驗證信</button>
+      </form>
+      {{/if}}
+      <form action="/users/{{user._id}}?_method=PUT" method="POST">
+        <div class='form-group row'>
+          <label for='staticEmail' class='col-sm-2 col-form-label'>Email</label>
+          <div class='col-sm-10'>
+            <input type='text' readonly class='form-control-plaintext' id='staticEmail' value='{{user.email}}' />
           </div>
-          <div class='form-group row'>
-            <label for='inputName' class='col-sm-2 col-form-label'>姓名</label>
-            <div class='col-sm-10'>
-              <input
-                type='text'
-                class='form-control'
-                id='inputName'
-                name="name"
-                value='{{user.name}}'
-              />
-            </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputName' class='col-sm-2 col-form-label'>姓名</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputName' name="name" value='{{user.name}}' />
           </div>
-          <div class='form-group row'>
-            <label for='inputPhone' class='col-sm-2 col-form-label'>手機</label>
-            <div class='col-sm-10'>
-              <input
-                type='text'
-                class='form-control'
-                id='inputPhone'
-                name="phone"
-                value='{{user.phone}}'
-              />
-            </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputPhone' class='col-sm-2 col-form-label'>手機</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputPhone' name="phone" value='{{user.phone}}' />
           </div>
-          <div class='form-group row'>
-            <label
-              for='inputMailNum'
-              class='col-sm-2 col-form-label'
-            >郵遞區號</label>
-            <div class='col-sm-10'>
-              <input
-                type='text'
-                class='form-control'
-                id='inputMailNum',
-                name="mailNum"
-                value='{{user.mailNum}}'
-              />
-            </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputMailNum' class='col-sm-2 col-form-label'>郵遞區號</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputMailNum' , name="mailNum" value='{{user.mailNum}}' />
           </div>
-          <div class='form-group row mb-5'>
-            <label
-              for='inputAddress'
-              class='col-sm-2 col-form-label'
-            >地址</label>
-            <div class='col-sm-10'>
-              <input
-                type='text'
-                class='form-control'
-                id='inputAddress',
-                name="address"
-                value='{{user.address}}'
-              />
-            </div>
+        </div>
+        <div class='form-group row mb-5'>
+          <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputAddress' , name="address" value='{{user.address}}' />
           </div>
-          <div class='row d-flex justify-content-end mr-1'>
-            <button type="submit" class='col-3 btn btn-secondary'>儲存</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class='row d-flex justify-content-end mr-1'>
+          <button type="submit" class='col-3 btn btn-secondary'>儲存</button>
+        </div>
+      </form>
+    </div>
     {{/if}}
     {{#if isEditPwd}}
-      <div class='col-9 mt-5'>
-        {{>message}}
-        <form action="/users/{{user._id}}?_method=PUT" method="POST">
-          <div class='form-group row'>
-            <label
-              for='oldPassword'
-              class='col-sm-2 col-form-label'
-            >舊密碼</label>
-            <div class='col-sm-10'>
-              <input
-                type='password'
-                class='form-control'
-                id='oldPassword'
-                {{#if user.isGoogle }}
-                readonly
-                {{/if}}
-                {{#if user.isFb }}
-                readonly
-                {{/if}}
-                name='password'
-                placeholder='請輸入舊密碼'
-              />
-            </div>
+    <div class='col-9 mt-5'>
+      {{>message}}
+      <form action="/users/{{user._id}}?_method=PUT" method="POST">
+        <div class='form-group row'>
+          <label for='oldPassword' class='col-sm-2 col-form-label'>舊密碼</label>
+          <div class='col-sm-10'>
+            <input type='password' class='form-control' id='oldPassword' {{#if user.isGoogle }} readonly {{/if}} {{#if
+              user.isFb }} readonly {{/if}} name='password' placeholder='請輸入舊密碼' />
           </div>
-          <div class='form-group row'>
-            <label
-              for='newPassword'
-              class='col-sm-2 col-form-label'
-            >新密碼</label>
-            <div class='col-sm-10'>
-              <input
-                type='password'
-                name='newPassword'
-                {{#if user.isGoogle }}
-                readonly
-                {{/if}}
-                {{#if user.isFb }}
-                readonly
-                {{/if}}
-                class='form-control'
-                id='newPassword'
-                placeholder='請輸入新密碼'
-              />
-            </div>
+        </div>
+        <div class='form-group row'>
+          <label for='newPassword' class='col-sm-2 col-form-label'>新密碼</label>
+          <div class='col-sm-10'>
+            <input type='password' name='newPassword' {{#if user.isGoogle }} readonly {{/if}} {{#if user.isFb }}
+              readonly {{/if}} class='form-control' id='newPassword' placeholder='請輸入新密碼' />
           </div>
-          <div class='form-group row'>
-            <label
-              for='checkPassword'
-              class='col-sm-2 col-form-label'
-            >確認密碼</label>
-            <div class='col-sm-10'>
-              <input
-                type='password'
-                class='form-control'
-                {{#if user.isGoogle }}
-                readonly
-                {{/if}}
-                {{#if user.isFb }}
-                readonly
-                {{/if}}
-                id='checkPassword'
-                name='checkPassword'
-                placeholder='請輸入確認密碼'
-              />
-            </div>
+        </div>
+        <div class='form-group row'>
+          <label for='checkPassword' class='col-sm-2 col-form-label'>確認密碼</label>
+          <div class='col-sm-10'>
+            <input type='password' class='form-control' {{#if user.isGoogle }} readonly {{/if}} {{#if user.isFb }}
+              readonly {{/if}} id='checkPassword' name='checkPassword' placeholder='請輸入確認密碼' />
           </div>
+        </div>
 
-          <div class='row d-flex justify-content-end mr-1'>
-            <button type="submit" class='col-3 btn btn-secondary'>確認修改</button>
-          </div>
-        </form>
-      </div>
+        <div class='row d-flex justify-content-end mr-1'>
+          <button type="submit" class='col-3 btn btn-secondary'>確認修改</button>
+        </div>
+      </form>
+    </div>
     {{/if}}
     {{#if orders}}
-      <div class='col-9 '>
-        <table class='table border-bottom'>
-          <thead class='thead-dark'>
-            <tr>
-              <th scope='col'>訂單編號</th>
-              <th scope='col'>下訂時間</th>
-              <th scope='col'>總價</th>
-              <th scope='col'>狀態</th>
-              <th scope='col'>付費方式</th>
-              <th scope='col'>#</th>
-            </tr>
-          </thead>
-          <tbody>
+    <div class='col-9 '>
+      <table class='table border-bottom'>
+        <thead class='thead-dark'>
+          <tr>
+            <th scope='col'>訂單編號</th>
+            <th scope='col'>下訂時間</th>
+            <th scope='col'>總價</th>
+            <th scope='col'>狀態</th>
+            <th scope='col'>付費方式</th>
+            <th scope='col'>#</th>
+          </tr>
+        </thead>
+        <tbody>
 
           {{#each orders}}
-            <tr>
-              <th scope='row'>
-                <a href="/orders/{{this._id}}">{{this._id}}</a>
-               </th>
-              <td>{{this.createdAt}}</td>
-              <td>$ {{this.totalPrice}}</td>
-              <td>
-                {{this.status}}
-              </td>
-              <td>
-                {{#if this.paymentMethod}}
-                {{this.paymentMethod}}
-                {{else}}
-                NONE
-                {{/if}}
-              </td>
-              <td class="d-flex">
-                {{#ifCond this.status '訂單已付款'}}
-                #
-                  {{else}}
-                <form action="/orders/{{this._id}}?_method=DELETE" method="POST">
-                  <button type="submit" class="btn btn-danger" 
-                  {{#ifCond this.status '訂單已取消'}}
-                  disabled
+          <tr>
+            <th scope='row'>
+              <a href="/orders/{{this._id}}">{{this._id}}</a>
+            </th>
+            <td>{{this.createdAt}}</td>
+            <td>$ {{this.totalPrice}}</td>
+            <td>
+              {{this.status}}
+            </td>
+            <td>
+              {{#if this.paymentMethod}}
+              {{this.paymentMethod}}
+              {{else}}
+              NONE
+              {{/if}}
+            </td>
+            <td class="d-flex">
+              {{#ifCond this.status '訂單已付款'}}
+              #
+              {{else}}
+              <form action="/orders/{{this._id}}?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger" {{#ifCond this.status '訂單已取消' }} disabled
                   {{/ifCond}}>取消</button>
-                </form>
-                <form action="/orders/{{this._id}}">
-                  <button type="submit" class="btn btn-info" 
-                  {{#ifCond this.status '尚未付款'}}
-                  {{else}}
-                  disabled
+              </form>
+              <form action="/orders/{{this._id}}">
+                <button type="submit" class="btn btn-info" {{#ifCond this.status '尚未付款' }} {{else}} disabled
                   {{/ifCond}}>付款</button>
-                </form>
-                {{/ifCond}}
-              </td>
-            </tr>
+              </form>
+              {{/ifCond}}
+            </td>
+          </tr>
           {{/each}}
-          </tbody>
-        </table>
+        </tbody>
+      </table>
       <nav aria-label="Page navigation col-9  ">
-      <ul class="pagination mt-4 d-flex justify-content-center">
+        <ul class="pagination mt-4 d-flex justify-content-center">
 
-        <li class="page-item"><a class="page-link" href="/users/{{user._id}}/orders?page={{prev}}">Previous</a></li>
-         {{#each pages}}
-        <li class="page-item         
+          <li class="page-item"><a class="page-link" href="/users/{{user._id}}/orders?page={{prev}}">Previous</a></li>
+          {{#each pages}}
+          <li class="page-item         
         {{#ifCond ../page this}}
         active
         {{/ifCond}}"><a class="page-link" href="/users/{{../user._id}}/orders?page={{this}}">{{this}}</a></li>
-        {{/each}}
-        <li class="page-item"><a class="page-link" href="/users/{{user._id}}/orders?page={{next}}">Next</a></li>
-      </ul>
-    </nav>
-      </div>
+          {{/each}}
+          <li class="page-item"><a class="page-link" href="/users/{{user._id}}/orders?page={{next}}">Next</a></li>
+        </ul>
+      </nav>
+    </div>
     {{/if}}
   </div>
 </div>

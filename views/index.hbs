@@ -3,133 +3,68 @@
 <div class='container'>
   <div class='row no-gutters'>
 
-  <div class="col-12 row justify-content-between ">
-    {{>message}}
-  </div>
-
+    <div class="col-12 row justify-content-between ">
+      {{>message}}
     </div>
-    <div class='col-12 row justify-content-between'>
-      <form action='/products/search? ' class='col-4 p-0'>
-        <div class='input-group'>
-          <input
-            type='text'
-            name='keyword'
-            class='form-control'
-            placeholder='輸入商品名稱'
-            aria-label='Restaurant Name...'
-            value= 
-            {{#if keyword}}
-            {{keyword}}
-            {{else}}
-            ''
-            {{/if}}
-            aria-describedby='search-button'
-          />
-          {{#if category}}
-          <input type="text" hidden name="category" value="{{category}}">
-          {{/if}}
-          {{#if order}}
-          <input type="text" hidden name="order" value="{{order}}">
-          {{/if}}
+  </div>
+  <div class='col-12 row justify-content-between'>
+    <form action='/products/search? ' class='col-4 p-0'>
+      <div class='input-group'>
+        <input type='text' name='keyword' class='form-control' placeholder='輸入商品名稱' aria-label='Restaurant Name...'
+          value={{#if keyword}} {{keyword}} {{else}} '' {{/if}} aria-describedby='search-button' />
+        {{#if category}}
+        <input type="text" hidden name="category" value="{{category}}">
+        {{/if}}
+        {{#if order}}
+        <input type="text" hidden name="order" value="{{order}}">
+        {{/if}}
 
-          <div class='input-group-append'>
-            <button class='btn btn-major' type='submit' id='search-button'><i
-                class='fas fa-search'
-              ></i></button>
-          </div>
+        <div class='input-group-append'>
+          <button class='btn btn-major' type='submit' id='search-button'><i class='fas fa-search'></i></button>
         </div>
-      </form>
-      <div class='col-4 dropdown d-flex justify-content-end p-0'>
-        <button
-          class='btn btn-danger dropdown-toggle'
-          type='button'
-          id='dropdownMenu2'
-          data-toggle='dropdown'
-          aria-haspopup='true'
-          aria-expanded='false'
-        >
-        {{#if orderName_cht}}
-          {{orderName_cht}}
-        {{else}}
-          商品排序
-        {{/if}}
-        </button>
-        {{#if keyword}}
-          {{#if category}}
-            <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-              <a
-                href='/products/search?order=low-high&keyword={{keyword}}&category={{category}}'
-                class='dropdown-item'
-                type='button'
-              >價錢低到高</a>
-              <a
-                href='/products/search?order=high-low&keyword={{keyword}}&category={{category}}'
-                class='dropdown-item'
-                type='button'
-              >價錢高到低</a>
-              <a
-                href='/products/search?order=early-late&keyword={{keyword}}&category={{category}}'
-                class='dropdown-item'
-                type='button'
-              >上架時間早到晚</a>
-              <a
-                href='/products/search?order=late-early&keyword={{keyword}}&category={{category}}'
-                class='dropdown-item'
-                type='button'
-              >上架時間晚到早</a>
-            </div>
-          {{else}}
-              <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-                <a
-                  href='/products/search?order=low-high&keyword={{keyword}}'
-                  class='dropdown-item'
-                  type='button'
-                >價錢低到高</a>
-                <a
-                  href='/products/search?order=high-low&keyword={{keyword}}'
-                  class='dropdown-item'
-                  type='button'
-                >價錢高到低</a>
-                <a
-                  href='/products/search?order=early-late&keyword={{keyword}}'
-                  class='dropdown-item'
-                  type='button'
-                >上架時間早到晚</a>
-                <a
-                  href='/products/search?order=late-early&keyword={{keyword}}'
-                  class='dropdown-item'
-                  type='button'
-                >上架時間晚到早</a>
-              </div>
-          {{/if}}
-        {{else}}
-          <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-          <a
-            href='/?order=low-high&category={{this.category}}'
-            class='dropdown-item'
-            type='button'
-          >價錢低到高</a>
-          <a
-            href='/?order=high-low&category={{this.category}}'
-            class='dropdown-item'
-            type='button'
-          >價錢高到低</a>
-          <a
-            href='/?order=early-late&category={{this.category}}'
-            class='dropdown-item'
-            type='button'
-          >上架時間早到晚</a>
-          <a
-            href='/?order=late-early&category={{this.category}}'
-            class='dropdown-item'
-            type='button'
-          >上架時間晚到早</a>
-        </div>
-        {{/if}}
       </div>
+    </form>
+    <div class='col-4 dropdown d-flex justify-content-end p-0'>
+      <button class='btn btn-danger dropdown-toggle' type='button' id='dropdownMenu2' data-toggle='dropdown'
+        aria-haspopup='true' aria-expanded='false'>
+        {{#if orderName_cht}}
+        {{orderName_cht}}
+        {{else}}
+        商品排序
+        {{/if}}
+      </button>
+      {{#if keyword}}
+      {{#if category}}
+      <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+        <a href='/products/search?order=low-high&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+          type='button'>價錢低到高</a>
+        <a href='/products/search?order=high-low&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+          type='button'>價錢高到低</a>
+        <a href='/products/search?order=early-late&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+          type='button'>上架時間早到晚</a>
+        <a href='/products/search?order=late-early&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+          type='button'>上架時間晚到早</a>
+      </div>
+      {{else}}
+      <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+        <a href='/products/search?order=low-high&keyword={{keyword}}' class='dropdown-item' type='button'>價錢低到高</a>
+        <a href='/products/search?order=high-low&keyword={{keyword}}' class='dropdown-item' type='button'>價錢高到低</a>
+        <a href='/products/search?order=early-late&keyword={{keyword}}' class='dropdown-item' type='button'>上架時間早到晚</a>
+        <a href='/products/search?order=late-early&keyword={{keyword}}' class='dropdown-item' type='button'>上架時間晚到早</a>
+      </div>
+      {{/if}}
+      {{else}}
+      <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+        <a href='/?order=low-high&category={{this.category}}' class='dropdown-item' type='button'>價錢低到高</a>
+        <a href='/?order=high-low&category={{this.category}}' class='dropdown-item' type='button'>價錢高到低</a>
+        <a href='/?order=early-late&category={{this.category}}' class='dropdown-item' type='button'>上架時間早到晚</a>
+        <a href='/?order=late-early&category={{this.category}}' class='dropdown-item' type='button'>上架時間晚到早</a>
+      </div>
+      {{/if}}
     </div>
-
   </div>
+
+</div>
 
 </div>
 
@@ -138,22 +73,17 @@
   <div class='row '>
     <div class='col-2 list-group'>
       <a class='list-group-item bg-light '>商品分類</a>
-      <a href="/"
-        class='list-group-item list-group-item-action list-group-item-light 
+      <a href="/" class='list-group-item list-group-item-action list-group-item-light 
         {{#if category}}
         {{else}}
         active
-        {{/if}}'
-        aria-disabled='true'
-      >全部</a>
+        {{/if}}' aria-disabled='true'>全部</a>
       {{#each categories}}
-      <a href="/?category={{this.url}}"
-        class='list-group-item list-group-item-action list-group-item-light 
+      <a href="/?category={{this.url}}" class='list-group-item list-group-item-action list-group-item-light 
         {{#ifCond ../category this.name}}
         active {{../category}}
         {{/ifCond}}
-        '
-      >{{this.name}}</a>
+        '>{{this.name}}</a>
       {{/each}}
     </div>
     <div class='row col-md-10 col-12 mx-auto justify-content-start'>
@@ -170,38 +100,22 @@
           </a>
           <div class='w-100 row no-gutters'>
             {{#if this.isInWishlist}}
-             <form
-              action='/wishlist?_method=PUT'
-              method='POST'
-              class='col-6 p-0'
-            >
-            <input type="text" hidden name='id' value="{{this._id}}">
-              <button
-                class='w-100 h-100 btn btn-info rounded-0'
-              >移除願望清單</button>
+            <form action='/wishlist?_method=PUT' method='POST' class='col-6 p-0'>
+              <input type="text" hidden name='id' value="{{this._id}}">
+              <button class='w-100 h-100 btn btn-info rounded-0'>移除願望清單</button>
             </form>
             {{else}}
-            <form
-              action='/wishlist'
-              method='POST'
-              class='col-6 p-0'
-            >
-            <input type="text" hidden name='id' value="{{this._id}}">
-            <input type="text" hidden name='pic' value="{{this.pic}}">
-            <input type="text" hidden name='name' value="{{this.name}}">
-            <input type="text" hidden name="price" value="{{this.price}}">
-              <button
-                class='w-100 h-100 btn btn-warning rounded-0'
-              >加入願望清單</button>
+            <form action='/wishlist' method='POST' class='col-6 p-0'>
+              <input type="text" hidden name='id' value="{{this._id}}">
+              <input type="text" hidden name='pic' value="{{this.pic}}">
+              <input type="text" hidden name='name' value="{{this.name}}">
+              <input type="text" hidden name="price" value="{{this.price}}">
+              <button class='w-100 h-100 btn btn-warning rounded-0'>加入願望清單</button>
             </form>
             {{/if}}
-            <form
-              action='/cart'
-              method='POST'
-              class='col-6 p-0'
-            >
-            <input type="hidden" name="id" value="{{this._id}}">
-            <input type="hidden" name="num" value="1">
+            <form action='/cart' method='POST' class='col-6 p-0'>
+              <input type="hidden" name="id" value="{{this._id}}">
+              <input type="hidden" name="num" value="1">
               <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
             </form>
           </div>
@@ -209,33 +123,41 @@
       </div>
       {{/each}}
       <div class="col-12 row justify-content-center">
-    <nav aria-label="Page navigation col-8 ">
-      {{#if keyword}}
-      <ul class="pagination mt-4">
+        <nav aria-label="Page navigation col-8 ">
+          {{#if keyword}}
+          <ul class="pagination mt-4">
 
-        <li class="page-item"><a class="page-link" href="/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
-         {{#each pages}}
-        <li class="page-item         
+            <li class="page-item"><a class="page-link"
+                href="/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{prev}}">Previous</a>
+            </li>
+            {{#each pages}}
+            <li class="page-item         
         {{#ifCond ../page this}}
         active
-        {{/ifCond}}"><a class="page-link" href="/products/search?keyword={{keyword}}?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
-        {{/each}}
-        <li class="page-item"><a class="page-link" href="/products/search?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
-      </ul>
-      {{else}}
-      <ul class="pagination mt-4">
+        {{/ifCond}}"><a class="page-link"
+                href="/products/search?keyword={{keyword}}?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a>
+            </li>
+            {{/each}}
+            <li class="page-item"><a class="page-link"
+                href="/products/search?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
+          </ul>
+          {{else}}
+          <ul class="pagination mt-4">
 
-        <li class="page-item"><a class="page-link" href="?category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
-         {{#each pages}}
-        <li class="page-item         
+            <li class="page-item"><a class="page-link"
+                href="?category={{category}}&order={{order}}&page={{prev}}">Previous</a></li>
+            {{#each pages}}
+            <li class="page-item         
         {{#ifCond ../page this}}
         active
-        {{/ifCond}}"><a class="page-link" href="/?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
-        {{/each}}
-        <li class="page-item"><a class="page-link" href="/?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
-      </ul>
-      {{/if}}
-    </nav>
+        {{/ifCond}}"><a class="page-link"
+                href="/?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a></li>
+            {{/each}}
+            <li class="page-item"><a class="page-link"
+                href="/?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
+          </ul>
+          {{/if}}
+        </nav>
 
       </div>
     </div>

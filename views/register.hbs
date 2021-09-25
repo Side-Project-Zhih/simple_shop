@@ -1,69 +1,51 @@
-<h1 class='restaurant-show-title'>My Shop</h1>
-<div class='container'>
-  <div class='row justify-content-center'>
-    <form
-      class='form-signin col-6 '
-      action='/users/register'
-      method='POST'
-      style='width: 100%;'
-    >
-      <div class='text-center mb-4'>
-        <h1 class='h3 mb-3 font-weight-normal'>會員註冊</h1>
+<h1 class="restaurant-show-title">
+  My Shop
+</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <form class="form-signin col-6" action="/users/register" method="POST" style="width: 100%;">
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">
+          會員註冊
+        </h1>
       </div>
       {{>message}}
-      <div class='form-label-group'>
-        <label for='inputName'>姓名</label>
-        <input
-          type='text'
-          name='name'
-          class='form-control'
-          placeholder='Name'
-          required
-          autofocus
-        />
+      <div class="form-label-group">
+        <label for="inputName">
+          姓名
+        </label>
+        <input type="text" name="name" class="form-control" placeholder="Name" required autofocus />
       </div>
-      <div class='form-label-group'>
-        <label for='inputEmail'>Email</label>
-        <input
-          type='text'
-          name='email'
-          class='form-control'
-          placeholder='Email'
-          required
-          autofocus
-        />
+      <div class="form-label-group">
+        <label for="inputEmail">
+          Email
+        </label>
+        <input type="text" name="email" class="form-control" placeholder="Email" required autofocus />
       </div>
-      <div class='form-label-group'>
-        <label for='inputPassword'>密碼</label>
-        <input
-          type='password'
-          name='password'
-          class='form-control'
-          placeholder='密碼'
-          required
-        />
+      <div class="form-label-group">
+        <label for="inputPassword">
+          密碼
+        </label>
+        <input type="password" name="password" class="form-control" placeholder="密碼" required />
       </div>
-      <div class='form-label-group'>
-        <label for='inputPasswordCheck'>確認密碼</label>
-        <input
-          type='password'
-          name='passwordCheck'
-          class='form-control'
-          placeholder='確認密碼'
-          required
-        />
+      <div class="form-label-group">
+        <label for="inputPasswordCheck">
+          確認密碼
+        </label>
+        <input type="password" name="passwordCheck" class="form-control" placeholder="確認密碼" required />
       </div>
       <br />
-      <button
-        class='btn btn-lg btn-primary btn-block'
-        type='submit'
-      >送出</button>
-      <div class='text-center mb-4'>
-        <p><a href='/login'>登入</a></p>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">
+        送出
+      </button>
+      <div class="text-center mb-4">
+        <p>
+          <a href="/login">
+            登入
+          </a>
+        </p>
       </div>
       {{! <p class="mt-5 mb-3 text-muted text-center">© 2017-2018</p> }}
     </form>
-
   </div>
-
 </div>

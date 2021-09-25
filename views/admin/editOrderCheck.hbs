@@ -2,196 +2,128 @@
 <div class='container'>
   <form action="/admin/orders/{{id}}?_method=PUT" method="POST">
 
-  <table class='table border-bottom'>
-    <thead class='thead-dark'>
-      <tr>
-        <th scope='col'>商品名稱</th>
-        <th scope='col'>單價</th>
-        <th scope='col'>數量</th>
-      </tr>
-    </thead>
-    <tbody id="products">
-    
-      {{#each products}}
+    <table class='table border-bottom'>
+      <thead class='thead-dark'>
+        <tr>
+          <th scope='col'>商品名稱</th>
+          <th scope='col'>單價</th>
+          <th scope='col'>數量</th>
+        </tr>
+      </thead>
+      <tbody id="products">
+
+        {{#each products}}
         <tr>
           <th scope='row'>{{this.name}}</th>
           <td><input class="w-25 text-danger" disabled type="text" value="{{this.modify_price}}">/ {{this.price}} 元</td>
-          <td><input class="w-25 text-danger" disabled  type="text" value="{{this.modify_num}}">/ {{this.num}}</td>
+          <td><input class="w-25 text-danger" disabled type="text" value="{{this.modify_num}}">/ {{this.num}}</td>
         </tr>
-      {{/each}}
-    </tbody>
-  </table>
-  <div class='d-flex justify-content-between'>
-    <div > 
-      <h6>訂單編號: {{id}}</h6>
-      <h6>下訂時間:  {{createdAt}}</h6>
-      <h5 class="text-danger">
-        訂單狀態: {{status}}  </h5>
-       <h5 class="text-danger">
-        出貨狀態: 
-        {{#if isSent}}
-        已出貨
-        {{else}}
-        尚未出貨
-        {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+    <div class='d-flex justify-content-between'>
+      <div>
+        <h6>訂單編號: {{id}}</h6>
+        <h6>下訂時間: {{createdAt}}</h6>
+        <h5 class="text-danger">
+          訂單狀態: {{status}} </h5>
+        <h5 class="text-danger">
+          出貨狀態:
+          {{#if isSent}}
+          已出貨
+          {{else}}
+          尚未出貨
+          {{/if}}
         </h5>
-    </div>
-    <div class="text-right">
-      <h3 class='text-danger'>
-      修改後總 共
-      {{modify_totalPrice}}元
-    </h3>
-     <h4 class=''>
-      原始總金額 共
-      {{totalPrice}}元
-    </h3>
-    </div>
-  </div>
-  <div
-    class='text-right border-top row justify-content-center'
-  >
-    <div class="col">
-    <h3 class="col-12 text-center  mt-5 mb-5">客戶資訊</h3>
-      <div class='form-group row'>
-      <label for='staticEmail' class='col-sm-2 col-form-label text-center'>Email</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          disabled
-          class='form-control'
-          id='staticEmail'
-          value='{{user.email}}'
-        />
+      </div>
+      <div class="text-right">
+        <h3 class='text-danger'>
+          修改後總 共
+          {{modify_totalPrice}}元
+        </h3>
+        <h4 class=''>
+          原始總金額 共
+          {{totalPrice}}元
+          </h3>
       </div>
     </div>
-    <div class='form-group row'>
-      <label for='inputName' class='col-sm-2 col-form-label text-center'>姓名</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputName'
-          name='name'
-          disabled
-          value='{{receiverInfo.name}}'
-        />
+    <div class='text-right border-top row justify-content-center'>
+      <div class="col">
+        <h3 class="col-12 text-center  mt-5 mb-5">客戶資訊</h3>
+        <div class='form-group row'>
+          <label for='staticEmail' class='col-sm-2 col-form-label text-center'>Email</label>
+          <div class='col-sm-10'>
+            <input type='text' disabled class='form-control' id='staticEmail' value='{{user.email}}' />
+          </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputName' class='col-sm-2 col-form-label text-center'>姓名</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputName' name='name' disabled value='{{receiverInfo.name}}' />
+          </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputPhone' class='col-sm-2 col-form-label text-center'>手機</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputPhone' name='phone' disabled
+              value='{{receiverInfo.phone}}' />
+          </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputMailNum' class='col-sm-2 col-form-label text-center'>郵遞區號</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputMailNum' , name='mailNum' disabled
+              value='{{receiverInfo.mailNum}}' />
+          </div>
+        </div>
+        <div class='form-group row mb-5 text-center'>
+          <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputAddress' , name='address' disabled
+              value='{{receiverInfo.address}}' />
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <h3 class="col-12 text-center  mt-5 mb-5">寄件資訊</h3>
+        <div class='form-group row'>
+          <label for='staticEmail' class='col-sm-2 col-form-label text-center'>Email</label>
+          <div class='col-sm-10'>
+            <input type='text' disabled class='form-control' id='staticEmail' value='{{user.email}}' />
+          </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputName' class='col-sm-2 col-form-label text-center'>姓名</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputName' name='name' disabled value='{{receiverInfo.name}}' />
+          </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputPhone' class='col-sm-2 col-form-label text-center'>手機</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputPhone' name='phone' disabled
+              value='{{receiverInfo.phone}}' />
+          </div>
+        </div>
+        <div class='form-group row'>
+          <label for='inputMailNum' class='col-sm-2 col-form-label text-center'>郵遞區號</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputMailNum' , name='mailNum' disabled
+              value='{{receiverInfo.mailNum}}' />
+          </div>
+        </div>
+        <div class='form-group row mb-5 text-center'>
+          <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
+          <div class='col-sm-10'>
+            <input type='text' class='form-control' id='inputAddress' , name='address' disabled
+              value='{{receiverInfo.address}}' />
+          </div>
+        </div>
       </div>
     </div>
-    <div class='form-group row'>
-      <label for='inputPhone' class='col-sm-2 col-form-label text-center'>手機</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputPhone'
-          name='phone'
-          disabled
-          value='{{receiverInfo.phone}}'
-        />
-      </div>
+    <input type="text" hidden name="data" value="{{modifyOrder}}">
+    <div class="d-flex justify-content-center">
+      <button class="w-25 btn btn-secondary">確定修改</button>
     </div>
-    <div class='form-group row'>
-      <label for='inputMailNum' class='col-sm-2 col-form-label text-center'>郵遞區號</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputMailNum'
-          ,
-          name='mailNum'
-          disabled
-          value='{{receiverInfo.mailNum}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row mb-5 text-center'>
-      <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputAddress'
-          ,
-          name='address'
-          disabled
-          value='{{receiverInfo.address}}'
-        />
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <h3 class="col-12 text-center  mt-5 mb-5">寄件資訊</h3>
-      <div class='form-group row'>
-      <label for='staticEmail' class='col-sm-2 col-form-label text-center'>Email</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          disabled
-          class='form-control'
-          id='staticEmail'
-          value='{{user.email}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row'>
-      <label for='inputName' class='col-sm-2 col-form-label text-center'>姓名</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputName'
-          name='name'
-          disabled
-          value='{{receiverInfo.name}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row'>
-      <label for='inputPhone' class='col-sm-2 col-form-label text-center'>手機</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputPhone'
-          name='phone'
-          disabled
-          value='{{receiverInfo.phone}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row'>
-      <label for='inputMailNum' class='col-sm-2 col-form-label text-center'>郵遞區號</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputMailNum'
-          ,
-          name='mailNum'
-          disabled
-          value='{{receiverInfo.mailNum}}'
-        />
-      </div>
-    </div>
-    <div class='form-group row mb-5 text-center'>
-      <label for='inputAddress' class='col-sm-2 col-form-label'>地址</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputAddress'
-          ,
-          name='address'
-          disabled
-          value='{{receiverInfo.address}}'
-        />
-      </div>
-    </div>
-  </div>
-  </div>
-  <input type="text" hidden name="data" value="{{modifyOrder}}">
-  <div class="d-flex justify-content-center">
-  <button class="w-25 btn btn-secondary">確定修改</button>
-  </div>
   </form>
 </div>

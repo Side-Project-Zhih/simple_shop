@@ -1,104 +1,71 @@
 <h1 class='restaurant-show-title'>My Shop</h1>
 <div class='container'>
   {{>message}}
-  <form
-    class='media row mb-5 border'
-    action='/admin/products'
-    method='POST'
-    enctype='multipart/form-data'
-  >
+  <form class='media row mb-5 border' action='/admin/products' method='POST' enctype='multipart/form-data'>
     <div class='col-12 media-body flex-column align-items-center'>
       <div class='form-group row '>
-        <label for='name' class='col-sm-2 col-form-label text-center mt-3'>品名  <span class="h6 text-danger">*必填</span></label>
+        <label for='name' class='col-sm-2 col-form-label text-center mt-3'>品名 <span
+            class="h6 text-danger">*必填</span></label>
         <div class='col-sm-6 mt-3'>
-          <input
-            type='text'
-            class='form-control'
-            id='name'
-            ,
-            name='name'
-          />
+          <input type='text' class='form-control' id='name' , name='name' />
         </div>
       </div>
       <div class='form-group row'>
-        <label for='price' class='col-sm-2 col-form-label text-center'>單價 <span class="h6 text-danger">*必填</span></label>
+        <label for='price' class='col-sm-2 col-form-label text-center'>單價 <span
+            class="h6 text-danger">*必填</span></label>
         <div class='col-sm-6'>
-          <input
-            type='text'
-            class='form-control'
-            id='price'
-            ,
-            name='price'
-          />
+          <input type='text' class='form-control' id='price' , name='price' />
         </div>
       </div>
       <div class='form-group row'>
-        <label for='amount' class='col-sm-2 col-form-label text-center'>庫存 <span class="h6 text-danger">*必填</span></label>
+        <label for='amount' class='col-sm-2 col-form-label text-center'>庫存 <span
+            class="h6 text-danger">*必填</span></label>
         <div class='col-sm-6'>
-          <input
-            type='text'
-            class='form-control'
-            id='amount'
-            ,
-            name='amount'
-          />
+          <input type='text' class='form-control' id='amount' , name='amount' />
         </div>
       </div>
       <div class='form-group row '>
-        <label for='category' class='col-sm-2 col-form-label text-center'>分類 <span class="h6 text-danger">*必填</span></label>
+        <label for='category' class='col-sm-2 col-form-label text-center'>分類 <span
+            class="h6 text-danger">*必填</span></label>
         <div class="col-sm-6 mb-3">
           <select class=" form-control" name="category" id="category">
-              {{#each categories}}
-              <option value="{{this.name}}" 
-              >{{this.name}}</option>
-              {{/each}}
+            {{#each categories}}
+            <option value="{{this.name}}">{{this.name}}</option>
+            {{/each}}
           </select>
         </div>
       </div>
       <div class='form-group row'>
         <label for='pic' class='col-sm-2 col-form-label text-center '>產品照片上傳</label>
         <div class='col-sm-4'>
-          <input
-            type='file'
-            class='form-control p-1 mb-3'
-            id='pic'
-            ,
-            name='pic'
-          />
+          <input type='file' class='form-control p-1 mb-3' id='pic' , name='pic' />
           <p class='text-danger'>格式: png、jpg</p>
         </div>
       </div>
       <div class='form-group row '>
-        <label for='pic' class='col-sm-2 col-form-label text-center'>產品資訊 <span class="h6 text-danger">*必填</span></label>
+        <label for='pic' class='col-sm-2 col-form-label text-center'>產品資訊 <span
+            class="h6 text-danger">*必填</span></label>
         <div class="col-10 ">
-          <textarea
-          class=''
-            name='description'
-            id='editor' placeholder="請輸入描述"
-          ></textarea>
+          <textarea class='' name='description' id='editor' placeholder="請輸入描述"></textarea>
         </div>
       </div>
     </div>
     <div class='col-12 form-group row justify-content-end'>
       <a href="/admin/products" class="col-3 btn btn-primary m-3">返回</a>
-      <button
-        type='submit'
-        class='col-3 btn btn-secondary m-3'
-      >建立產品</button>
+      <button type='submit' class='col-3 btn btn-secondary m-3'>建立產品</button>
     </div>
   </form>
 
 </div>
-<script
-  src='https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js'
-></script>
+<script src='https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js'></script>
 <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <script>
-  ClassicEditor .create( document.querySelector( '#editor' ) ,{ 
-   toolbar:[
-  'heading','bold', 'italic', 'link', 'uploadImage','undo', 'redo',
-  'numberedList', 'bulletedList'],
-  ckfinder: { 
-    uploadUrl:"http://localhost:3000/admin/products/upload"} }) .catch( error =>
-  { console.error( error ); } );
+  ClassicEditor.create(document.querySelector('#editor'), {
+    toolbar: [
+      'heading', 'bold', 'italic', 'link', 'uploadImage', 'undo', 'redo',
+      'numberedList', 'bulletedList'],
+    ckfinder: {
+      uploadUrl: "http://localhost:3000/admin/products/upload"
+    }
+  }).catch(error => { console.error(error); });
 </script>
