@@ -6,12 +6,15 @@ const cart = new Schema(
       type: Object,
       default: {}
     },
-    pdsInfo:[{
-      type: Schema.Types.ObjectId,
-      ref: 'Product' 
-    }],
+    pdsInfo: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Product'
+      }
+    ],
     totalPrice: Number
   },
   { minimize: false }
 )
+
 module.exports = mongoose.model('Cart', cart)

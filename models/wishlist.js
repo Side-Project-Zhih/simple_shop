@@ -10,4 +10,5 @@ const wishlist = new Schema({
     of: { type: Map, of: String }
   }
 })
+
 module.exports = mongoose.model('Wishlist', wishlist)
