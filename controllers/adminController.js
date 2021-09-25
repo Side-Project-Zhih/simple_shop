@@ -2,7 +2,6 @@ const Order = require('../models/order')
 const Product = require('../models/product')
 const Category = require('../models/category')
 const helper = require('../helper/helper')
-const s3 = require('../config/s3')
 const fs = require('fs')
 let orderLimit = 10
 let pdNumLimit = 12
@@ -235,11 +234,15 @@ module.exports = {
     amount = +amount
     if (file) {
       let data = await fs.promises.readFile(file.path)
-      await fs.promises.writeFile(
-        `./public/pic/upload/${file.originalname}`,
-        data
-      )
-      let pic = `/pic/upload/${file.originalname}`
+      const params = {
+        Bucket: `zhih-bucket/${name}`, // 相簿位子
+        Key: 'pic', // 你希望儲存在 S3 上的檔案名稱
+        Body: data, // 檔案
+        ACL: 'public-read', // 檔案權限
+        ContentType: req.file.mimetype // 副檔名
+      }
+      let info = await helper.uploadToS3(params)
+      let pic = info.Location
       try {
         await Product.findByIdAndUpdate(pdId, {
           name,
@@ -283,11 +286,16 @@ module.exports = {
     try {
       if (file) {
         let data = await fs.promises.readFile(file.path)
-        let pic = `/pic/upload/${file.originalname}.jpg`
-        await fs.promises.writeFile(
-          `./public/pic/upload/${file.originalname}.jpg`,
-          data
-        )
+        const params = {
+          Bucket: `zhih-bucket/${name}`, // 相簿位子
+          Key: 'pic', // 你希望儲存在 S3 上的檔案名稱
+          Body: data, // 檔案
+          ACL: 'public-read', // 檔案權限
+          ContentType: req.file.mimetype // 副檔名
+        }
+        let info = await helper.uploadToS3(params)
+        let pic = info.Location
+        console.log(info)
         product = await Product.create({
           name,
           category,
@@ -317,8 +325,16 @@ module.exports = {
     const pdId = req.params.id
     try {
       let product = await Product.findById(pdId)
-      let pic = product.pic
-      await fs.promises.unlink(`./public${pic}`)
+      let { name, pic } = product
+      if (pic.includes('http')) {
+        const params = {
+          Bucket: 'zhih-bucket',
+          Key: `${name}/pic`
+        }
+        let data = await helper.removeFromS3(params)
+      } else {
+        await fs.promises.unlink(`./public${pic}`)
+      }
       await product.remove()
       req.flash('successMsg', `刪除 ${product.name} 成功`)
     } catch (err) {
