@@ -6,7 +6,7 @@ const methodOverride = require('method-override')
 const connectFlash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
-const Category = require('./models/category') // 待整理
+const putInTemplate = require('./middleware/putInTemplate')
 const sessionHelper = require('./middleware/sessionHelper')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -31,42 +31,33 @@ app.use(
   session({
     secret: 'test',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: true
   })
 )
+//passport
 app.use(passport.initialize())
 app.use(passport.session())
 require('./config/passport')
-
 //template
 app.engine(
   'hbs',
   exphbs({
     defaultLayout: 'main',
     extname: 'hbs',
-    helpers: require('./helper/helper'),
+    helpers: require('./helper/helper')
   })
 )
 app.set('view engine', 'hbs')
-app.use(async (req, res, next) => {
-  res.locals.successMsg = req.flash('successMsg')
-  res.locals.warningMsg = req.flash('warningMsg')
-  res.locals.user = req.user
-  res.locals.isAuthenticated = req.isAuthenticated()
-  let categories = await Category.find().select('name')
-    .lean()
-  categories.forEach((item) => {
-    item.url = encodeURIComponent(item.name)
-  })
-  res.locals.categories = categories
-  next()
-})
+
+//處理放入template常用的資料
+app.use(putInTemplate)
 //處理session內的wishlist
 app.use(sessionHelper.dealWithWishlist)
 //處理session內的cart
 app.use(sessionHelper.dealCart)
-
+//放入routes
 app.use(router)
+
 app.listen(port, () =>
   console.log(`operate server successfully at port :${port}`)
 )
