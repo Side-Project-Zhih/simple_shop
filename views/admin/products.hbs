@@ -67,15 +67,15 @@
                 type='button'
               >價錢高到低</a>
               <a
-                href='/admin/products/search?order=A-Z&keyword={{keyword}}&category={{category}}'
+                href='/admin/products/search?order=early-late&keyword={{keyword}}&category={{category}}'
                 class='dropdown-item'
                 type='button'
-              >A-Z</a>
+              >上架時間早到晚</a>
               <a
-                href='/admin/products/search?order=Z-A&keyword={{keyword}}&category={{category}}'
+                href='/admin/products/search?order=late-early&keyword={{keyword}}&category={{category}}'
                 class='dropdown-item'
                 type='button'
-              >Z-A</a>
+              >上架時間晚到早</a>
             </div>
           {{else}}
               <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
@@ -90,15 +90,15 @@
                   type='button'
                 >價錢高到低</a>
                 <a
-                  href='/admin/products/search?order=A-Z&keyword={{keyword}}'
+                  href='/admin/products/search?order=early-late&keyword={{keyword}}'
                   class='dropdown-item'
                   type='button'
-                >A-Z</a>
+                >上架時間早到晚</a>
                 <a
-                  href='/admin/products/search?order=Z-A&keyword={{keyword}}'
+                  href='/admin/products/search?order=late-early&keyword={{keyword}}'
                   class='dropdown-item'
                   type='button'
-                >Z-A</a>
+                >上架時間晚到早</a>
               </div>
           {{/if}}
         {{else}}
@@ -114,15 +114,15 @@
             type='button'
           >價錢高到低</a>
           <a
-            href='/admin/products?order=A-Z&category={{this.category}}'
+            href='/admin/products?order=early-late&category={{this.category}}'
             class='dropdown-item'
             type='button'
-          >A-Z</a>
+          >上架時間早到晚</a>
           <a
-            href='/admin/products?order=Z-A&category={{this.category}}'
+            href='/admin/products?order=late-early&category={{this.category}}'
             class='dropdown-item'
             type='button'
-          >Z-A</a>
+          >上架時間晚到早</a>
         </div>
         {{/if}}
       </div>

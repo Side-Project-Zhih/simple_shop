@@ -4,17 +4,17 @@ module.exports = {
   orderType: (order) => {
     let orderOption = {}
     let orderName_cht
-    if (order === 'A-Z') {
+    if (order === 'early-late') {
       orderOption = {
-        name: 'asc'
+        createdAt: 'asc'
       }
-      orderName_cht = 'A-Z'
+      orderName_cht = '上架時間早到晚'
     }
-    if (order === 'Z-A') {
+    if (order === 'late-early') {
       orderOption = {
-        name: 'desc'
+        createdAt: 'desc'
       }
-      orderName_cht = 'Z-A'
+      orderName_cht = '上架時間晚到早'
     }
     if (order === 'low-high') {
       orderOption = {
@@ -27,6 +27,10 @@ module.exports = {
         price: 'desc'
       }
       orderName_cht = '價錢高到低'
+    } else {
+      orderOption = {
+        createdAt: 'desc'
+      }
     }
     return [orderOption, orderName_cht]
   },

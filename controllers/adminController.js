@@ -356,7 +356,7 @@ module.exports = {
     }
     try {
       await Category.create({ name })
-      req.flash('warningMsg', `種類: ${name} 建立成功`)
+      req.flash('successMsg', `種類: ${name} 建立成功`)
     } catch (err) {
       console.log(err)
       req.flash('warningMsg', '種類建立失敗')
@@ -374,7 +374,7 @@ module.exports = {
       let category = await Category.findById(categoryId)
       category.name = name
       await category.save()
-      req.flash('warningMsg', `種類:將 ${category.name} 修改為 ${name}`)
+      req.flash('successMsg', `種類:將 ${category.name} 修改為 ${name}`)
     } catch (err) {
       req.flash('warningMsg', '種類建立失敗')
     }
