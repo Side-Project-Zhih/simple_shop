@@ -26,7 +26,13 @@
     <div class='container'>
       <nav class='navbar navbar-expand-lg navbar-light'>
         <div class='container'>
-          <a class='navbar-brand' href='/'>
+          <a class='navbar-brand'
+              {{#ifCond user.role 'admin'}}
+               href='/admin/orders'
+              {{else}}
+               href='/'
+              {{/ifCond}}
+          >
             <img
               src='https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png'
               width='30'
@@ -38,15 +44,27 @@
           </a>
           <ul class='navbar-nav d-flex list-unstyled'>
             {{#if isAuthenticated}}
-              {{#ifCond user.role 'admin'}}
+              {{#ifCond user.role 'admin'}}        
+                <li class='nav-item text-secondary rounded'><a
+                    href='/'
+                    class='nav-link'
+                  >回首頁</a></li>
+                <li class='nav-item text-secondary rounded'><a
+                    href='/admin/categories'
+                    class='nav-link'
+                  >種類管理</a></li>
                 <li class='nav-item text-secondary rounded'><a
                     href='/admin/products'
                     class='nav-link'
-                  >訂單管理</a></li>
+                  >產品管理</a></li>
+                <li class='nav-item text-secondary rounded'><a
+                    href='/admin/products/create'
+                    class='nav-link'
+                  >新增產品</a></li>
                 <li class='nav-item text-secondary rounded'><a
                     href='/admin/orders'
                     class='nav-link'
-                  >商店管理</a></li>
+                  >訂單管理</a></li>
                 <li class='nav-item text-secondary rounded'><a
                     href='/users/logout'
                     class='nav-link'

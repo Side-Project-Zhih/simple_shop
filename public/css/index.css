@@ -16,7 +16,7 @@ header {
   margin: -5px;
   height: 360px;
   background: #dddddd center center
-    url("https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5720/restaurants-list-cover.jpg");
+    url("https://zhih-bucket.s3.ap-northeast-1.amazonaws.com/Refined+Cotton+Gloves/pic");
   background-size: cover;
   filter: blur(3px);
 }
