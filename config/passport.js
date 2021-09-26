@@ -4,6 +4,7 @@ const googleStrategy = require('passport-google-oauth20').Strategy
 const fbStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
+let BaseUrl =  process.env.BaseUrl || 'http://localhost:3000'
 passport.use(
   new LocalStrategy(
     {
@@ -30,7 +31,7 @@ passport.use(
     {
       clientID: process.env.googleClientId_login,
       clientSecret: process.env.googleClientSecret_login,
-      callbackURL: 'http://localhost:3000/auth/google/callback'
+      callbackURL: `${BaseUrl}/auth/google/callback`
     },
     (accessToken, refreshToken, profile, done) => {
       const { email, name } = profile._json
@@ -59,11 +60,10 @@ passport.use(
     {
       clientID: process.env.facebookClientId,
       clientSecret: process.env.facebookClientSecret,
-      callbackURL: 'http://localhost:3000/auth/facebook/callback',
+      callbackURL: `${BaseUrl}/auth/facebook/callback`,
       profileFields: ['email', 'displayName']
     },
-    ( accessToken, refreshToken, profile, done) => {
-
+    (accessToken, refreshToken, profile, done) => {
       const { email, name } = profile._json
       User.findOne({ email })
         .lean()

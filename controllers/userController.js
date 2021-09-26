@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const mailer = require('../config/mailer')
 const helper = require('../helper/helper')
-const BaseUrl = 'http://localhost:3000'
+let BaseUrl = process.env.BaseUrl || 'http://localhost:3000'
 module.exports = {
   renderLoginPage: (req, res) => {
     res.render('login')
