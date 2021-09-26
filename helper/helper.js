@@ -35,7 +35,6 @@ module.exports = {
     return [orderOption, orderName_cht]
   },
   ifCond: function (a, b, options) {
-    // console.log(a,b)
     if (a === b) {
       return options.fn(this)
     } else {

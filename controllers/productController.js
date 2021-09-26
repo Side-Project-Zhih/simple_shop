@@ -14,13 +14,15 @@ module.exports = {
       }
     }
     const [orderOption, orderName_cht] = helper.orderType(order)
-    const { pages, prev, next } = await helper.getPagination(Product,
+    const { pages, prev, next } = await helper.getPagination(
+      Product,
       pdOption,
       pdNumLimit,
       page
     )
     let skipNum = pdNumLimit * (page - 1)
     let products = await Product.find(pdOption)
+      .populate('category', '_id name')
       .skip(skipNum)
       .limit(pdNumLimit)
       .sort(orderOption)
@@ -47,16 +49,18 @@ module.exports = {
   },
   searchProduct: async (req, res) => {
     const wishlistPds = req.wishlistPds
-    let { category,keyword, order, page } = req.query
+    let { category, keyword, order, page } = req.query
     if (!keyword) return res.redirect('/')
     page = +page ? +page : 1
     const pdOption = {
-      name: { $regex: keyword, $options: 'i' },
+      name: { $regex: keyword, $options: 'i' }
     }
-    if(category){
+    if (category) {
+      console.log(category)
       pdOption.category = category
     }
-    const { pages, prev, next } =await  helper.getPagination(Product,
+    const { pages, prev, next } = await helper.getPagination(
+      Product,
       pdOption,
       pdNumLimit,
       page
@@ -64,6 +68,7 @@ module.exports = {
     const [orderOption, orderName_cht] = helper.orderType(order)
     let skipNum = pdNumLimit * (page - 1)
     const products = await Product.find(pdOption)
+      .populate('category', '_id name')
       .skip(skipNum)
       .limit(pdNumLimit)
       .sort(orderOption)
@@ -93,7 +98,7 @@ module.exports = {
   renderProductPage: async (req, res) => {
     const wishlistPds = req.wishlistPds
     const { productId } = req.params
-    let isInWishlist = (wishlistPds && wishlistPds[productId])? true: false
+    let isInWishlist = wishlistPds && wishlistPds[productId] ? true : false
     let product = await Product.findById(productId).lean()
     product.amount = Array.from({ length: product.amount }).map((_, i) => i + 1)
     res.render('pd_detail', { product, isInWishlist })

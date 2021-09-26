@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class='col-12 row justify-content-between'>
-    <form action='/products/search? ' class='col-4 p-0'>
+    <form action='/products/search' class='col-4 p-0'>
       <div class='input-group'>
         <input type='text' name='keyword' class='form-control' placeholder='輸入商品名稱' aria-label='Restaurant Name...'
           value={{#if keyword}} {{keyword}} {{else}} '' {{/if}} aria-describedby='search-button' />
@@ -79,9 +79,9 @@
         active
         {{/if}}' aria-disabled='true'>全部</a>
       {{#each categories}}
-      <a href="/?category={{this.url}}" class='list-group-item list-group-item-action list-group-item-light 
-        {{#ifCond ../category this.name}}
-        active {{../category}}
+      <a href="/?category={{this._id}}" class='list-group-item list-group-item-action list-group-item-light 
+        {{#ifCond ../category this._id}}
+        active 
         {{/ifCond}}
         '>{{this.name}}</a>
       {{/each}}
@@ -135,11 +135,11 @@
         {{#ifCond ../page this}}
         active
         {{/ifCond}}"><a class="page-link"
-                href="/products/search?keyword={{keyword}}?category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a>
+                href="/products/search?keyword={{../keyword}}&category={{../category}}&order={{../order}}&page={{this}}">{{this}}</a>
             </li>
             {{/each}}
             <li class="page-item"><a class="page-link"
-                href="/products/search?category={{category}}&order={{order}}&page={{next}}">Next</a></li>
+                href="/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{next}}">Next</a></li>
           </ul>
           {{else}}
           <ul class="pagination mt-4">
