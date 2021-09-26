@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 const adminController = require('../../../controllers/adminController')
 
-router.get('/categories', adminController.renderCategories)
-router.post('/categories', adminController.createCategory)
-router.put('/categories/:id', adminController.putCategory)
-router.delete('/categories/:id', adminController.deleteCategory)
+router.get('/', adminController.renderCategories)
+router.post('/', adminController.createCategory)
+router.put('/:id', adminController.putCategory)
+router.delete('/:id', adminController.deleteCategory)
 
 module.exports = router

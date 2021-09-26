@@ -225,7 +225,8 @@ module.exports = {
   },
   editProductPage: async (req, res) => {
     const pdId = req.params.id
-    let product = await Product.findById(pdId).lean()
+    let product = await Product.findById(pdId).populate('category', '_id').lean()
+    product.category._id = product.category._id.toString()
     res.render('./admin/editProduct', { product })
   },
   putProduct: async (req, res) => {
@@ -374,9 +375,10 @@ module.exports = {
     }
     try {
       let category = await Category.findById(categoryId)
+      let oldName = category.name
       category.name = name
       await category.save()
-      req.flash('successMsg', `種類:將 ${category.name} 修改為 ${name}`)
+      req.flash('successMsg', `種類:將 ${oldName} 修改為 ${name}`)
     } catch (err) {
       req.flash('warningMsg', '種類建立失敗')
     }

@@ -3,16 +3,16 @@ const router = express.Router()
 const adminController = require('../../../controllers/adminController')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
-router.get('/products', adminController.renderProducts)
-router.get('/products/search', adminController.searchProducts)
+router.get('/', adminController.renderProducts)
+router.get('/search', adminController.searchProducts)
 router.post(
-  '/products/upload',
+  '/upload',
   upload.single('upload'),
   adminController.uploadImgFromDescription
 )
-router.get('/products/create', adminController.renderCreatePage)
-router.get('/products/:id', adminController.editProductPage)
-router.put('/products/:id', upload.single('pic'), adminController.putProduct)
-router.delete('/products/:id', adminController.deleteProduct)
-router.post('/products', upload.single('pic'), adminController.createProduct)
+router.get('/create', adminController.renderCreatePage)
+router.get('/:id', adminController.editProductPage)
+router.put('/:id', upload.single('pic'), adminController.putProduct)
+router.delete('/:id', adminController.deleteProduct)
+router.post('/', upload.single('pic'), adminController.createProduct)
 module.exports = router

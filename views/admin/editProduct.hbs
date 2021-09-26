@@ -28,7 +28,7 @@
         <div class="col-sm-8 mb-3">
           <select class=" form-control" name="category" id="category">
             {{#each categories}}
-            <option value="{{this.name}}" {{#ifCond this.name ../product.category}} selected {{/ifCond}}>{{this.name}}
+            <option value="{{this._id}}" {{#ifCond this._id ../product.category._id}} selected {{/ifCond}}>{{this.name}}
             </option>
             {{/each}}
           </select>
