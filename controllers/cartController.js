@@ -72,7 +72,6 @@ module.exports = {
           pdsInfo.push(pd._id)
         }
         cart.totalPrice += totalPrice
-        console.log(cart)
         await Cart.findByIdAndUpdate(user.cart, cart)
       }
     } else {

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-const DB_URL = 'mongodb://localhost/MYSHOP'
+const DB_URL = process.env.mongoDBurl || 'mongodb://localhost/MYSHOP'
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-  useFindAndModify: true
+  useFindAndModify: false
 })
 const db = mongoose.connection
 db.on('error', (error) => {

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const mailer = require('../config/mailer')
 const helper = require('../helper/helper')
+const BaseUrl = 'http://localhost:3000'
 module.exports = {
   renderLoginPage: (req, res) => {
     res.render('login')
@@ -116,17 +117,21 @@ module.exports = {
       to: mail,
       subject: 'MY SHOP 帳號驗證信',
       html: `<h2>請點以下連結完成驗證</h2><br>
-            <a href="http://localhost:3000/users/${_id}/validation/${encodeMail}">連結</a>
+            <a href="${BaseUrl}/users/${_id}/validation/${encodeMail}">連結</a>
             `
     }
-    let info = await mailer
-      .sendMail(validMail)
-      .catch((error) => console.log(error))
-    req.flash('successMsg', '已發送驗證信')
+    try {
+      let info = await mailer.sendMail(validMail)
+
+      req.flash('successMsg', '已發送驗證信')
+    } catch (err) {
+      console.log(err)
+      req.flash('warningMsg', '發送驗證信失敗')
+    }
     res.redirect('back')
   },
   checkValidationMail: async (req, res) => {
-    let email = helper.base64ToString(req.params.email) 
+    let email = helper.base64ToString(req.params.email)
     const user = req.user
     if (user.email.toString() !== email) {
       return res.render('mailValid')
