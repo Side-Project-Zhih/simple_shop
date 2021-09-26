@@ -9,20 +9,17 @@ module.exports = {
         createdAt: 'asc'
       }
       orderName_cht = '上架時間早到晚'
-    }
-    if (order === 'late-early') {
+    } else if (order === 'late-early') {
       orderOption = {
         createdAt: 'desc'
       }
       orderName_cht = '上架時間晚到早'
-    }
-    if (order === 'low-high') {
+    } else if (order === 'low-high') {
       orderOption = {
         price: 'asc'
       }
       orderName_cht = '價錢低到高'
-    }
-    if (order === 'high-low') {
+    } else if (order === 'high-low') {
       orderOption = {
         price: 'desc'
       }
