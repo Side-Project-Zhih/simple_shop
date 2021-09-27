@@ -1,5 +1,6 @@
 const crypto = require('crypto')
-const URL = 'https://2c48-36-230-87-154.ngrok.io'
+require('dotenv').config()
+const URL = process.env.BaseUrl
 const MerchantID = 'MS323026958'
 const HashKey = '5zA360sARmhJ0UsIa6rxih5jtNz9Ur57'
 const HashIV = 'ClfvgHRSHOhTpfiP'
