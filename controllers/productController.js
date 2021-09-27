@@ -37,6 +37,8 @@ module.exports = {
         return products
       })
     res.render('index', {
+      title: 'MY SHOP',
+
       products,
       category,
       orderName_cht,
@@ -84,6 +86,7 @@ module.exports = {
       })
     keyword = encodeURIComponent(keyword)
     res.render('index', {
+      title: 'MY SHOP',
       products,
       category,
       orderName_cht,
@@ -101,6 +104,10 @@ module.exports = {
     let isInWishlist = wishlistPds && wishlistPds[productId] ? true : false
     let product = await Product.findById(productId).lean()
     product.amount = Array.from({ length: product.amount }).map((_, i) => i + 1)
-    res.render('pd_detail', { product, isInWishlist })
+    res.render('pd_detail', {
+      title: 'MY SHOP',
+      product,
+      isInWishlist
+    })
   }
 }

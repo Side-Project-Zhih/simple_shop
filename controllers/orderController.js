@@ -26,6 +26,7 @@ module.exports = {
     }
     createdAt = new Date(createdAt).toLocaleString()
     res.render('order', {
+      title: '訂單',
       products: pdsInfo,
       totalPrice,
       receiverInfo,
@@ -45,22 +46,23 @@ module.exports = {
     let user = req.user
     let cartId = user.cart
     let receiverInfo = req.body
-    for(let key of Object.keys(receiverInfo)){
-      if(!receiverInfo[key]) {
+    for (let key of Object.keys(receiverInfo)) {
+      if (!receiverInfo[key]) {
         req.flash('warningMsg', '寄件資訊每一欄都必須填寫')
-        return res.render(`/cart/check`)
+        return res.render(`/cart/check`, {
+          title: '訂單'
+        })
       }
     }
-    let cart = await Cart.findById(cartId).populate(
-      'pdsInfo',
-      '_id name price amount '
-    ).lean()
+    let cart = await Cart.findById(cartId)
+      .populate('pdsInfo', '_id name price amount ')
+      .lean()
     let totalPrice = cart.totalPrice
-    let { pdsInfo, pds} = cart
+    let { pdsInfo, pds } = cart
     for (let pd of pdsInfo) {
       let num = pds[pd._id]
       pd.num = num
-      pd.totalPrice = pd.price * num 
+      pd.totalPrice = pd.price * num
       delete pd.amount
     }
     let orderInfo = {
@@ -88,9 +90,9 @@ module.exports = {
     await Promise.all([
       User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders }),
       Cart.findByIdAndDelete(cartId),
-      mailer.sendMail(mailContent),
-    ]).catch(er => {
-      console.log (err)
+      mailer.sendMail(mailContent)
+    ]).catch((er) => {
+      console.log(err)
     })
 
     res.redirect(`/orders/${order._id.toString()}`)
@@ -120,8 +122,15 @@ module.exports = {
       delete order.pdsInfo
       order.status = helper.orderStatus(order.status)
     })
-  
-    res.render('profile', { orders, pages, prev, page, next })
+
+    res.render('profile', {
+      title: '我的訂單',
+      orders,
+      pages,
+      prev,
+      page,
+      next
+    })
   },
   payOrder: async (req, res) => {
     const data = JSON.parse(

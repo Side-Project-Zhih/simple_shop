@@ -5,11 +5,11 @@ const helper = require('../helper/helper')
 let BaseUrl = process.env.BaseUrl || 'http://localhost:3000'
 module.exports = {
   renderLoginPage: (req, res) => {
-    res.render('login')
+    res.render('login', { title: '登入會員' })
   },
   login: (req, res) => {},
   renderRegisterPage: (req, res) => {
-    res.render('register')
+    res.render('register', { title: '註冊會員' })
   },
   register: (req, res) => {
     const { email, name, password, passwordCheck } = req.body
@@ -19,7 +19,7 @@ module.exports = {
     // console.log(emailRule.test(email))
     if (!emailRule.test(email)) {
       req.flash('warningMsg', 'email格式錯誤')
-      return res.render('back')
+      return res.redirect('back')
     }
     //確認密碼
     if (password !== passwordCheck) {
@@ -56,6 +56,7 @@ module.exports = {
   },
   renderUserProfile: (req, res) => {
     const renderObj = helper.getProfilePart(req.query)
+    renderObj.title='個人資料'
     res.render('profile', renderObj)
   },
   putUserProfile: async (req, res) => {
@@ -134,10 +135,10 @@ module.exports = {
     let email = helper.base64ToString(req.params.email)
     const user = req.user
     if (user.email.toString() !== email) {
-      return res.render('mailValid')
+      return res.render('mailValid',{title:'驗證信確認失敗'})
     }
     await User.findOneAndUpdate({ email }, { isValid: true })
     req.user.isValid = true
-    res.render('mailValid', { isValid: true })
+    res.render('mailValid', {title:'驗證信確認成功', isValid: true })
   }
 }
