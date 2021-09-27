@@ -8,10 +8,12 @@ module.exports = {
     if (req.isAuthenticated()) {
       wishlistId = user.wishlist
     }
-    let wishlist = await Wishlist.findById(wishlistId).lean()
-    let pds = wishlist.pds
-    for (const key of Object.keys(pds)) {
-      products.push(pds[key])
+    if(wishlistId){
+      let wishlist = await Wishlist.findById(wishlistId).lean()
+      let pds = wishlist.pds
+      for (const key of Object.keys(pds)) {
+        products.push(pds[key])
+      }
     }
     res.render('wishlist', { products })
   },
@@ -66,9 +68,11 @@ module.exports = {
     if (req.isAuthenticated()) {
       wishlistId = user.wishlist
     }
-    let wishlist = await Wishlist.findById(wishlistId)
-    wishlist.pds.delete(pdId)
-    await wishlist.save()
+    if(wishlistId){
+      let wishlist = await Wishlist.findById(wishlistId)
+      wishlist.pds.delete(pdId)
+      await wishlist.save()
+    }
     return res.redirect('back')
   }
 }
