@@ -80,7 +80,7 @@ module.exports = {
     user.orders[order._id.toString()] = true
     const mailContent = {
       from: process.env.googleAccount,
-      to: 'fufong79570@gmail.com',
+      to: user.email,
       subject: 'MY SHOP 訂單成立',
       html: `<h2>感謝您的訂購</h2><br>
       <h2>您的訂單編號為  ${order._id}</h2><br>
