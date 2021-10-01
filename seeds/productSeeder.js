@@ -14,7 +14,7 @@ db.once('open', async () => {
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
         pic: `https://loremflickr.com/320/240?random=${Math.ceil(
-          Math.random() * 18
+          Math.random() * 12
         )}`,
         description: faker.commerce.productDescription(),
         amount: Math.ceil(Math.random() * 10),
