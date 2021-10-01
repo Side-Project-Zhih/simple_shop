@@ -13,9 +13,7 @@ db.once('open', async () => {
       data.push({
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
-        pic: `https://loremflickr.com/320/240?random=${Math.ceil(
-          Math.random() * 12
-        )}`,
+        pic: `https://loremflickr.com/320/240/cat?random=${i+1}`,
         description: faker.commerce.productDescription(),
         amount: Math.ceil(Math.random() * 10),
         category: type
