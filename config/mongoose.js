@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
-const DB_URL = 'mongodb://localhost/MYSHOP'
+const DB_URL = process.env.mongoDBurl || 'mongodb://localhost/MYSHOP'
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
