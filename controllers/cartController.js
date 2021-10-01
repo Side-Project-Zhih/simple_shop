@@ -120,13 +120,18 @@ module.exports = {
     let cart = await Cart.findById(cartId)
       .populate('pdsInfo', '_id price')
       .lean()
-    let cartPd = cart.pds[pdId]
-    let pd = cart.pdsInfo.find((item) => item._id.toString() === pdId)
-    if (cartPd.num === 1) {
-      return res.redirect('back')
-    }
-    --cartPd.num
+    let pdIndex = cart.pdsInfo.findIndex((item) => item._id.toString() === pdId)
+    let pd = cart.pdsInfo[pdIndex]
+    --cart.pds[pdId]
     cart.totalPrice -= pd.price
+
+    if (cart.pds[pdId] === 0) {
+      cart.pdsInfo.splice(pdIndex, 1)
+      delete cart.pds[pdId]
+    }
+    if (cart.totalPrice <= 0) {
+      cart.totalPrice = 0
+    }
     await Cart.findByIdAndUpdate(cartId, cart)
     return res.redirect('back')
   },
