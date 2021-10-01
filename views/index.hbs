@@ -99,6 +99,11 @@
             </div>
           </a>
           <div class='w-100 row no-gutters'>
+            <form action='/cart' method='POST' class='col-6 p-0'>
+              <input type="hidden" name="id" value="{{this._id}}">
+              <input type="hidden" name="num" value="1">
+              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
+            </form>
             {{#if this.isInWishlist}}
             <form action='/wishlist?_method=PUT' method='POST' class='col-6 p-0'>
               <input type="text" hidden name='id' value="{{this._id}}">
@@ -113,11 +118,6 @@
               <button class='w-100 h-100 btn btn-warning rounded-0'>加入願望清單</button>
             </form>
             {{/if}}
-            <form action='/cart' method='POST' class='col-6 p-0'>
-              <input type="hidden" name="id" value="{{this._id}}">
-              <input type="hidden" name="num" value="1">
-              <button class='w-100 btn btn-danger rounded-0'>加入購物車</button>
-            </form>
           </div>
         </div>
       </div>
@@ -139,7 +139,8 @@
             </li>
             {{/each}}
             <li class="page-item"><a class="page-link"
-                href="/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{next}}">Next</a></li>
+                href="/products/search?keyword={{keyword}}&category={{category}}&order={{order}}&page={{next}}">Next</a>
+            </li>
           </ul>
           {{else}}
           <ul class="pagination mt-4">
