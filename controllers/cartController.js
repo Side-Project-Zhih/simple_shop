@@ -31,7 +31,7 @@ module.exports = {
     const pdId = req.body.id
     let num = +req.body.num
     let pd = await Product.findById(pdId).lean()
-    if (num > pd.amount || !num ) {
+    if (num > pd.amount || !num) {
       req.flash('warningMsg', '此為該數量之上限')
       return res.redirect('back')
     }
@@ -178,11 +178,16 @@ module.exports = {
         .lean()
       let pds = cart.pds
       products = cart.pdsInfo
+      if (products.length === 0) {
+        return res.redirect('back')
+      }
       totalPrice = cart.totalPrice
       products.forEach((pd) => {
         pd.num = pds[pd._id]
         pd.totalPrice = pds[pd._id] * pd.price
       })
+    } else {
+      return res.redirect('back')
     }
     res.render('checkCart', { title: '購物車', products, totalPrice })
   }
