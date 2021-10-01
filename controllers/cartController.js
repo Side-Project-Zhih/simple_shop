@@ -31,7 +31,7 @@ module.exports = {
     const pdId = req.body.id
     let num = +req.body.num
     let pd = await Product.findById(pdId).lean()
-    if (num > pd.amount || num <= 0) {
+    if (num > pd.amount || !num ) {
       req.flash('warningMsg', '此為該數量之上限')
       return res.redirect('back')
     }
