@@ -13,7 +13,7 @@ module.exports = {
     const renderData = { title: '註冊會員' }
     res.render('register', renderData)
   },
-  register: (req, res) => {
+  register: async (req, res) => {
     const { email, name, password, passwordCheck } = req.body
     //確認email格式
     const emailRule =
@@ -32,23 +32,22 @@ module.exports = {
       req.flash('warningMsg', '密碼不符合格式')
       return res.redirect('back')
     }
-    User.exists({ email })
-      .then((isExist) => {
-        if (isExist) {
-          req.flash('warningMsg', '此帳戶已被使用')
-          return res.redirect('back')
-        }
-
-        return User.create({
-          email,
-          password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-          name
-        }).then(() => {
-          req.flash('successMsg', '帳戶建立成功，稍後請進行email驗證')
-          return res.redirect('/users/login')
-        })
+    try {
+      const isExist = await User.exists({ email })
+      if (isExist) {
+        req.flash('warningMsg', '此帳戶已被使用')
+        return res.redirect('back')
+      }
+      await User.create({
+        email,
+        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+        name
       })
-      .catch((err) => console.log(error))
+      req.flash('successMsg', '帳戶建立成功，稍後請進行email驗證')
+      return res.redirect('/users/login')
+    } catch (err) {
+      console.log(err)
+    }
   },
   logout: (req, res) => {
     req.session.wishlist = null

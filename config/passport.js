@@ -4,7 +4,7 @@ const googleStrategy = require('passport-google-oauth20').Strategy
 const fbStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
-let BaseUrl =  process.env.BaseUrl || 'http://localhost:3000'
+let BaseUrl = process.env.BaseUrl || 'http://localhost:3000'
 passport.use(
   new LocalStrategy(
     {
@@ -12,17 +12,16 @@ passport.use(
       passwordField: 'password',
       passReqToCallback: true
     },
-    (req, email, password, done) => {
-      User.findOne({ email }).lean().then((user) => {
-        if (!user) {
-          return done(null, false,{ message: '該帳戶不存在' })
-        }
-        const isMatch = bcrypt.compareSync(password, user.password)
-        if (isMatch) {
-          return done(null, user)
-        }
-        return done(null, false, { message: '密碼錯誤請重新輸入' })
-      })
+    async (req, email, password, done) => {
+      const user = await User.findOne({ email }).lean()
+      if (!user) {
+        return done(null, false, { message: '該帳戶不存在' })
+      }
+      const isMatch = bcrypt.compareSync(password, user.password)
+      if (isMatch) {
+        return done(null, user)
+      }
+      return done(null, false, { message: '密碼錯誤請重新輸入' })
     }
   )
 )
@@ -33,25 +32,24 @@ passport.use(
       clientSecret: process.env.googleClientSecret_login,
       callbackURL: `${BaseUrl}/auth/google/callback`
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       const { email, name } = profile._json
-      User.findOne({ email })
-        .lean()
-        .then((user) => {
-          if (user) {
-            return done(null, user)
-          }
-          let password = Math.random().toString(36).slice(-8)
-          return User.create({
-            name,
-            email,
-            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-            isGoogle: true
-          }).then((user) => {
-            return done(null, user)
-          })
+      try {
+        let user = await User.findOne({ email }).lean()
+        if (user) {
+          return done(null, user)
+        }
+        let password = Math.random().toString(36).slice(-8)
+        user = await User.create({
+          name,
+          email,
+          password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+          isGoogle: true
         })
-        .catch((error) => console.log(error))
+        return done(null, user)
+      } catch (err) {
+        console.log(err)
+      }
     }
   )
 )
@@ -63,25 +61,24 @@ passport.use(
       callbackURL: `${BaseUrl}/auth/facebook/callback`,
       profileFields: ['email', 'displayName']
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       const { email, name } = profile._json
-      User.findOne({ email })
-        .lean()
-        .then((user) => {
-          if (user) {
-            return done(null, user)
-          }
-          let password = Math.random().toString(36).slice(-8)
-          return User.create({
-            name,
-            email,
-            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-            isFb: true
-          }).then((user) => {
-            return done(null, user)
-          })
+      try {
+        let user = await User.findOne({ email }).lean()
+        if (user) {
+          return done(null, user)
+        }
+        let password = Math.random().toString(36).slice(-8)
+        user = await User.create({
+          name,
+          email,
+          password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+          isFb: true
         })
-        .catch((error) => console.log(error))
+        return done(null, user)
+      } catch (err) {
+        console.log(err)
+      }
     }
   )
 )
@@ -89,9 +86,8 @@ passport.use(
 passport.serializeUser((user, done) => {
   return done(null, user._id)
 })
-passport.deserializeUser((userId, done) => {
-  return User.findById(userId)
-    .lean()
-    .then((user) => done(null, user))
+passport.deserializeUser(async (userId, done) => {
+  const user = await User.findById(userId).lean()
+  return done(null, user)
 })
 module.exports = passport
