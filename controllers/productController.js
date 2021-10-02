@@ -36,9 +36,8 @@ module.exports = {
         })
         return products
       })
-    res.render('index', {
+    const renderData = {
       title: 'MY SHOP',
-
       products,
       category,
       orderName_cht,
@@ -47,7 +46,8 @@ module.exports = {
       prev,
       page,
       next
-    })
+    }
+    res.render('index', renderData)
   },
   searchProduct: async (req, res) => {
     const wishlistPds = req.wishlistPds
@@ -58,7 +58,6 @@ module.exports = {
       name: { $regex: keyword, $options: 'i' }
     }
     if (category) {
-      console.log(category)
       pdOption.category = category
     }
     const { pages, prev, next } = await helper.getPagination(
@@ -80,12 +79,11 @@ module.exports = {
           if (wishlistPds && wishlistPds[item._id]) {
             item.isInWishlist = true
           }
-          item.shortName = item.name.substring(0, 18)
         })
         return products
       })
     keyword = encodeURIComponent(keyword)
-    res.render('index', {
+    const renderData = {
       title: 'MY SHOP',
       products,
       category,
@@ -96,7 +94,8 @@ module.exports = {
       page,
       next,
       keyword
-    })
+    }
+    res.render('index', renderData)
   },
   renderProductPage: async (req, res) => {
     const wishlistPds = req.wishlistPds
@@ -104,10 +103,11 @@ module.exports = {
     let isInWishlist = wishlistPds && wishlistPds[productId] ? true : false
     let product = await Product.findById(productId).lean()
     product.amount = Array.from({ length: product.amount }).map((_, i) => i + 1)
-    res.render('pd_detail', {
+    const renderData = {
       title: 'MY SHOP',
       product,
       isInWishlist
-    })
+    }
+    res.render('pd_detail', renderData)
   }
 }

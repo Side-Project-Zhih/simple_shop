@@ -25,7 +25,7 @@ module.exports = {
       )
     }
     createdAt = new Date(createdAt).toLocaleString()
-    res.render('order', {
+    const renderData = {
       title: '訂單',
       products: pdsInfo,
       totalPrice,
@@ -35,7 +35,8 @@ module.exports = {
       email: req.user.email,
       status: helper.orderStatus(status),
       tradeInfo
-    })
+    }
+    res.render('order', renderData)
   },
   cancelOrder: async (req, res) => {
     const id = req.params.id
@@ -122,15 +123,15 @@ module.exports = {
       delete order.pdsInfo
       order.status = helper.orderStatus(order.status)
     })
-
-    res.render('profile', {
+    const renderData = {
       title: '我的訂單',
       orders,
       pages,
       prev,
       page,
       next
-    })
+    }
+    res.render('profile', renderData)
   },
   payOrder: async (req, res) => {
     const data = JSON.parse(

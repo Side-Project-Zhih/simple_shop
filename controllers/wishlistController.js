@@ -15,7 +15,8 @@ module.exports = {
         products.push(pds[key])
       }
     }
-    res.render('wishlist', { products })
+    const renderData = { products }
+    res.render('wishlist', renderData)
   },
   postWishlist: async (req, res) => {
     let wishlistId = req.session.wishlist

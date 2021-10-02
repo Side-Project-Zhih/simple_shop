@@ -248,11 +248,11 @@ module.exports = {
     if (file) {
       let data = await fs.promises.readFile(file.path)
       const params = {
-        Bucket: `zhih-bucket/${name}`, // 相簿位子
-        Key: 'pic', // 你希望儲存在 S3 上的檔案名稱
-        Body: data, // 檔案
-        ACL: 'public-read', // 檔案權限
-        ContentType: req.file.mimetype // 副檔名
+        Bucket: `zhih-bucket/${name}`,
+        Key: 'pic',
+        Body: data,
+        ACL: 'public-read',
+        ContentType: req.file.mimetype
       }
       let info = await helper.uploadToS3(params)
       let pic = info.Location
@@ -303,11 +303,11 @@ module.exports = {
       if (file) {
         let data = await fs.promises.readFile(file.path)
         const params = {
-          Bucket: `zhih-bucket/${name}`, // 相簿位子
-          Key: 'pic', // 你希望儲存在 S3 上的檔案名稱
-          Body: data, // 檔案
-          ACL: 'public-read', // 檔案權限
-          ContentType: req.file.mimetype // 副檔名
+          Bucket: `zhih-bucket/${name}`,
+          Key: 'pic',
+          Body: data,
+          ACL: 'public-read',
+          ContentType: req.file.mimetype
         }
         let info = await helper.uploadToS3(params)
         let pic = info.Location
@@ -346,7 +346,7 @@ module.exports = {
           Bucket: 'zhih-bucket',
           Key: `${name}/pic`
         }
-        let data = await helper.removeFromS3(params)
+        await helper.removeFromS3(params)
       } else {
         await fs.promises.unlink(`./public${pic}`)
       }
@@ -412,10 +412,10 @@ module.exports = {
     let data = await fs.promises.readFile(file.path)
     const params = {
       Bucket: 'zhih-bucket/description',
-      Key: file.originalname, // 你希望儲存在 S3 上的檔案名稱
-      Body: data, // 檔案
-      ACL: 'public-read', // 檔案權限
-      ContentType: file.mimetype // 副檔名
+      Key: file.originalname, 
+      Body: data, 
+      ACL: 'public-read',
+      ContentType: file.mimetype 
     }
     let info = await helper.uploadToS3(params)
     let url = info.Location

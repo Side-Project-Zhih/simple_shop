@@ -23,7 +23,8 @@ module.exports = {
         pd.totalPrice = pds[pd._id] * pd.price
       })
     }
-    res.render('carts', { title: '購物車', products, totalPrice })
+    const renderData = { title: '購物車', products, totalPrice }
+    res.render('carts', renderData)
   },
   postCart: async (req, res) => {
     let cartId = req.session.cart
@@ -192,6 +193,7 @@ module.exports = {
     } else {
       return res.redirect('back')
     }
-    res.render('checkCart', { title: '購物車', products, totalPrice })
+    const renderData = { title: '購物車', products, totalPrice }
+    res.render('checkCart', renderData)
   }
 }

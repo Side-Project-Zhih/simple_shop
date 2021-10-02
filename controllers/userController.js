@@ -5,18 +5,19 @@ const helper = require('../helper/helper')
 let BaseUrl = process.env.BaseUrl || 'http://localhost:3000'
 module.exports = {
   renderLoginPage: (req, res) => {
-    res.render('login', { title: '登入會員' })
+    const renderData = { title: '登入會員' }
+    res.render('login', renderData)
   },
   login: (req, res) => {},
   renderRegisterPage: (req, res) => {
-    res.render('register', { title: '註冊會員' })
+    const renderData = { title: '註冊會員' }
+    res.render('register', renderData)
   },
   register: (req, res) => {
     const { email, name, password, passwordCheck } = req.body
     //確認email格式
     const emailRule =
       /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
-    // console.log(emailRule.test(email))
     if (!emailRule.test(email)) {
       req.flash('warningMsg', 'email格式錯誤')
       return res.redirect('back')
@@ -55,9 +56,9 @@ module.exports = {
     res.redirect('/')
   },
   renderUserProfile: (req, res) => {
-    const renderObj = helper.getProfilePart(req.query)
-    renderObj.title='個人資料'
-    res.render('profile', renderObj)
+    const renderData = helper.getProfilePart(req.query)
+    renderData.title = '個人資料'
+    res.render('profile', renderData)
   },
   putUserProfile: async (req, res) => {
     const _id = req.params._id
@@ -135,10 +136,11 @@ module.exports = {
     let email = helper.base64ToString(req.params.email)
     const user = req.user
     if (user.email.toString() !== email) {
-      return res.render('mailValid',{title:'驗證信確認失敗'})
+      return res.render('mailValid', { title: '驗證信確認失敗' })
     }
     await User.findOneAndUpdate({ email }, { isValid: true })
     req.user.isValid = true
-    res.render('mailValid', {title:'驗證信確認成功', isValid: true })
+    const renderData = { title: '驗證信確認成功', isValid: true }
+    res.render('mailValid', renderData)
   }
 }
