@@ -31,11 +31,11 @@ module.exports = {
     const pdId = req.body.id
     let num = +req.body.num
     let pd = await Product.findById(pdId).lean()
-    if (num > pd.amount || !num) {
-      req.flash('warningMsg', '此為該數量之上限')
+    if (!num) {
+      req.flash('warningMsg', '數量不可空白')
       return res.redirect('back')
     }
-    let totalPrice = pd.price * num
+    let totalPriceOfNewAdd = pd.price * num
     let pds = {}
     let pdsInfo = [pdId]
     pds[pd._id] = num
@@ -46,7 +46,7 @@ module.exports = {
         let cart = await Cart.create({
           pds,
           pdsInfo,
-          totalPrice
+          totalPrice: totalPriceOfNewAdd
         })
         await User.findByIdAndUpdate(user._id.toString(), {
           cart: cart._id.toString()
@@ -57,21 +57,23 @@ module.exports = {
         let cart = await Cart.findById(user.cart).lean()
         pds = cart.pds
         pdsInfo = cart.pdsInfo
-        let cartPd = pds[pd._id]
-        if (cartPd) {
-          let pdNum = cartPd
-          if (pdNum + num > pd.amount) {
-            let diff = pd.amount - pdNum
-            totalPrice = pd.price * diff
+
+        if (pds[pd._id]) {
+          let pdNum = pds[pd._id]
+          let totalPdNum = pdNum + num
+          if (totalPdNum > pd.amount) {
+            let diffPdNum = pd.amount - pdNum
+            totalPriceOfNewAdd = pd.price * diffPdNum
             cart.pds[pd._id] = pd.amount
+            req.flash('warningMsg', '此為該數量之上限')
           } else {
-            cart.pds[pd._id] += num
+            cart.pds[pd._id] = totalPdNum
           }
         } else {
           pds[pd._id] = num
           pdsInfo.push(pd._id)
         }
-        cart.totalPrice += totalPrice
+        cart.totalPrice += totalPriceOfNewAdd
         await Cart.findByIdAndUpdate(user.cart, cart)
       }
     } else {
@@ -81,7 +83,7 @@ module.exports = {
         let cart = await Cart.create({
           pds,
           pdsInfo,
-          totalPrice
+          totalPrice: totalPriceOfNewAdd
         })
         req.session.cart = cart._id
       } else {
@@ -89,21 +91,22 @@ module.exports = {
         let cart = await Cart.findById(cartId).lean()
         pds = cart.pds
         pdsInfo = cart.pdsInfo
-        let cartPd = pds[pd._id]
-        if (cartPd) {
-          let pdNum = cartPd
-          if (pdNum + num > pd.amount) {
-            let diff = pd.amount - pdNum
-            totalPrice = pd.price * diff
+        if (pds[pd._id]) {
+          let pdNum = pds[pd._id]
+          let totalPdNum = pdNum + num
+          if (totalPdNum > pd.amount) {
+            let diffPdNum = pd.amount - pdNum
+            totalPriceOfNewAdd = pd.price * diffPdNum
             cart.pds[pd._id] = pd.amount
+            req.flash('warningMsg', '此為該數量之上限')
           } else {
-            cart.pds[pd._id] += num
+            cart.pds[pd._id] = totalPdNum
           }
         } else {
           pds[pd._id] = num
           pdsInfo.push(pd._id)
         }
-        cart.totalPrice += totalPrice
+        cart.totalPrice += totalPriceOfNewAdd
         await Cart.findByIdAndUpdate(cartId, cart)
       }
     }
