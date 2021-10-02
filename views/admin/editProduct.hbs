@@ -56,14 +56,4 @@
 
 </div>
 <script src='https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js'></script>
-<script>
-  ClassicEditor.create(document.querySelector('#editor'), {
-    toolbar: [
-      'heading', 'bold', 'italic', 'link', 'uploadImage', 'undo', 'redo',
-      'numberedList', 'bulletedList'],
-    ckfinder: {
-      uploadUrl:
-        "http://localhost:3000/admin/products/upload"
-    }
-  }).catch(error => { console.error(error); });
-</script>
+<script src="/js/ckedirorConfig.js"></script>
