@@ -91,7 +91,7 @@ module.exports = {
       User.findByIdAndUpdate(user._id, { cart: null, orders: user.orders }),
       Cart.findByIdAndDelete(cartId),
       mailer.sendMail(mailContent)
-    ]).catch((er) => {
+    ]).catch((err) => {
       console.log(err)
     })
 

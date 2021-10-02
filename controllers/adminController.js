@@ -27,15 +27,15 @@ module.exports = {
       order.createdAt = new Date(order.createdAt).toLocaleString()
       order.status = helper.orderStatus(order.status)
     })
-
-    res.render('./admin/orders', {
+    const renderData = {
       title: '管理訂單',
       orders,
       pages,
       prev,
       page,
       next
-    })
+    }
+    res.render('./admin/orders', renderData)
   },
   editOrderPage: async (req, res) => {
     const orderId = req.params.id
@@ -44,29 +44,16 @@ module.exports = {
         'pdsInfo _id customerInfo receiverInfo createdAt status totalPrice isSent'
       )
       .lean()
-    let {
-      pdsInfo,
-      createdAt,
-      _id,
-      customerInfo,
-      receiverInfo,
-      status,
-      totalPrice,
-      isSent
-    } = order
-
-    createdAt = new Date(createdAt).toLocaleString()
-    res.render('./admin/editOrder', {
+    order.id = order._id
+    order.products = order.pdsInfo
+    order.createdAt = new Date(order.createdAt).toLocaleString()
+    delete order._id
+    delete order.pdsInfo
+    const renderData = {
       title: '修改訂單',
-      products: pdsInfo,
-      totalPrice,
-      receiverInfo,
-      id: _id,
-      user: customerInfo,
-      createdAt,
-      status,
-      isSent
-    })
+      ...order
+    }
+    res.render('./admin/editOrder', renderData)
   },
   checkOrderChange: async (req, res) => {
     let data = req.body
@@ -99,13 +86,13 @@ module.exports = {
       }
     }
     modifyOrder = JSON.stringify(modifyOrder)
-    res.render('./admin/editOrderCheck', {
+    const renderData = {
       title: '修改訂單',
       products: pdsInfo,
       totalPrice,
       modify_totalPrice,
       id: _id,
-      user: customerInfo,
+      customerInfo,
       createdAt,
       isSent: Boolean(+data.isSent),
       status: helper.orderStatus(data.status),
@@ -116,7 +103,8 @@ module.exports = {
         address: data.address
       },
       modifyOrder
-    })
+    }
+    res.render('./admin/editOrderCheck', renderData)
   },
   putOrder: async (req, res) => {
     const orderId = req.params.id
@@ -157,12 +145,13 @@ module.exports = {
     order.createdAt = new Date(order.createdAt).toLocaleString()
     order.status = helper.orderStatus(order.status)
     keyword = encodeURIComponent(keyword)
-    res.render('./admin/orders', {
+    const renderData = {
       title: '搜尋訂單',
       orders: [order],
       keyword,
       search: true
-    })
+    }
+    res.render('./admin/orders', renderData)
   },
   renderProducts: async (req, res) => {
     let { category, order, page } = req.query
@@ -186,7 +175,7 @@ module.exports = {
       .limit(pdNumLimit)
       .sort(orderOption)
       .lean()
-    res.render('./admin/products', {
+    const renderData = {
       title: '管理商品',
       products,
       category,
@@ -196,7 +185,8 @@ module.exports = {
       prev,
       page,
       next
-    })
+    }
+    res.render('./admin/products', renderData)
   },
   searchProducts: async (req, res) => {
     let { category, keyword, order, page } = req.query
@@ -223,7 +213,7 @@ module.exports = {
       .sort(orderOption)
       .lean()
     keyword = encodeURIComponent(keyword)
-    res.render('./admin/products', {
+    const renderData = {
       title: '搜尋商品',
       products,
       category,
@@ -234,7 +224,8 @@ module.exports = {
       page,
       next,
       keyword
-    })
+    }
+    res.render('./admin/products', renderData)
   },
   editProductPage: async (req, res) => {
     const pdId = req.params.id
@@ -242,10 +233,11 @@ module.exports = {
       .populate('category', '_id')
       .lean()
     product.category._id = product.category._id.toString()
-    res.render('./admin/editProduct', {
+    const renderData = {
       title: '修改商品',
       product
-    })
+    }
+    res.render('./admin/editProduct', renderData)
   },
   putProduct: async (req, res) => {
     const pdId = req.params.id
@@ -294,9 +286,10 @@ module.exports = {
     return res.redirect(`/admin/products/${pdId}`)
   },
   renderCreatePage: (req, res) => {
-    res.render('./admin/createProduct.hbs', {
+    const renderData = {
       title: '建立商品'
-    })
+    }
+    res.render('./admin/createProduct.hbs', renderData)
   },
   createProduct: async (req, res) => {
     let { name, category, price, description, amount } = req.body
@@ -318,7 +311,6 @@ module.exports = {
         }
         let info = await helper.uploadToS3(params)
         let pic = info.Location
-        console.log(info)
         product = await Product.create({
           name,
           category,
@@ -369,7 +361,8 @@ module.exports = {
   renderCategories: async (req, res) => {
     let categoryId = req.query.id
     let category = await Category.findById(categoryId).lean()
-    res.render('./admin/category', { category, title: '管理種類' })
+    const renderData = { category, title: '管理種類' }
+    res.render('./admin/category', renderData)
   },
   createCategory: async (req, res) => {
     const { name } = req.body
