@@ -6,67 +6,67 @@
     <div class="col-12 row justify-content-between ">
       {{>message}}
     </div>
-  </div>
-  <div class='col-12 row justify-content-between'>
-    <form action='/products/search' class='col-4 p-0'>
-      <div class='input-group'>
-        <input type='text' name='keyword' class='form-control' placeholder='輸入商品名稱' aria-label='Restaurant Name...'
-          value={{#if keyword}} {{keyword}} {{else}} '' {{/if}} aria-describedby='search-button' />
-        {{#if category}}
-        <input type="text" hidden name="category" value="{{category}}">
-        {{/if}}
-        {{#if order}}
-        <input type="text" hidden name="order" value="{{order}}">
-        {{/if}}
+    <div class='col-12 row justify-content-between'>
+      <form action='/products/search' class='col-4 p-0'>
+        <div class='input-group'>
+          <input type='text' name='keyword' class='form-control' placeholder='輸入商品名稱' aria-label='Restaurant Name...'
+            value={{#if keyword}} {{keyword}} {{else}} '' {{/if}} aria-describedby='search-button' />
+          {{#if category}}
+          <input type="text" hidden name="category" value="{{category}}">
+          {{/if}}
+          {{#if order}}
+          <input type="text" hidden name="order" value="{{order}}">
+          {{/if}}
 
-        <div class='input-group-append'>
-          <button class='btn btn-major' type='submit' id='search-button'><i class='fas fa-search'></i></button>
+          <div class='input-group-append'>
+            <button class='btn btn-major' type='submit' id='search-button'><i class='fas fa-search'></i></button>
+          </div>
         </div>
-      </div>
-    </form>
-    <div class='col-4 dropdown d-flex justify-content-end p-0'>
-      <button class='btn btn-danger dropdown-toggle' type='button' id='dropdownMenu2' data-toggle='dropdown'
-        aria-haspopup='true' aria-expanded='false'>
-        {{#if orderName_cht}}
-        {{orderName_cht}}
+      </form>
+      <div class='col-4 dropdown d-flex justify-content-end p-0'>
+        <button class='btn btn-danger dropdown-toggle' type='button' id='dropdownMenu2' data-toggle='dropdown'
+          aria-haspopup='true' aria-expanded='false'>
+          {{#if orderName_cht}}
+          {{orderName_cht}}
+          {{else}}
+          商品排序
+          {{/if}}
+        </button>
+        {{#if keyword}}
+        {{#if category}}
+        <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+          <a href='/products/search?order=low-high&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+            type='button'>價錢低到高</a>
+          <a href='/products/search?order=high-low&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+            type='button'>價錢高到低</a>
+          <a href='/products/search?order=early-late&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+            type='button'>上架時間早到晚</a>
+          <a href='/products/search?order=late-early&keyword={{keyword}}&category={{category}}' class='dropdown-item'
+            type='button'>上架時間晚到早</a>
+        </div>
         {{else}}
-        商品排序
+        <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+          <a href='/products/search?order=low-high&keyword={{keyword}}' class='dropdown-item' type='button'>價錢低到高</a>
+          <a href='/products/search?order=high-low&keyword={{keyword}}' class='dropdown-item' type='button'>價錢高到低</a>
+          <a href='/products/search?order=early-late&keyword={{keyword}}' class='dropdown-item'
+            type='button'>上架時間早到晚</a>
+          <a href='/products/search?order=late-early&keyword={{keyword}}' class='dropdown-item'
+            type='button'>上架時間晚到早</a>
+        </div>
         {{/if}}
-      </button>
-      {{#if keyword}}
-      {{#if category}}
-      <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-        <a href='/products/search?order=low-high&keyword={{keyword}}&category={{category}}' class='dropdown-item'
-          type='button'>價錢低到高</a>
-        <a href='/products/search?order=high-low&keyword={{keyword}}&category={{category}}' class='dropdown-item'
-          type='button'>價錢高到低</a>
-        <a href='/products/search?order=early-late&keyword={{keyword}}&category={{category}}' class='dropdown-item'
-          type='button'>上架時間早到晚</a>
-        <a href='/products/search?order=late-early&keyword={{keyword}}&category={{category}}' class='dropdown-item'
-          type='button'>上架時間晚到早</a>
+        {{else}}
+        <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+          <a href='/?order=low-high&category={{this.category}}' class='dropdown-item' type='button'>價錢低到高</a>
+          <a href='/?order=high-low&category={{this.category}}' class='dropdown-item' type='button'>價錢高到低</a>
+          <a href='/?order=early-late&category={{this.category}}' class='dropdown-item' type='button'>上架時間早到晚</a>
+          <a href='/?order=late-early&category={{this.category}}' class='dropdown-item' type='button'>上架時間晚到早</a>
+        </div>
+        {{/if}}
       </div>
-      {{else}}
-      <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-        <a href='/products/search?order=low-high&keyword={{keyword}}' class='dropdown-item' type='button'>價錢低到高</a>
-        <a href='/products/search?order=high-low&keyword={{keyword}}' class='dropdown-item' type='button'>價錢高到低</a>
-        <a href='/products/search?order=early-late&keyword={{keyword}}' class='dropdown-item' type='button'>上架時間早到晚</a>
-        <a href='/products/search?order=late-early&keyword={{keyword}}' class='dropdown-item' type='button'>上架時間晚到早</a>
-      </div>
-      {{/if}}
-      {{else}}
-      <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-        <a href='/?order=low-high&category={{this.category}}' class='dropdown-item' type='button'>價錢低到高</a>
-        <a href='/?order=high-low&category={{this.category}}' class='dropdown-item' type='button'>價錢高到低</a>
-        <a href='/?order=early-late&category={{this.category}}' class='dropdown-item' type='button'>上架時間早到晚</a>
-        <a href='/?order=late-early&category={{this.category}}' class='dropdown-item' type='button'>上架時間晚到早</a>
-      </div>
-      {{/if}}
     </div>
   </div>
-
 </div>
 
-</div>
 
 <!-- product list -->
 <div class='container mt-3'>
